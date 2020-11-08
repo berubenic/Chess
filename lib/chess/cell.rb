@@ -5,9 +5,33 @@ module Chess
   class Cell
     attr_reader :coordinate, :content
 
-    def initialize(coordinate, content = nil)
-      @coordinate = coordinate
+    def initialize(x, y, content = nil)
+      @coordinate = [x, y]
       @content = content
+    end
+
+    def create_pawn(color)
+      @content = Pawn.new(color, coordinate)
+    end
+
+    def create_rook(color)
+      @content = Rook.new(color, coordinate)
+    end
+
+    def create_knight(color)
+      @content = Knight.new(color, coordinate)
+    end
+
+    def create_bishop(color)
+      @content = Bishop.new(color, coordinate)
+    end
+
+    def create_queen(color)
+      @content = Queen.new(color, coordinate)
+    end
+
+    def create_king(color)
+      @content = King.new(color, coordinate)
     end
   end
 end

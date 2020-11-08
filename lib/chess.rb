@@ -8,3 +8,4 @@ end
 
 require_relative './chess/board'
 require_relative './chess/cell'
+require_relative './chess/piece'

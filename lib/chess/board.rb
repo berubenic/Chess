@@ -16,7 +16,7 @@ module Chess
       end
     end
 
-    # not tested, implementation method?...
+    # implementation method, not tested
     def setup_board
       setup_pawns
       setup_rooks

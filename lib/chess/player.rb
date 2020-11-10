@@ -15,6 +15,11 @@ module Chess
       @name = player_input
     end
 
+    # implementation method, not tested
+    def input_move
+      verify_move(player_input)
+    end
+
     def assign_color(color)
       @color = color
     end
@@ -31,6 +36,17 @@ module Chess
 
     def player_input
       gets.chomp
+    end
+
+    def verify_move(input)
+      if input.length == 2
+        input
+      elsif input == 'exit'
+        exit
+      else
+        puts 'Invalid move, please try again.'
+        input_move
+      end
     end
   end
 end

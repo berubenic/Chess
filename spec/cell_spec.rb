@@ -136,5 +136,15 @@ module Chess
         expect(cell.content.color).to eq(color)
       end
     end
+
+    describe '#update_content' do
+      subject(:cell) { described_class.new(x_coordinate: 0, y_coordinate: 0) }
+
+      it 'assigns @content' do
+        content = 'some_content'
+        cell.update_content(content)
+        expect(cell.content).to eq(content)
+      end
+    end
   end
 end

@@ -10,6 +10,10 @@ module Chess
       @content = content
     end
 
+    def update_content(content)
+      @content = content
+    end
+
     def create_pawn(color)
       @content = Pawn.new(color: color, current_position: coordinate)
     end

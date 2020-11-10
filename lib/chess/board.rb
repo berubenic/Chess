@@ -16,14 +16,6 @@ module Chess
       end
     end
 
-    def create_row(y_coordinate)
-      row = []
-      (0..7).each do |x_coordinate|
-        row << Cell.new(x_coordinate, y_coordinate)
-      end
-      row
-    end
-
     def setup_board
       setup_pawns
       setup_rooks
@@ -31,6 +23,16 @@ module Chess
       setup_bishops
       setup_queen
       setup_king
+    end
+
+    private
+
+    def create_row(y_coordinate)
+      row = []
+      (0..7).each do |x_coordinate|
+        row << Cell.new(x_coordinate, y_coordinate)
+      end
+      row
     end
 
     def setup_pawns

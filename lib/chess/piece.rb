@@ -8,6 +8,10 @@ module Chess
       @color = color
       @current_position = current_position
     end
+
+    def update_position(coordinate)
+      @current_position = coordinate
+    end
   end
 
   class Pawn < Piece

@@ -12,6 +12,7 @@ module Chess
 
     def update_content(content)
       @content = content
+      content.update_position(coordinate)
     end
 
     def create_pawn(color)

@@ -139,9 +139,14 @@ module Chess
 
     describe '#update_content' do
       subject(:cell) { described_class.new(x_coordinate: 0, y_coordinate: 0) }
+      let(:piece) { instance_double(Piece) }
 
-      it 'assigns @content' do
-        content = 'some_content'
+      before do
+        allow(piece).to receive(:update_position)
+      end
+
+      it 'assigns @content and sends #update_position to content' do
+        content = piece
         cell.update_content(content)
         expect(cell.content).to eq(content)
       end

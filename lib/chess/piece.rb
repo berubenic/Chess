@@ -25,7 +25,9 @@ module Chess
   class Pawn < Piece
     private
 
-    def possible_moves(x, y)
+    def possible_moves
+      x = current_position[0]
+      y = current_position[1]
       possibilities = [
         [x, y + 2],
         [x, y + 1],
@@ -43,7 +45,25 @@ module Chess
   class Bishop < Piece
   end
 
+  # Knight
   class Knight < Piece
+    private
+
+    def possible_moves
+      x = current_position[0]
+      y = current_position[1]
+      possibilities = [
+        [x + 1, y + 2],
+        [x + 1, y - 2],
+        [x - 1, y + 2],
+        [x - 1, y - 2],
+        [x + 2, y + 1],
+        [x + 2, y - 1],
+        [x - 2, y + 1],
+        [x - 2, y - 1]
+      ]
+      possibilities.keep_if { |coord| with_in_board?(coord) }
+    end
   end
 
   class Queen < Piece

@@ -26,7 +26,7 @@ module Chess
       setup_king
     end
 
-    def move_coordinate(moves)
+    def send_possible_moves_to_be_updated(moves)
       moves.each do |coord|
         x = coord[0]
         y = coord[1]

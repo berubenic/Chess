@@ -23,17 +23,14 @@ module Chess
 
   # Pawn
   class Pawn < Piece
-    private
-
-    def possible_moves
-      x = current_position[0]
-      y = current_position[1]
-      possibilities = [
-        [x, y + 2],
-        [x, y + 1],
-        [x, y - 2],
-        [x, y - 1]
-      ]
+    def possible_moves(x = current_position[0], y = current_position[1], possibilities = [])
+      if color == 'white'
+        possibilities << [x, y - 1]
+        possibilities << [x, y - 2] if count.zero?
+      elsif color == 'black'
+        possibilities << [x, y + 1]
+        possibilities << [x, y + 2] if count.zero?
+      end
 
       possibilities.keep_if { |coord| with_in_board?(coord) }
     end

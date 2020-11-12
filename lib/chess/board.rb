@@ -26,6 +26,19 @@ module Chess
       setup_king
     end
 
+    def move_coordinate(moves)
+      moves.each do |coord|
+        x = coord[0]
+        y = coord[1]
+        retrieve_and_update_cell(x, y)
+      end
+    end
+
+    def retrieve_and_update_cell(x_coordinate, y_coordinate)
+      cell = cells[y_coordinate][x_coordinate]
+      cell.update_content('o') if cell.content.nil?
+    end
+
     private
 
     def create_row(y_coordinate)

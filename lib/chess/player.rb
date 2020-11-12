@@ -2,6 +2,7 @@
 
 # Player
 module Chess
+  # Player
   class Player
     attr_reader :name, :turn, :color
 

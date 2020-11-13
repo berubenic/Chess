@@ -5,11 +5,11 @@ require_relative 'spec_helper'
 # Board_spec
 module Chess
   describe Board do
-    describe '#create_board' do
+    describe '#prepare_game' do
       subject(:board) { described_class.new }
 
       before do
-        board.create_board
+        board.prepare_game
       end
 
       it 'assigns @cells an array of array with elements being instances of Cell' do

@@ -9,21 +9,9 @@ module Chess
       @cells = cells
     end
 
-    def create_board
-      @cells = []
-      (0..7).each do |y_coordinate|
-        @cells << create_row(y_coordinate)
-      end
-    end
-
-    # implementation method, not tested
-    def setup_board
-      setup_pawns
-      setup_rooks
-      setup_knights
-      setup_bishops
-      setup_queen
-      setup_king
+    def prepare_game
+      create_board
+      setup_board
     end
 
     def send_possible_moves_to_be_updated(moves)
@@ -40,6 +28,22 @@ module Chess
     end
 
     private
+
+    def create_board
+      @cells = []
+      (0..7).each do |y_coordinate|
+        @cells << create_row(y_coordinate)
+      end
+    end
+
+    def setup_board
+      setup_pawns
+      setup_rooks
+      setup_knights
+      setup_bishops
+      setup_queen
+      setup_king
+    end
 
     def create_row(y_coordinate)
       row = []

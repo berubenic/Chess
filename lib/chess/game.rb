@@ -8,13 +8,10 @@ module Chess
       @player_two = player_two
     end
 
-    def setup_game
-      board.create_board
-      board.setup_board
-      player_one.input_name
-      player_two.input_name
-      player_one.assign_color('white')
-      player_two.assign_color('black')
+    def prepare_game
+      board.prepare_game
+      player_one.prepare_game('white')
+      player_two.prepare_game('black')
     end
   end
 end

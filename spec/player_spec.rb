@@ -5,22 +5,22 @@ require_relative 'spec_helper'
 # Player spec
 module Chess
   describe Player do
-    describe '#input_name' do
+    describe '#prepare_game' do
       subject(:player) { described_class.new }
+
+      before do
+        allow(player).to receive(:player_input).and_return('John')
+      end
 
       it 'assigns player.name the input provided by the player' do
-        allow(player).to receive(:player_input).and_return('John')
-        player.input_name
+        color = 'some_color'
+        player.prepare_game(color)
         expect(player.name).to eq('John')
       end
-    end
-
-    describe '#assign_color' do
-      subject(:player) { described_class.new }
 
       it 'assigns player.color the color provided' do
         color = 'some_color'
-        player.assign_color(color)
+        player.prepare_game(color)
         expect(player.color).to eq(color)
       end
     end

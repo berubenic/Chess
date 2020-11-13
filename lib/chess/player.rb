@@ -12,17 +12,14 @@ module Chess
       @color = color
     end
 
-    def input_name
-      @name = player_input
+    def prepare_game(color)
+      input_name
+      assign_color(color)
     end
 
     # implementation method, not tested
     def input_move
       verify_move(player_input)
-    end
-
-    def assign_color(color)
-      @color = color
     end
 
     def switch_turn
@@ -34,6 +31,14 @@ module Chess
     end
 
     private
+
+    def assign_color(color)
+      @color = color
+    end
+
+    def input_name
+      @name = player_input
+    end
 
     def player_input
       gets.chomp

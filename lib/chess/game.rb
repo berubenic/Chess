@@ -20,6 +20,10 @@ module Chess
       @move = player.select_piece
     end
 
+    def valid_select?
+      board.valid_select?(move, current_player.color)
+    end
+
     private
 
     def current_player

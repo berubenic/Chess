@@ -14,6 +14,8 @@ module Chess
       setup_board
     end
 
+    def valid_select?(move, player_color); end
+
     def send_possible_moves_to_be_updated(moves)
       moves.each do |coord|
         x = coord[0]

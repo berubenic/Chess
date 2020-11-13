@@ -87,5 +87,23 @@ module Chess
         end
       end
     end
+
+    describe '#valid_select?' do
+      let(:board) { instance_double(Board) }
+      let(:player_one) { instance_double(Player) }
+      let(:player_two) { instance_double(Player) }
+      subject(:game) { described_class.new(board, player_one, player_two) }
+
+      before do
+        allow(board).to receive(:valid_select?)
+        allow(player_one).to receive(:turn).and_return(true)
+        allow(player_one).to receive(:color).and_return('white')
+      end
+
+      it 'sends #valid_select to board' do
+        expect(board).to receive(:valid_select?)
+        game.valid_select?
+      end
+    end
   end
 end

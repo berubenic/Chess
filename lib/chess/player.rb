@@ -45,7 +45,7 @@ module Chess
 
     def verify_input(input)
       if input.length == 2 && input[0].downcase == /[a-g]/ && input[1] >= 1 && input[1] <= 8
-        input
+        input.downcase!
       else
         puts 'Invalid move, please try again.'
         player_input

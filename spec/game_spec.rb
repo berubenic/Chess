@@ -105,5 +105,21 @@ module Chess
         game.valid_select?
       end
     end
+
+    describe '#convert_move' do
+      subject(:game) { described_class.new }
+
+      it 'converts a8 to [0, 7]' do
+        game.instance_variable_set(:@move, 'a8')
+        game.convert_move
+        expect(game.move).to eq([0, 7])
+      end
+
+      it 'converts h1 to [7, 0]' do
+        game.instance_variable_set(:@move, 'h1')
+        game.convert_move
+        expect(game.move).to eq([7, 0])
+      end
+    end
   end
 end

@@ -3,6 +3,18 @@
 module Chess
   class Game
     attr_reader :board, :player_one, :player_two, :move
+
+    LETTERS = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+      e: 4,
+      f: 5,
+      g: 6,
+      h: 7
+    }.freeze
+
     def initialize(board = Board.new, player_one = Player.new, player_two = Player.new)
       @board = board
       @player_one = player_one
@@ -19,6 +31,8 @@ module Chess
     def select_piece(player = current_player)
       @move = player.select_piece
     end
+
+    def convert_move; end
 
     def valid_select?
       board.valid_select?(move, current_player.color)

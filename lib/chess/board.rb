@@ -14,7 +14,9 @@ module Chess
       setup_board
     end
 
-    def valid_select?(move, player_color); end
+    def valid_select?(move, player_color)
+      retrieve_cell(move)
+    end
 
     def send_possible_moves_to_be_updated(moves)
       moves.each do |coord|
@@ -30,6 +32,10 @@ module Chess
     end
 
     private
+
+    def retrieve_cell(move)
+      
+    end
 
     def create_board
       @cells = []

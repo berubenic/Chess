@@ -17,11 +17,8 @@ module Chess
       assign_color(color)
     end
 
-    def select_piece; end
-
-    # implementation method, not tested
-    def input_move
-      verify_move(player_input)
+    def select_piece
+      player_input
     end
 
     def switch_turn

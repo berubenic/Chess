@@ -60,6 +60,22 @@ module Chess
           expect(board.valid_select?(move, color)).to be false
         end
       end
+
+      context '#highlight_move' do
+        subject(:board) { described_class.new }
+        let(:cell) { instance_double(Cell) }
+
+        before do
+          allow(board).to receive(:retrieve_cell).and_return(cell)
+          allow(cell).to receive(:toggle_highlight)
+        end
+
+        it 'sends Cell #toggle_highlight' do
+          move = 'some_move'
+          expect(cell).to receive(:toggle_highlight)
+          board.highlight_move(move)
+        end
+      end
     end
   end
 end

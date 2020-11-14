@@ -151,5 +151,25 @@ module Chess
         expect(cell.content).to eq(content)
       end
     end
+
+    describe '#toggle_highlight' do
+      context 'cell.highlight is false' do
+        subject(:cell) { described_class.new(x_coordinate: 0, y_coordinate: 0) }
+
+        it 'assigns @highlight to be true' do
+          cell.toggle_highlight
+          expect(cell.highlight).to be true
+        end
+      end
+
+      context 'cell.highlight is true' do
+        subject(:cell) { described_class.new(x_coordinate: 0, y_coordinate: 0, highlight: true) }
+
+        it 'assigns @highlight to be false' do
+          cell.toggle_highlight
+          expect(cell.highlight).to be false
+        end
+      end
+    end
   end
 end

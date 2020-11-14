@@ -17,7 +17,8 @@ module Chess
     end
 
     def toggle_highlight
-      @highlight = true if highlight == false
+      return @highlight = true if highlight == false
+
       @highlight = false if highlight == true
     end
 

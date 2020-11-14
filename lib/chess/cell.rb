@@ -16,8 +16,9 @@ module Chess
       content.update_position(coordinate)
     end
 
-    def highlight
-      @highlight = true
+    def toggle_highlight
+      @highlight = true if highlight == false
+      @highlight = false if highlight == true
     end
 
     def create_pawn(color)

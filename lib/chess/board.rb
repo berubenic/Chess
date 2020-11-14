@@ -21,7 +21,7 @@ module Chess
 
     def highlight_move(move)
       cell = retrieve_cell(move)
-      cell.highlight
+      cell.toggle_highlight
     end
 
     private

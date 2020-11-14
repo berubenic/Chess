@@ -24,9 +24,29 @@ module Chess
       cell.toggle_highlight
     end
 
-    def possible_moves(move); end
+    def possible_moves(move)
+      piece = retrieve_cell(move).content
+      possible_movements(piece)
+      possible_captures(piece)
+    end
 
     private
+
+    def possible_captures(piece)
+      captures = piece.possible_captures
+      captures.each do |capture|
+        cell = retrieve_cell(capture)
+        cell.toggle_highlight
+      end
+    end
+
+    def possible_movements(piece)
+      movements = piece.possible_movements
+      movements.each do |move|
+        cell = retrieve_cell(move)
+        cell.update_content('o')
+      end
+    end
 
     def verify_cell_for_move?(cell, player_color)
       return false if cell.content.nil?

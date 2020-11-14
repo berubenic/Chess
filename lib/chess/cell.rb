@@ -3,7 +3,7 @@
 module Chess
   # Cell
   class Cell
-    attr_reader :coordinate, :content, :highlight
+    attr_reader :coordinate, :content, :highlight, :color
 
     def initialize(x_coordinate:, y_coordinate:, content: nil, highlight: false, color: nil)
       @coordinate = [x_coordinate, y_coordinate]
@@ -24,27 +24,33 @@ module Chess
     end
 
     def create_pawn(color)
-      @content = Pawn.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2659" : "\u265F"
+      @content = Pawn.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def create_rook(color)
-      @content = Rook.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2656" : "\u265C"
+      @content = Rook.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def create_knight(color)
-      @content = Knight.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2658" : "\u265E"
+      @content = Knight.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def create_bishop(color)
-      @content = Bishop.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2657" : "\u265D"
+      @content = Bishop.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def create_queen(color)
-      @content = Queen.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2655" : "\u265B"
+      @content = Queen.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def create_king(color)
-      @content = King.new(color: color, current_position: coordinate)
+      symbol = color == 'white' ? "\u2654" : "\u265A"
+      @content = King.new(color: color, current_position: coordinate, symbol: symbol)
     end
 
     def color_tile(primary)
@@ -54,9 +60,17 @@ module Chess
 
     def to_s
       if color == 'primary'
-        content.bg_primary
+        " #{print_content} ".bg_primary
       elsif color == 'secondary'
-        content.bg_secondary
+        " #{print_content} ".bg_secondary
+      end
+    end
+
+    def print_content
+      if content.nil?
+        ' '
+      else
+        content
       end
     end
   end

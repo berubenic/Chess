@@ -3,7 +3,7 @@
 module Chess
   # Game
   class Game
-    attr_reader :board, :player_one, :player_two, :move
+    attr_reader :board, :player_one, :player_two, :move, :printer
 
     LETTERS = {
       'a' => 0,
@@ -16,11 +16,12 @@ module Chess
       'h' => 7
     }.freeze
 
-    def initialize(board = Board.new, player_one = Player.new, player_two = Player.new)
+    def initialize(board = Board.new, player_one = Player.new, player_two = Player.new, printer = Printer.new)
       @board = board
       @player_one = player_one
       @player_two = player_two
       @move = nil
+      @printer = printer
     end
 
     def prepare_game
@@ -49,6 +50,10 @@ module Chess
 
     def possible_moves
       board.possible_moves(move, current_player.color)
+    end
+
+    def print_board
+      printer.print_board(board)
     end
 
     private

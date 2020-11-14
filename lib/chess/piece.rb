@@ -3,15 +3,20 @@
 module Chess
   # Pieces
   class Piece
-    attr_reader :color, :current_position, :count
-    def initialize(color:, current_position:, count: 0)
+    attr_reader :color, :current_position, :count, :symbol
+    def initialize(color:, current_position:, count: 0, symbol: nil)
       @color = color
       @current_position = current_position
       @count = count
+      @symbol = symbol
     end
 
     def update_position(coordinate)
       @current_position = coordinate
+    end
+
+    def to_s
+      symbol
     end
 
     private

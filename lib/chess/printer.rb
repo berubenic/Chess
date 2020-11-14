@@ -14,5 +14,18 @@ module Chess
     BLACK_BISHOP = "\u265D"
     BLACK_QUEEN = "\u265B"
     BLACK_KING = "\u265A"
+    COLUMN_HEADER = '   A  B  C  D  E  F  G  H'
+
+    def print_board(board)
+      cells = board.cells
+      puts COLUMN_HEADER
+      cells.each_with_index do |x, y|
+        print "#{y + 1} "
+        x.each { |cell| print cell.to_s }
+        print " #{y + 1}"
+        print "\n"
+      end
+      puts COLUMN_HEADER
+    end
   end
 end

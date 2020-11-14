@@ -121,5 +121,21 @@ module Chess
         expect(game.move).to eq([7, 0])
       end
     end
+
+    describe '#highlight_move' do
+      let(:board) { instance_double(Board) }
+      let(:player_one) { instance_double(Player) }
+      let(:player_two) { instance_double(Player) }
+      subject(:game) { described_class.new(board, player_one, player_two) }
+
+      before do
+        allow(board).to receive(:highlight_move)
+      end
+
+      it 'sends #highlight_move to board' do
+        expect(board).to receive(:highlight_move)
+        game.highlight_move
+      end
+    end
   end
 end

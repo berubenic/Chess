@@ -16,6 +16,10 @@ module Chess
       content.update_position(coordinate)
     end
 
+    def highlight
+      @highlight = true
+    end
+
     def create_pawn(color)
       @content = Pawn.new(color: color, current_position: coordinate)
     end

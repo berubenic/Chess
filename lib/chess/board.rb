@@ -19,6 +19,11 @@ module Chess
       verify_cell_for_move?(cell, player_color)
     end
 
+    def highlight_move(move)
+      cell = retrieve_cell(move)
+      cell.highlight
+    end
+
     private
 
     def verify_cell_for_move?(cell, player_color)

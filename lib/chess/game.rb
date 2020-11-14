@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Chess
+  # Game
   class Game
     attr_reader :board, :player_one, :player_two, :move
 
@@ -40,6 +41,10 @@ module Chess
 
     def valid_select?
       board.valid_select?(move, current_player.color)
+    end
+
+    def highlight_move
+      board.highlight_move(move)
     end
 
     private

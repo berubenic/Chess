@@ -31,5 +31,35 @@ module Chess
         expect(board.cells[7].length).to eq(8)
       end
     end
+
+    describe '#valid_select?' do
+      subject(:board) { described_class.new }
+
+      context '#verify_cell_for_move? returns true' do
+        before do
+          allow(board).to receive(:retrieve_cell)
+          allow(board).to receive(:verify_cell_for_move?).and_return(true)
+        end
+
+        it 'returns true' do
+          move = 'some_move'
+          color = 'some_color'
+          expect(board.valid_select?(move, color)).to be true
+        end
+      end
+
+      context '#verify_cell_for_move? returns false' do
+        before do
+          allow(board).to receive(:retrieve_cell)
+          allow(board).to receive(:verify_cell_for_move?).and_return(false)
+        end
+
+        it 'returns false' do
+          move = 'some_move'
+          color = 'some_color'
+          expect(board.valid_select?(move, color)).to be false
+        end
+      end
+    end
   end
 end

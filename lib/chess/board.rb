@@ -15,26 +15,23 @@ module Chess
     end
 
     def valid_select?(move, player_color)
-      retrieve_cell(move)
-    end
-
-    def send_possible_moves_to_be_updated(moves)
-      moves.each do |coord|
-        x = coord[0]
-        y = coord[1]
-        retrieve_and_update_cell(x, y)
-      end
-    end
-
-    def retrieve_and_update_cell(x_coordinate, y_coordinate)
-      cell = cells[y_coordinate][x_coordinate]
-      cell.update_content('o') if cell.content.nil?
+      cell = retrieve_cell(move)
+      verify_cell_for_move?(cell, player_color)
     end
 
     private
 
+    def verify_cell_for_move?(cell, player_color)
+      return false if cell.content.nil?
+      return false if cell.content.color != player_color
+
+      true
+    end
+
     def retrieve_cell(move)
-      
+      x = move[0]
+      y = move[1]
+      cells[y][x]
     end
 
     def create_board

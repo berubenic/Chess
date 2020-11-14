@@ -3,11 +3,12 @@
 module Chess
   # Cell
   class Cell
-    attr_reader :coordinate, :content
+    attr_reader :coordinate, :content, :highlight
 
-    def initialize(x_coordinate:, y_coordinate:, content: nil)
+    def initialize(x_coordinate:, y_coordinate:, content: nil, highlight: false)
       @coordinate = [x_coordinate, y_coordinate]
       @content = content
+      @highlight = highlight
     end
 
     def update_content(content)

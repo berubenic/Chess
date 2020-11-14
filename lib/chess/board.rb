@@ -42,10 +42,21 @@ module Chess
 
     def possible_movements(piece)
       movements = piece.possible_movements
+      movements = remove_occupied(movements)
       movements.each do |move|
         cell = retrieve_cell(move)
         cell.update_content('o')
       end
+    end
+
+    def remove_occupied(movements, result = [])
+      movements.each do |move|
+        cell = retrieve_cell(move)
+        next unless cell.content.nil?
+
+        result << move
+      end
+      result
     end
 
     def verify_cell_for_move?(cell, player_color)

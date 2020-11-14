@@ -23,7 +23,7 @@ module Chess
 
   # Pawn
   class Pawn < Piece
-    def possible_moves(x = current_position[0], y = current_position[1], possibilities = [])
+    def possible_movement(x = current_position[0], y = current_position[1], possibilities = [])
       if color == 'white'
         possibilities << [x, y - 1]
         possibilities << [x, y - 2] if count.zero?
@@ -34,6 +34,8 @@ module Chess
 
       possibilities.keep_if { |coord| with_in_board?(coord) }
     end
+
+    def possible_captures(x = current_position[0], y = current_position[1], possibilities = []); end
   end
 
   class Rook < Piece

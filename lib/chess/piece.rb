@@ -35,7 +35,17 @@ module Chess
       possibilities.keep_if { |coord| with_in_board?(coord) }
     end
 
-    def possible_captures(x = current_position[0], y = current_position[1], possibilities = []); end
+    def possible_captures(x = current_position[0], y = current_position[1], possibilities = [])
+      if color == 'white'
+        possibilities << [x - 1, y - 1]
+        possibilities << [x + 1, y - 1]
+      elsif color == 'black'
+        possibilities << [x - 1, y + 1]
+        possibilities << [x + 1, y + 1]
+      end
+
+      possibilities.keep_if { |coord| with_in_board?(coord) }
+    end
   end
 
   class Rook < Piece

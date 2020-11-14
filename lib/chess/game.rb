@@ -48,7 +48,7 @@ module Chess
     end
 
     def possible_moves
-      board.possible_moves(move)
+      board.possible_moves(move, current_player.color)
     end
 
     private

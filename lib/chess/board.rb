@@ -24,15 +24,15 @@ module Chess
       cell.toggle_highlight
     end
 
-    def possible_moves(move)
+    def possible_moves(move, player_color)
       piece = retrieve_cell(move).content
       possible_movements(piece)
-      possible_captures(piece)
+      possible_captures(piece, player_color)
     end
 
     private
 
-    def possible_captures(piece)
+    def possible_captures(piece, _player_color)
       captures = piece.possible_captures
       captures.each do |capture|
         cell = retrieve_cell(capture)

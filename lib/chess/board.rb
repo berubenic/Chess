@@ -24,6 +24,8 @@ module Chess
       cell.toggle_highlight
     end
 
+    def possible_moves(move); end
+
     private
 
     def verify_cell_for_move?(cell, player_color)

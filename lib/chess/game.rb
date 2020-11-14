@@ -47,6 +47,10 @@ module Chess
       board.highlight_move(move)
     end
 
+    def possible_moves
+      board.possible_moves(move)
+    end
+
     private
 
     def current_player

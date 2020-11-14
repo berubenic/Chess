@@ -137,5 +137,21 @@ module Chess
         game.highlight_move
       end
     end
+
+    describe '#possible_moves' do
+      let(:board) { instance_double(Board) }
+      let(:player_one) { instance_double(Player) }
+      let(:player_two) { instance_double(Player) }
+      subject(:game) { described_class.new(board, player_one, player_two) }
+
+      before do
+        allow(board).to receive(:possible_moves)
+      end
+
+      it 'sends #possible_moves to board' do
+        expect(board).to receive(:possible_moves)
+        game.possible_moves
+      end
+    end
   end
 end

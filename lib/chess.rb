@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'chess/version'
+require_relative 'chess/version'
 
 # Chess
 module Chess
@@ -12,3 +12,4 @@ require_relative './chess/piece'
 require_relative './chess/player'
 require_relative './chess/printer'
 require_relative './chess/game'
+require_relative './string'

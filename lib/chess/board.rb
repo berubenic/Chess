@@ -91,6 +91,7 @@ module Chess
     end
 
     def setup_board
+      prepare_row_for_color
       setup_pawns
       setup_rooks
       setup_knights
@@ -105,6 +106,33 @@ module Chess
         row << Cell.new(x_coordinate: x_coordinate, y_coordinate: y_coordinate)
       end
       row
+    end
+
+    def prepare_row_for_color
+      cells.each_with_index do |row, y|
+        send_odd_row_for_color(row) if y.odd?
+        send_even_row_for_color(row) unless y.odd?
+      end
+    end
+
+    def send_odd_row_for_color(row)
+      row.each_with_index do |cell, index|
+        if index.odd?
+          cell.color_tile(true)
+        else
+          cell.color_tile(false)
+        end
+      end
+    end
+
+    def send_even_row_for_color(row)
+      row.each_with_index do |cell, index|
+        if index.odd?
+          cell.color_tile(false)
+        else
+          cell.color_tile(true)
+        end
+      end
     end
 
     def setup_pawns

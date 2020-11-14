@@ -14,6 +14,5 @@ module Chess
     BLACK_BISHOP = "\u265D"
     BLACK_QUEEN = "\u265B"
     BLACK_KING = "\u265A"
-
   end
 end

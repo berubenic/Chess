@@ -146,6 +146,8 @@ module Chess
 
       before do
         allow(board).to receive(:possible_moves)
+        allow(player_one).to receive(:turn).and_return(true)
+        allow(player_one).to receive(:color).and_return('white')
       end
 
       it 'sends #possible_moves to board' do

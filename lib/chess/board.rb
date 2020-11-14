@@ -32,8 +32,9 @@ module Chess
 
     private
 
-    def possible_captures(piece, _player_color)
+    def possible_captures(piece, player_color)
       captures = piece.possible_captures
+      captures = remove_friendly_captures(captures, player_color)
       captures.each do |capture|
         cell = retrieve_cell(capture)
         cell.toggle_highlight
@@ -55,6 +56,16 @@ module Chess
         next unless cell.content.nil?
 
         result << move
+      end
+      result
+    end
+
+    def remove_friendly_captures(captures, player_color, result = [])
+      captures.each do |capture|
+        cell = retrieve_cell(capture)
+        next if cell.content.color == player_color
+
+        result << capture
       end
       result
     end

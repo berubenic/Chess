@@ -16,7 +16,7 @@ module Chess
       'h' => 7
     }.freeze
 
-    def initialize(board = Board.new, player_one = Player.new, player_two = Player.new, printer = Printer.new)
+    def initialize(board = Board.new, player_one = Player.new(turn: true), player_two = Player.new, printer = Printer.new)
       @board = board
       @player_one = player_one
       @player_two = player_two
@@ -54,6 +54,10 @@ module Chess
 
     def print_board
       printer.print_board(board)
+    end
+
+    def print_select_piece
+      printer.select_piece(current_player.name)
     end
 
     private

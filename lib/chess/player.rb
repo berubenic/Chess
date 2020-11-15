@@ -18,7 +18,13 @@ module Chess
     end
 
     def select_piece
-      verify_input(player_input)
+      input = player_input
+      if verify_input?(input)
+        input.downcase
+      else
+        puts 'Invalid move, please try again.'
+        select_piece
+      end
     end
 
     def switch_turn
@@ -43,13 +49,8 @@ module Chess
       gets.chomp
     end
 
-    def verify_input(input)
-      if input.length == 2 && input[0].downcase == /[A-Ga-g]/ && input[1] >= 1 && input[1] <= 8
-        input.downcase!
-      else
-        puts 'Invalid move, please try again.'
-        player_input
-      end
+    def verify_input?(input)
+      return true if input.length == 2 && input[1].to_i >= 1 && input[1].to_i <= 8
     end
   end
 end

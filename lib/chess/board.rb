@@ -63,6 +63,7 @@ module Chess
     def remove_friendly_captures(captures, player_color, result = [])
       captures.each do |capture|
         cell = retrieve_cell(capture)
+        next if cell.content.nil?
         next if cell.content.color == player_color
 
         result << capture

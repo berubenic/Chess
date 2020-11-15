@@ -28,7 +28,7 @@ module Chess
 
   # Pawn
   class Pawn < Piece
-    def possible_movement(x = current_position[0], y = current_position[1], possibilities = [])
+    def possible_movements(x = current_position[0], y = current_position[1], possibilities = [])
       if color == 'white'
         possibilities << [x, y - 1]
         possibilities << [x, y - 2] if count.zero?

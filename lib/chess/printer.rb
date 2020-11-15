@@ -27,5 +27,9 @@ module Chess
       end
       puts COLUMN_HEADER
     end
+
+    def select_piece(player_name)
+      puts "#{player_name} select the piece you want to move. ex.[A8]"
+    end
   end
 end

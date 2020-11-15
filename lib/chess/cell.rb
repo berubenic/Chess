@@ -14,6 +14,9 @@ module Chess
 
     def update_content(content)
       @content = content
+    end
+
+    def update_position(content)
       content.update_position(coordinate)
     end
 

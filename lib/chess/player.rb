@@ -50,7 +50,7 @@ module Chess
     end
 
     def verify_input?(input)
-      return true if input.length == 2 && input[1].to_i >= 1 && input[1].to_i <= 8
+      return true if input.length == 2 && input[0] =~ /[a-gA-G]/ && input[1].to_i >= 1 && input[1].to_i <= 8
     end
   end
 end

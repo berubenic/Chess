@@ -32,13 +32,28 @@ module Chess
       possible_captures(piece, player_color)
     end
 
+    def remove_possible_moves
+      moves.each do |move|
+        cell = retrieve_cell(move)
+        cell.remove_content
+      end
+      captures.each do |capture|
+        cell = retrieve_cell(capture)
+        cell.toggle_highlight
+      end
+    end
+
     def valid_move?(move)
       moves.include?(move) || captures.include?(move)
     end
 
-    def execute_move(move, _selected_piece)
-      cell = retrieve_cell(move)
-      cell.update_content
+    def execute_move(move, selected_piece)
+      selected_cell = retrieve_cell(selected_piece)
+      piece = selected_cell.content
+      selected_cell.remove_content
+      move_cell = retrieve_cell(move)
+      move_cell.update_content(piece)
+      move_cell.update_position(piece)
     end
 
     private

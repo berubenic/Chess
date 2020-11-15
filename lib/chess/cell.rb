@@ -16,6 +16,10 @@ module Chess
       @content = content
     end
 
+    def remove_content
+      @content = nil
+    end
+
     def update_position(content)
       content.update_position(coordinate)
     end

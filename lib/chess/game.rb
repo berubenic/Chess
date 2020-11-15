@@ -50,6 +50,10 @@ module Chess
       @move = player.select_piece
     end
 
+    def select_move(player = current_player)
+      @move = player.select_move
+    end
+
     def convert_move(result = [])
       result << LETTERS.values_at(move[0])[0]
       result << move[1].to_i - 1

@@ -3,10 +3,12 @@
 module Chess
   # Board
   class Board
-    attr_reader :cells
+    attr_reader :cells, :moves, :captures
 
     def initialize(cells = nil)
       @cells = cells
+      @moves = nil
+      @captures = nil
     end
 
     def prepare_game
@@ -33,8 +35,8 @@ module Chess
     private
 
     def possible_captures(piece, player_color)
-      captures = piece.possible_captures
-      captures = remove_friendly_captures(captures, player_color)
+      @captures = piece.possible_captures
+      @captures = remove_friendly_captures(player_color)
       captures.each do |capture|
         cell = retrieve_cell(capture)
         cell.toggle_highlight
@@ -42,16 +44,16 @@ module Chess
     end
 
     def possible_movements(piece)
-      movements = piece.possible_movements
-      movements = remove_occupied(movements)
-      movements.each do |move|
+      @moves = piece.possible_movements
+      @moves = remove_occupied
+      moves.each do |move|
         cell = retrieve_cell(move)
         cell.update_content('o')
       end
     end
 
-    def remove_occupied(movements, result = [])
-      movements.each do |move|
+    def remove_occupied(result = [])
+      moves.each do |move|
         cell = retrieve_cell(move)
         next unless cell.content.nil?
 
@@ -60,7 +62,7 @@ module Chess
       result
     end
 
-    def remove_friendly_captures(captures, player_color, result = [])
+    def remove_friendly_captures(player_color, result = [])
       captures.each do |capture|
         cell = retrieve_cell(capture)
         next if cell.content.nil?

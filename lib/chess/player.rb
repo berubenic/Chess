@@ -27,6 +27,10 @@ module Chess
       end
     end
 
+    def select_move
+      select_piece
+    end
+
     def switch_turn
       if turn == false
         @turn = true

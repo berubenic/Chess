@@ -36,7 +36,7 @@ module Chess
       moves.include?(move) || captures.include?(move)
     end
 
-    def execute_move(move)
+    def execute_move(move, _selected_piece)
       cell = retrieve_cell(move)
       cell.update_content
     end

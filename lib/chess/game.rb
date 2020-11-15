@@ -93,7 +93,7 @@ module Chess
     end
 
     def execute_move
-      board.execute_move(move)
+      board.execute_move(move, selected_piece)
     end
 
     def print_board
@@ -102,6 +102,11 @@ module Chess
 
     def print_ask_to_select_piece
       printer.select_piece(current_player.name)
+    end
+
+    def switch_turn
+      player_one.switch_turn
+      player_two.switch_turn
     end
 
     private

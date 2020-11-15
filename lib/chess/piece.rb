@@ -51,6 +51,10 @@ module Chess
 
       possibilities.keep_if { |coord| with_in_board?(coord) }
     end
+
+    def update_count
+      @count = 1
+    end
   end
 
   class Rook < Piece

@@ -14,6 +14,7 @@ module Chess
 
     def update_content(content)
       @content = content
+      content.update_count if content.is_a?(Pawn)
     end
 
     def remove_content

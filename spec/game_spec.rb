@@ -59,7 +59,7 @@ module Chess
 
         it 'assigns @move' do
           game.select_piece
-          expect(game.move).not_to be nil
+          expect(game.selected_piece).not_to be nil
         end
       end
 
@@ -83,7 +83,7 @@ module Chess
 
         it 'assigns @move' do
           game.select_piece
-          expect(game.move).not_to be nil
+          expect(game.selected_piece).not_to be nil
         end
       end
     end
@@ -122,19 +122,19 @@ module Chess
       end
     end
 
-    describe '#highlight_move' do
+    describe '#highlight_selected_piece' do
       let(:board) { instance_double(Board) }
       let(:player_one) { instance_double(Player) }
       let(:player_two) { instance_double(Player) }
       subject(:game) { described_class.new(board, player_one, player_two) }
 
       before do
-        allow(board).to receive(:highlight_move)
+        allow(board).to receive(:highlight_selected_piece)
       end
 
       it 'sends #highlight_move to board' do
-        expect(board).to receive(:highlight_move)
-        game.highlight_move
+        expect(board).to receive(:highlight_selected_piece)
+        game.highlight_selected_piece
       end
     end
 

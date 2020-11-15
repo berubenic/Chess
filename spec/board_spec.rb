@@ -73,7 +73,7 @@ module Chess
         it 'sends Cell #toggle_highlight' do
           move = 'some_move'
           expect(cell).to receive(:toggle_highlight)
-          board.highlight_move(move)
+          board.highlight_selected_piece(move)
         end
       end
     end

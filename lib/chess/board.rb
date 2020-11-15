@@ -21,7 +21,7 @@ module Chess
       verify_cell_for_move?(cell, player_color)
     end
 
-    def highlight_move(move)
+    def highlight_selected_piece(move)
       cell = retrieve_cell(move)
       cell.toggle_highlight
     end

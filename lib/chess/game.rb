@@ -36,7 +36,7 @@ module Chess
       select_piece
       convert_move
       if valid_select?
-        highlight_move
+        highlight_selected_piece
         possible_moves
         print_board
       else
@@ -57,7 +57,7 @@ module Chess
     end
 
     def select_piece(player = current_player)
-      @move = player.select_piece
+      @selected_piece = player.select_piece
     end
 
     def select_move(player = current_player)
@@ -70,20 +70,26 @@ module Chess
       @move = result
     end
 
+    def convert_selected_piece(result = [])
+      result << LETTERS.values_at(move[0])[0]
+      result << move[1].to_i - 1
+      @selected_piece = result
+    end
+
     def valid_select?
-      board.valid_select?(move, current_player.color)
+      board.valid_select?(selected_piece, current_player.color)
     end
 
     def valid_move?
       board.valid_move?(move)
     end
 
-    def highlight_move
-      board.highlight_move(move)
+    def highlight_selected_piece
+      board.highlight_selected_piece(selected_piece)
     end
 
     def possible_moves
-      board.possible_moves(move, current_player.color)
+      board.possible_moves(selected_piece, current_player.color)
     end
 
     def execute_move

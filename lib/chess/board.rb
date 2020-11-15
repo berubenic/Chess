@@ -73,7 +73,7 @@ module Chess
 
     def verify_cell_for_move?(cell, player_color)
       return false if cell.content.nil?
-      return false if cell.content.color != player_color
+      return false unless cell.content.color == player_color
 
       true
     end

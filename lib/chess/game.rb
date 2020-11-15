@@ -30,6 +30,22 @@ module Chess
       player_two.prepare_game('black')
     end
 
+    def game_loop
+      print_ask_to_select_piece
+      select_piece
+      convert_move
+      if valid_select?
+        highlight_move
+        possible_moves
+        print_board
+        player_one.switch_turn
+        player_two.switch_turn
+      else
+        puts 'Invalid move, please try again'
+      end
+      game_loop
+    end
+
     def select_piece(player = current_player)
       @move = player.select_piece
     end
@@ -56,7 +72,7 @@ module Chess
       printer.print_board(board)
     end
 
-    def print_select_piece
+    def print_ask_to_select_piece
       printer.select_piece(current_player.name)
     end
 

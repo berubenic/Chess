@@ -3,7 +3,7 @@
 module Chess
   # Game
   class Game
-    attr_reader :board, :player_one, :player_two, :move, :printer
+    attr_reader :board, :player_one, :player_two, :move, :printer, :selected_piece
 
     LETTERS = {
       'a' => 0,
@@ -20,6 +20,7 @@ module Chess
       @board = board
       @player_one = player_one
       @player_two = player_two
+      @selected_piece = nil
       @move = nil
       @printer = printer
     end
@@ -30,7 +31,7 @@ module Chess
       player_two.prepare_game('black')
     end
 
-    def game_loop
+    def select_piece_loop
       print_ask_to_select_piece
       select_piece
       convert_move
@@ -38,12 +39,21 @@ module Chess
         highlight_move
         possible_moves
         print_board
-        player_one.switch_turn
-        player_two.switch_turn
+      else
+        puts 'Invalid move, please try again.'
+        select_piece_loop
+      end
+    end
+
+    def select_move_loop
+      select_move
+      if valid_move?
+        execute_move
+        print_board
       else
         puts 'Invalid move, please try again'
+        select_move_loop
       end
-      game_loop
     end
 
     def select_piece(player = current_player)
@@ -64,12 +74,20 @@ module Chess
       board.valid_select?(move, current_player.color)
     end
 
+    def valid_move?
+      board.valid_move?(move)
+    end
+
     def highlight_move
       board.highlight_move(move)
     end
 
     def possible_moves
       board.possible_moves(move, current_player.color)
+    end
+
+    def execute_move
+      board.execute_move(move)
     end
 
     def print_board

@@ -32,6 +32,15 @@ module Chess
       possible_captures(piece, player_color)
     end
 
+    def valid_move?(move)
+      moves.include?(move) || captures.include?(move)
+    end
+
+    def execute_move(move)
+      cell = retrieve_cell(move)
+      cell.update_content
+    end
+
     private
 
     def possible_captures(piece, player_color)

@@ -173,5 +173,39 @@ module Chess
         game.select_move
       end
     end
+
+    describe '#valid_move?' do
+      let(:board) { instance_double(Board) }
+      let(:player_one) { instance_double(Player) }
+      let(:player_two) { instance_double(Player) }
+      subject(:game) { described_class.new(board, player_one, player_two) }
+
+      before do
+        allow(board).to receive(:valid_move?)
+        allow(player_one).to receive(:turn).and_return(true)
+        allow(player_one).to receive(:color).and_return('white')
+      end
+
+      it 'sends #valid_move? to board' do
+        expect(board).to receive(:valid_move?)
+        game.valid_move?
+      end
+    end
+
+    describe '#execute_move' do
+      let(:board) { instance_double(Board) }
+      let(:player_one) { instance_double(Player) }
+      let(:player_two) { instance_double(Player) }
+      subject(:game) { described_class.new(board, player_one, player_two) }
+
+      before do
+        allow(board).to receive(:execute_move)
+      end
+
+      it 'sends #execute_move to board' do
+        expect(board).to receive(:execute_move)
+        game.execute_move
+      end
+    end
   end
 end

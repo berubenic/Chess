@@ -16,18 +16,18 @@ module Chess
       setup_board
     end
 
-    def valid_select?(move, player_color)
-      cell = retrieve_cell(move)
-      verify_cell_for_move?(cell, player_color)
+    def valid_select?(selected_piece, player_color)
+      cell = retrieve_cell(selected_piece)
+      verify_cell_to_select?(cell, player_color)
     end
 
-    def highlight_selected_piece(move)
-      cell = retrieve_cell(move)
+    def highlight_selected_piece(selected_piece)
+      cell = retrieve_cell(selected_piece)
       cell.toggle_highlight
     end
 
-    def possible_moves(move, player_color)
-      piece = retrieve_cell(move).content
+    def possible_moves(selected_piece, player_color)
+      piece = retrieve_cell(selected_piece).content
       possible_movements(piece)
       possible_captures(piece, player_color)
     end
@@ -97,7 +97,7 @@ module Chess
       result
     end
 
-    def verify_cell_for_move?(cell, player_color)
+    def verify_cell_to_select?(cell, player_color)
       return false if cell.content.nil?
       return false unless cell.content.color == player_color
 

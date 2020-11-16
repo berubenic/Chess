@@ -6,4 +6,5 @@ require_relative 'chess/version'
 module Chess
 end
 
+require_relative './chess/board'
 require_relative './string'

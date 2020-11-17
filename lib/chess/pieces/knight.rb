@@ -25,7 +25,17 @@ module Chess
     private
 
     def valid_move?(move)
+      within_board?(move)
+      not_occupied?(move)
+    end
+
+    def within_board?(move)
       move.all? { |coordinate| coordinate.between? 0, 7 }
+    end
+
+    def not_occupied?(move)
+      board_tile = board[move[1]][move[0]]
+      board_tile == ''
     end
   end
 end

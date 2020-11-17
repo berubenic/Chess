@@ -14,15 +14,18 @@ module Chess
       [-2, -1]
     ].freeze
 
-    def possible_movements(_result = [])
+    def possible_movements(result = [])
       MOVES.each do |x, y|
         move = [coordinate[0] + x, coordinate[1] + y]
         result << move if valid_move?(move)
       end
+      @movements = result
     end
 
     private
 
-    def valid_move?(move); end
+    def valid_move?(move)
+      move.all? { |coordinate| coordinate.between? 0, 7 }
+    end
   end
 end

@@ -3,11 +3,11 @@
 module Chess
   # Piece Superclass
   class Piece
-    attr_reader :movements, :coordinate, :board
+    attr_reader :movements, :captures, :coordinate, :board, :color
     def initialize(content: nil, x_coordinate: nil, y_coordinate: nil, color: nil, board: nil)
       @content = content
       @coordinate = [x_coordinate, y_coordinate]
-      @board = nil
+      @board = board
       @color = color
       @movements = nil
       @captures = nil

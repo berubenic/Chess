@@ -2,13 +2,14 @@
 
 # rubocop:disable all
 
+# Knight spec
 module Chess
   describe Knight do
     describe '#possible_movements' do
-      context 'Knight is at [0, 0]' do
         context 'Board is empty except for Knight' do
           subject(:knight) { described_class.new }
-          it 'assign @movements an array of possible moves when at [0, 0]' do
+
+          it 'assigns @movements an array of possible moves when at [0, 0]' do
             board = [
               [knight, '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
@@ -52,7 +53,7 @@ module Chess
         end
         context "A friendly piece occupies one of it's possible moves" do
           subject(:knight) { described_class.new(color: 'white') }
-          let(:friendly) { described_class.new(color: 'white') }
+          let(:friendly) { instance_double(Piece, color: 'white') }
 
           it 'assigns @movements an array of possible moves when at [0, 0]' do
             board = [
@@ -67,10 +68,133 @@ module Chess
             ]
             knight.instance_variable_set(:@board, board)
             knight.instance_variable_set(:@coordinate, [0, 0])
-            friendly.instance_variable_set(:@coordinate, [2, 1])
             knight.possible_movements
             expect(knight.movements.include?([1, 2])).to be true
             expect(knight.movements.include?([2, 1])).to be false
+          end
+        end
+        context "Multiple friendly pieces occupying it's possible moves" do
+          subject(:knight) { described_class.new(color: 'black') }
+          let(:friendly_1) { instance_double(Piece, color: 'black') }
+          let(:friendly_2) { instance_double(Piece, color: 'black') }
+
+          it 'assigns @movements an array of possible moves when at [4, 4]' do
+            board = [
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', friendly_1, ''],
+              ['', '', '', '', knight, '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', friendly_2, '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [4, 4])
+            knight.possible_movements
+            expect(knight.movements.include?([5, 2])).to be true
+            expect(knight.movements.include?([6, 5])).to be true
+            expect(knight.movements.include?([3, 6])).to be true
+            expect(knight.movements.include?([2, 5])).to be true
+            expect(knight.movements.include?([2, 3])).to be true
+            expect(knight.movements.include?([3, 2])).to be true
+            expect(knight.movements.include?([6, 3])).to be false
+            expect(knight.movements.include?([5, 6])).to be false
+          end
+        end  
+        context "Enemy pieces don't matter" do
+          subject(:knight) { described_class.new(color: 'black') }
+          let(:enemy_1) { instance_double(Piece, color: 'white') }
+          let(:enemy_2) { instance_double(Piece, color: 'white') }
+
+          it 'assigns @movements an array of possible moves when at [4, 4]' do
+            board = [
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', enemy_1, ''],
+              ['', '', '', '', knight, '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', enemy_2, '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [4, 4])
+            knight.possible_movements
+            expect(knight.movements.include?([5, 2])).to be true
+            expect(knight.movements.include?([6, 5])).to be true
+            expect(knight.movements.include?([3, 6])).to be true
+            expect(knight.movements.include?([2, 5])).to be true
+            expect(knight.movements.include?([2, 3])).to be true
+            expect(knight.movements.include?([3, 2])).to be true
+            expect(knight.movements.include?([6, 3])).to be false
+            expect(knight.movements.include?([5, 6])).to be false
+        end     
+      end 
+      describe '#possible_captures' do
+        context 'Board is empty except for Knight' do
+          subject(:knight) { described_class.new }
+
+          it 'assigns @captures an empty array' do
+            board = [
+              [knight, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [0, 0])
+            knight.possible_captures
+            expect(knight.captures.empty?).to be true
+          end
+        end
+
+        context 'A enemy piece is in range' do
+          subject(:knight) { described_class.new(color: 'white') }
+          let(:enemy) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible capture" do
+            board = [
+              [knight, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', enemy, '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [0, 0])
+            knight.possible_captures
+            expect(knight.captures).to eq( [[1, 2]])
+          end
+        end
+
+        context ' A enemy and friendly piece is in range' do
+          subject(:knight) { described_class.new(color: 'white') }
+          let(:friendly) { instance_double(Piece, color: 'white') }
+          let(:enemy) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible capture" do
+            board = [
+              [knight, '', '', '', '', '', '', ''],
+              ['', '', friendly, '', '', '', '', ''],
+              ['', enemy, '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [0, 0])
+            knight.possible_captures
+            expect(knight.captures).to eq( [[1, 2]])
           end
         end
       end

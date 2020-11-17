@@ -2,6 +2,7 @@
 
 require_relative 'spec_helper'
 
+# Board spec
 module Chess
   describe Board do
     describe '#initialize' do

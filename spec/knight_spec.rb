@@ -175,7 +175,7 @@ module Chess
           end
         end
 
-        context ' A enemy and friendly piece is in range' do
+        context 'A enemy and friendly piece is in range' do
           subject(:knight) { described_class.new(color: 'white') }
           let(:friendly) { instance_double(Piece, color: 'white') }
           let(:enemy) { instance_double(Piece, color: 'black') }
@@ -195,6 +195,30 @@ module Chess
             knight.instance_variable_set(:@coordinate, [0, 0])
             knight.possible_captures
             expect(knight.captures).to eq( [[1, 2]])
+          end
+        end
+
+        context "Two enemy pieces in range" do
+          subject(:knight) { described_class.new(color: 'white') }
+          let(:enemy_1) { instance_double(Piece, color: 'black') }
+          let(:enemy_2) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible captures" do
+            board = [
+              [knight, '', '', '', '', '', '', ''],
+              ['', '', enemy_1, '', '', '', '', ''],
+              ['', enemy_2, '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            knight.instance_variable_set(:@board, board)
+            knight.instance_variable_set(:@coordinate, [0, 0])
+            knight.possible_captures
+            expect(knight.captures.include?([1, 2])).to be true
+            expect(knight.captures.include?([2, 1])).to be true
           end
         end
       end

@@ -6,7 +6,7 @@ require_relative 'chess/version'
 module Chess
 end
 
-require_relative './chess/pieces/pieces'
+require_relative './chess/pieces/piece'
 require_relative './chess/pieces/pawn'
 require_relative './chess/pieces/rook'
 require_relative './chess/pieces/knight'

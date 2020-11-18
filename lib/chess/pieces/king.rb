@@ -21,5 +21,13 @@ module Chess
       end
       @movements = result
     end
+
+    def possible_captures(result = [])
+      MOVES.each do |x, y|
+        capture = [coordinate[0] + x, coordinate[1] + y]
+        result << capture if valid_capture?(capture)
+      end
+      @captures = result
+    end
   end
 end

@@ -35,5 +35,14 @@ module Chess
       board_tile = board[move[1]][move[0]]
       board_tile == ''
     end
+
+    def valid_capture?(capture)
+      within_board?(capture) && !not_occupied?(capture) && !friendly_occupied?(capture)
+    end
+
+    def friendly_occupied?(capture)
+      piece = board[capture[1]][capture[0]]
+      piece.color == color
+    end
   end
 end

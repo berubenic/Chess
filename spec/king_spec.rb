@@ -131,6 +131,94 @@ module Chess
           expect(king.movements.include?([3, 4])).to be false
         end
       end
+      describe '#possible_captures' do
+        context 'Board is empty except for King' do
+          subject(:king) { described_class.new }
+
+          it 'assigns @captures an empty array' do
+            board = [
+              [king, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            king.instance_variable_set(:@board, board)
+            king.instance_variable_set(:@coordinate, [0, 0])
+            king.possible_captures
+            expect(king.captures.empty?).to be true
+          end
+        end
+        context 'A enemy piece is in range' do
+          subject(:king) { described_class.new(color: 'white') }
+          let(:enemy) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible capture" do
+            board = [
+              [king, '', '', '', '', '', '', ''],
+              [enemy, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            king.instance_variable_set(:@board, board)
+            king.instance_variable_set(:@coordinate, [0, 0])
+            king.possible_captures
+            expect(king.captures).to eq([[0, 1]])
+          end
+        end
+        context 'A enemy and friendly piece is in range' do
+          subject(:king) { described_class.new(color: 'white') }
+          let(:friendly) { instance_double(Piece, color: 'white') }
+          let(:enemy) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible capture" do
+            board = [
+              [king, friendly, '', '', '', '', '', ''],
+              [enemy, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            king.instance_variable_set(:@board, board)
+            king.instance_variable_set(:@coordinate, [0, 0])
+            king.possible_captures
+            expect(king.captures).to eq([[0, 1]])
+          end
+        end
+        context 'Two enemy pieces in range' do
+          subject(:king) { described_class.new(color: 'white') }
+          let(:enemy_1) { instance_double(Piece, color: 'black') }
+          let(:enemy_2) { instance_double(Piece, color: 'black') }
+
+          it "assigns @captures an array with it's possible captures" do
+            board = [
+              [king, enemy_1, '', '', '', '', '', ''],
+              [enemy_2, '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '', '']
+            ]
+            king.instance_variable_set(:@board, board)
+            king.instance_variable_set(:@coordinate, [0, 0])
+            king.possible_captures
+            expect(king.captures.include?([1, 0])).to be true
+            expect(king.captures.include?([0, 1])).to be true
+          end
+        end
+      end
     end
   end
 end

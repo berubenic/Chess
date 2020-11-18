@@ -29,16 +29,5 @@ module Chess
       end
       @captures = result
     end
-
-    private
-
-    def valid_capture?(capture)
-      within_board?(capture) && !not_occupied?(capture) && !friendly_occupied?(capture)
-    end
-
-    def friendly_occupied?(capture)
-      piece = board[capture[1]][capture[0]]
-      piece.color == color
-    end
   end
 end

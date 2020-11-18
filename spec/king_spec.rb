@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
+# rubocop:disable Metrics/BlockLength
+
 # Knight spec
 module Chess
   describe King do
@@ -222,3 +225,6 @@ module Chess
     end
   end
 end
+
+# rubocop:enable Metrics/BlockLength
+# rubocop:enable Metrics/ModuleLength

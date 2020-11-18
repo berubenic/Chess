@@ -25,6 +25,111 @@ module Chess
           expect(king.movements.include?([1, 1])).to be true
           expect(king.movements.include?([0, 1])).to be true
         end
+
+        it 'assigns @movements an array of possible moves when at [3, 3]' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', king, '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          king.instance_variable_set(:@board, board)
+          king.instance_variable_set(:@coordinate, [3, 3])
+          king.possible_movements
+          expect(king.movements.include?([3, 2])).to be true
+          expect(king.movements.include?([4, 2])).to be true
+          expect(king.movements.include?([4, 3])).to be true
+          expect(king.movements.include?([4, 4])).to be true
+          expect(king.movements.include?([3, 4])).to be true
+          expect(king.movements.include?([2, 4])).to be true
+          expect(king.movements.include?([2, 3])).to be true
+          expect(king.movements.include?([2, 2])).to be true
+        end
+      end
+      context "A friendly piece occupies one of it's possible moves" do
+        subject(:king) { described_class.new(color: 'white') }
+        let(:friendly) { instance_double(Piece, color: 'white') }
+
+        it 'assigns @movements an array of possible moves when at [0, 0]' do
+          board = [
+            [king, '', '', '', '', '', '', ''],
+            [friendly, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          king.instance_variable_set(:@board, board)
+          king.instance_variable_set(:@coordinate, [0, 0])
+          king.possible_movements
+          expect(king.movements.include?([1, 0])).to be true
+          expect(king.movements.include?([1, 1])).to be true
+          expect(king.movements.include?([0, 1])).to be false
+        end
+      end
+      context "Multiple friendly pieces occupying it's possible moves" do
+        subject(:king) { described_class.new(color: 'black') }
+        let(:friendly_1) { instance_double(Piece, color: 'black') }
+        let(:friendly_2) { instance_double(Piece, color: 'black') }
+
+        it 'assigns @movements an array of possible moves when at [4, 4]' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', friendly_1, king, '', '', ''],
+            ['', '', '', '', friendly_2, '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          king.instance_variable_set(:@board, board)
+          king.instance_variable_set(:@coordinate, [4, 4])
+          king.possible_movements
+          expect(king.movements.include?([3, 3])).to be true
+          expect(king.movements.include?([4, 3])).to be true
+          expect(king.movements.include?([5, 3])).to be true
+          expect(king.movements.include?([5, 4])).to be true
+          expect(king.movements.include?([5, 5])).to be true
+          expect(king.movements.include?([3, 5])).to be true
+          expect(king.movements.include?([4, 5])).to be false
+          expect(king.movements.include?([3, 4])).to be false
+        end
+      end
+      context "Enemy pieces don't matter" do
+        subject(:king) { described_class.new(color: 'black') }
+        let(:enemy_1) { instance_double(Piece, color: 'white') }
+        let(:enemy_2) { instance_double(Piece, color: 'white') }
+
+        it 'assigns @movements an array of possible moves when at [4, 4]' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', enemy_1, king, '', '', ''],
+            ['', '', '', '', enemy_2, '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          king.instance_variable_set(:@board, board)
+          king.instance_variable_set(:@coordinate, [4, 4])
+          king.possible_movements
+          expect(king.movements.include?([3, 3])).to be true
+          expect(king.movements.include?([4, 3])).to be true
+          expect(king.movements.include?([5, 3])).to be true
+          expect(king.movements.include?([5, 4])).to be true
+          expect(king.movements.include?([5, 5])).to be true
+          expect(king.movements.include?([3, 5])).to be true
+          expect(king.movements.include?([4, 5])).to be false
+          expect(king.movements.include?([3, 4])).to be false
+        end
       end
     end
   end

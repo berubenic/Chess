@@ -4,14 +4,14 @@ module Chess
   # King
   class King < Piece
     MOVES = [
-      [0, 1],
-      [1, 1],
-      [1, 0],
-      [1, -1],
       [0, -1],
-      [-1, -1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+      [0, 1],
+      [-1, 1],
       [-1, 0],
-      [-1, 1]
+      [-1, -1]
     ].freeze
 
     def possible_movements(result = [])

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Piece spec
 module Chess
   describe Piece do
     describe '#possible_movements' do

@@ -173,5 +173,93 @@ module Chess
         end
       end
     end
+    describe '#possible_captures' do
+      context 'Board is empty except for King' do
+        subject(:rook) { described_class.new }
+
+        it 'assigns @captures an empty array' do
+          board = [
+            [rook, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          rook.instance_variable_set(:@board, board)
+          rook.instance_variable_set(:@coordinate, [0, 0])
+          rook.possible_captures
+          expect(rook.captures.empty?).to be true
+        end
+      end
+      context 'A enemy piece is in range' do
+        subject(:rook) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible capture" do
+          board = [
+            [rook, '', '', '', '', '', '', ''],
+            [enemy, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          rook.instance_variable_set(:@board, board)
+          rook.instance_variable_set(:@coordinate, [0, 0])
+          rook.possible_captures
+          expect(rook.captures).to eq([[0, 1]])
+        end
+      end
+      context 'A enemy and friendly piece is in range' do
+        subject(:rook) { described_class.new(color: 'white') }
+        let(:friendly) { instance_double(Piece, color: 'white') }
+        let(:enemy) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible capture" do
+          board = [
+            [rook, friendly, '', '', '', '', '', ''],
+            [enemy, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          rook.instance_variable_set(:@board, board)
+          rook.instance_variable_set(:@coordinate, [0, 0])
+          rook.possible_captures
+          expect(rook.captures).to eq([[0, 1]])
+        end
+      end
+      context 'Two enemy pieces in range' do
+        subject(:rook) { described_class.new(color: 'white') }
+        let(:enemy_1) { instance_double(Piece, color: 'black') }
+        let(:enemy_2) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible captures" do
+          board = [
+            [rook, enemy_1, '', '', '', '', '', ''],
+            [enemy_2, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          rook.instance_variable_set(:@board, board)
+          rook.instance_variable_set(:@coordinate, [0, 0])
+          rook.possible_captures
+          expect(rook.captures.include?([1, 0])).to be true
+          expect(rook.captures.include?([0, 1])).to be true
+        end
+      end
+    end
   end
 end

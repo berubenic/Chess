@@ -150,5 +150,93 @@ module Chess
         end
       end
     end
+    describe '#possible_captures' do
+      context 'Board is empty except for King' do
+        subject(:bishop) { described_class.new }
+
+        it 'assigns @captures an empty array' do
+          board = [
+            [bishop, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          bishop.instance_variable_set(:@board, board)
+          bishop.instance_variable_set(:@coordinate, [0, 0])
+          bishop.possible_captures
+          expect(bishop.captures.empty?).to be true
+        end
+      end
+      context 'A enemy piece is in range' do
+        subject(:bishop) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible capture" do
+          board = [
+            [bishop, '', '', '', '', '', '', ''],
+            ['', enemy, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          bishop.instance_variable_set(:@board, board)
+          bishop.instance_variable_set(:@coordinate, [0, 0])
+          bishop.possible_captures
+          expect(bishop.captures).to eq([[1, 1]])
+        end
+      end
+      context 'A enemy and friendly piece is in range' do
+        subject(:bishop) { described_class.new(color: 'white') }
+        let(:friendly) { instance_double(Piece, color: 'white') }
+        let(:enemy) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible capture" do
+          board = [
+            [friendly, '', '', '', '', '', '', ''],
+            ['', bishop, '', '', '', '', '', ''],
+            ['', '', enemy, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          bishop.instance_variable_set(:@board, board)
+          bishop.instance_variable_set(:@coordinate, [1, 1])
+          bishop.possible_captures
+          expect(bishop.captures).to eq([[2, 2]])
+        end
+      end
+      context 'Two enemy pieces in range' do
+        subject(:bishop) { described_class.new(color: 'white') }
+        let(:enemy_1) { instance_double(Piece, color: 'black') }
+        let(:enemy_2) { instance_double(Piece, color: 'black') }
+
+        it "assigns @captures an array with it's possible captures" do
+          board = [
+            [enemy_1, '', '', '', '', '', '', ''],
+            ['', bishop, '', '', '', '', '', ''],
+            ['', '', enemy_2, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          bishop.instance_variable_set(:@board, board)
+          bishop.instance_variable_set(:@coordinate, [1, 1])
+          bishop.possible_captures
+          expect(bishop.captures.include?([0, 0])).to be true
+          expect(bishop.captures.include?([2, 2])).to be true
+        end
+      end
+    end
   end
 end

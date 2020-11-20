@@ -178,8 +178,8 @@ module Chess
         it "assigns @captures an array with it's possible capture" do
           board = [
             [bishop, '', '', '', '', '', '', ''],
-            ['', enemy, '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
+            ['', '', enemy, '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -189,7 +189,7 @@ module Chess
           bishop.instance_variable_set(:@board, board)
           bishop.instance_variable_set(:@coordinate, [0, 0])
           bishop.possible_captures
-          expect(bishop.captures).to eq([[1, 1]])
+          expect(bishop.captures).to eq([[2, 2]])
         end
       end
       context 'A enemy and friendly piece is in range' do
@@ -201,8 +201,8 @@ module Chess
           board = [
             [friendly, '', '', '', '', '', '', ''],
             ['', bishop, '', '', '', '', '', ''],
-            ['', '', enemy, '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
+            ['', '', '', enemy, '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -211,7 +211,7 @@ module Chess
           bishop.instance_variable_set(:@board, board)
           bishop.instance_variable_set(:@coordinate, [1, 1])
           bishop.possible_captures
-          expect(bishop.captures).to eq([[2, 2]])
+          expect(bishop.captures).to eq([[3, 3]])
         end
       end
       context 'Two enemy pieces in range' do
@@ -223,18 +223,18 @@ module Chess
           board = [
             [enemy_1, '', '', '', '', '', '', ''],
             ['', bishop, '', '', '', '', '', ''],
-            ['', '', enemy_2, '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', enemy_2]
           ]
           bishop.instance_variable_set(:@board, board)
           bishop.instance_variable_set(:@coordinate, [1, 1])
           bishop.possible_captures
           expect(bishop.captures.include?([0, 0])).to be true
-          expect(bishop.captures.include?([2, 2])).to be true
+          expect(bishop.captures.include?([7, 7])).to be true
         end
       end
     end

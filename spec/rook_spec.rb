@@ -201,8 +201,8 @@ module Chess
         it "assigns @captures an array with it's possible capture" do
           board = [
             [rook, '', '', '', '', '', '', ''],
-            [enemy, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
+            [enemy, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -212,7 +212,7 @@ module Chess
           rook.instance_variable_set(:@board, board)
           rook.instance_variable_set(:@coordinate, [0, 0])
           rook.possible_captures
-          expect(rook.captures).to eq([[0, 1]])
+          expect(rook.captures).to eq([[0, 2]])
         end
       end
       context 'A enemy and friendly piece is in range' do
@@ -222,19 +222,19 @@ module Chess
 
         it "assigns @captures an array with it's possible capture" do
           board = [
-            [rook, friendly, '', '', '', '', '', ''],
+            [rook, '', '', friendly, '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
             [enemy, '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
           rook.instance_variable_set(:@board, board)
           rook.instance_variable_set(:@coordinate, [0, 0])
           rook.possible_captures
-          expect(rook.captures).to eq([[0, 1]])
+          expect(rook.captures).to eq([[0, 5]])
         end
       end
       context 'Two enemy pieces in range' do
@@ -245,19 +245,19 @@ module Chess
         it "assigns @captures an array with it's possible captures" do
           board = [
             [rook, enemy_1, '', '', '', '', '', ''],
-            [enemy_2, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
+            ['', '', '', '', '', '', '', ''],
+            [enemy_2, '', '', '', '', '', '', '']
           ]
           rook.instance_variable_set(:@board, board)
           rook.instance_variable_set(:@coordinate, [0, 0])
           rook.possible_captures
           expect(rook.captures.include?([1, 0])).to be true
-          expect(rook.captures.include?([0, 1])).to be true
+          expect(rook.captures.include?([0, 7])).to be true
         end
       end
     end

@@ -233,9 +233,9 @@ module Chess
         it "assigns @captures an array with it's possible capture" do
           board = [
             [queen, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
             [enemy, '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -244,7 +244,7 @@ module Chess
           queen.instance_variable_set(:@board, board)
           queen.instance_variable_set(:@coordinate, [0, 0])
           queen.possible_captures
-          expect(queen.captures).to eq([[0, 1]])
+          expect(queen.captures).to eq([[0, 3]])
         end
       end
       context 'A enemy and friendly piece is in range' do
@@ -255,18 +255,18 @@ module Chess
         it "assigns @captures an array with it's possible capture" do
           board = [
             [queen, friendly, '', '', '', '', '', ''],
-            [enemy, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
+            ['', '', '', '', '', '', '', ''],
+            [enemy, '', '', '', '', '', '', '']
           ]
           queen.instance_variable_set(:@board, board)
           queen.instance_variable_set(:@coordinate, [0, 0])
           queen.possible_captures
-          expect(queen.captures).to eq([[0, 1]])
+          expect(queen.captures).to eq([[0, 7]])
         end
       end
       context 'Two enemy pieces in range' do
@@ -276,7 +276,7 @@ module Chess
 
         it "assigns @captures an array with it's possible captures" do
           board = [
-            [queen, enemy_1, '', '', '', '', '', ''],
+            [queen, '', '', enemy_1, '', '', '', ''],
             [enemy_2, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -288,7 +288,7 @@ module Chess
           queen.instance_variable_set(:@board, board)
           queen.instance_variable_set(:@coordinate, [0, 0])
           queen.possible_captures
-          expect(queen.captures.include?([1, 0])).to be true
+          expect(queen.captures.include?([3, 0])).to be true
           expect(queen.captures.include?([0, 1])).to be true
         end
       end

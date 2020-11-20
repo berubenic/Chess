@@ -17,17 +17,11 @@ module Chess
     ].freeze
 
     def possible_movements
-      MOVES.each do |x, y|
-        move = [coordinate[0] + x, coordinate[1] + y]
-        movements << move if valid_move?(move)
-      end
+      @movements = find_movements(MOVES)
     end
 
     def possible_captures
-      MOVES.each do |x, y|
-        capture = [coordinate[0] + x, coordinate[1] + y]
-        captures << capture if valid_capture?(capture)
-      end
+      @captures = find_captures(MOVES)
     end
   end
 end

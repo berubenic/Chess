@@ -174,7 +174,7 @@ module Chess
       end
     end
     describe '#possible_captures' do
-      context 'Board is empty except for King' do
+      context 'Board is empty except for Rook' do
         subject(:rook) { described_class.new }
 
         it 'assigns @captures an empty array' do

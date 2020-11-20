@@ -15,18 +15,22 @@ module Chess
 
     def possible_movements
       if color == 'white'
-        possible_color_movements(WHITE_MOVES)
+        first_possible_move(WHITE_MOVES)
       elsif color == 'black'
-        possible_color_movements(BLACK_MOVES)
+        first_possible_move(BLACK_MOVES)
       end
     end
 
-    def possible_color_movements(moves)
+    def first_possible_move(moves)
       move = [coordinate[0], coordinate[1] + moves[0]]
       movements << move if valid_move?(move)
       return unless valid_move?(move)
       return if moved
 
+      second_possible_move(moves)
+    end
+
+    def second_possible_move(moves)
       additional_move = [coordinate[0], coordinate[1] + moves[1]]
       movements << additional_move if valid_move?(additional_move)
     end

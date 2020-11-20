@@ -3,6 +3,8 @@
 module Chess
   # Pawn
   class Pawn < Piece
+    include SingleMovement
+
     WHITE_MOVES = [
       -1,
       -2
@@ -33,20 +35,13 @@ module Chess
 
     def possible_captures
       if color == 'white'
-        captures_by_color(WHITE_CAPTURES)
+        @captures = find_captures(WHITE_CAPTURES)
       elsif color == 'black'
-        captures_by_color(BLACK_CAPTURES)
+        @captures = find_captures(BLACK_CAPTURES)
       end
     end
 
     private
-
-    def captures_by_color(possibilities)
-      possibilities.each do |x, y|
-        capture = [coordinate[0] + x, coordinate[1] + y]
-        captures << capture if valid_capture?(capture)
-      end
-    end
 
     def first_possible_move(moves)
       move = [coordinate[0], coordinate[1] + moves[0]]

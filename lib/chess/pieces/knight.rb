@@ -3,6 +3,8 @@
 module Chess
   # Knight
   class Knight < Piece
+    include SingleMovement
+
     MOVES = [
       [1, 2],
       [1, -2],

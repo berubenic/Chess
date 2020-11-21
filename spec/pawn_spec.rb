@@ -300,7 +300,7 @@ module Chess
 
       context 'A enemy piece is in range of the white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
-        let(:enemy) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'black') }
 
         it "assigns @captures an array with it's possible captures" do
           board = [
@@ -339,7 +339,7 @@ module Chess
 
       context 'A enemy piece is in range of the black pawn' do
         subject(:pawn) { described_class.new(color: 'black') }
-        let(:enemy) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'white') }
 
         it "assigns @captures an array with it's possible captures" do
           board = [
@@ -378,8 +378,8 @@ module Chess
 
       context 'A enemy piece and a friendly piece is in range of the white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
-        let(:friendly) { described_class.new(color: 'white') }
-        let(:enemy) { described_class.new(color: 'black') }
+        let(:friendly) { instance_double(Pawn, color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black') }
 
         it "assigns @captures an array with it's possible captures" do
           board = [
@@ -401,8 +401,8 @@ module Chess
 
       context 'A enemy piece and a friendly piece is in range of the black pawn' do
         subject(:pawn) { described_class.new(color: 'black') }
-        let(:friendly) { described_class.new(color: 'black') }
-        let(:enemy) { described_class.new(color: 'white') }
+        let(:friendly) { instance_double(Pawn, color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white') }
 
         it "assigns @captures an array with it's possible captures" do
           board = [
@@ -422,11 +422,15 @@ module Chess
         end
       end
 
-      context 'white en_passant' do
+      context 'left en_passant for white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
-        let(:enemy) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
 
-        it 'assigns @captures a en_passant move when enemy has moved two squares' do
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           board = [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -439,6 +443,25 @@ module Chess
           ]
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[0, 2]])
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', enemy, pawn, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [2, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[1, 2]])
         end
       end
     end

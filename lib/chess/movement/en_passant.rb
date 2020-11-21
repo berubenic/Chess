@@ -20,6 +20,7 @@ module EnPassant
   def right_en_passant
     right_coordinate = [coordinate[0] + 1, coordinate[1]]
     return nil unless tile_valid?(right_coordinate)
+    # tile_valid? is defined in pawn.rb
 
     return [right_coordinate[0], right_coordinate[1] - 1] if color == 'white'
     return [right_coordinate[0], right_coordinate[1] + 1] if color == 'black'

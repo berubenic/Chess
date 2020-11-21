@@ -551,6 +551,58 @@ module Chess
           expect(pawn.en_passant_captures.include?([2, 2])).to be true
         end
       end
+
+      context 'enemy is not a pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Queen, color: 'black') }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Queen)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [pawn, enemy, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [0, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures.empty?).to be true
+        end
+      end
+
+      context 'enemy pawn has not moved two squares in previous turn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: false) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [pawn, enemy, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [0, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures.empty?).to be true
+        end
+      end
     end
   end
 end

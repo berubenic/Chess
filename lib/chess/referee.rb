@@ -15,9 +15,10 @@ module Chess
           next if tile == ''
           next if tile == king
 
-          king.checkmate if tile.captures.include?(king.coordinate)
+          return king.checkmate if tile.captures.include?(king.coordinate)
         end
       end
+      king.not_checkmate
     end
   end
 end

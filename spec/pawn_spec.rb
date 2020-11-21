@@ -560,7 +560,7 @@ module Chess
           allow(enemy).to receive(:class).and_return(Queen)
         end
 
-        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+        it 'does not assign @en_passant_captures when the enemy has not moved in previous turn' do
           board = [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -601,6 +601,133 @@ module Chess
           pawn.instance_variable_set(:@coordinate, [0, 3])
           pawn.possible_captures
           expect(pawn.en_passant_captures.empty?).to be true
+        end
+      end
+      context 'left en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [enemy, pawn, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[0, 5]])
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', enemy, pawn, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [2, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[1, 5]])
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', enemy, pawn],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [7, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[6, 5]])
+        end
+      end
+      context 'right en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', pawn, enemy, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[2, 5]])
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [pawn, enemy, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [0, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to eq([[1, 5]])
+        end
+      end
+      context 'left and right en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [enemy, pawn, enemy, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures.include?([0, 5])).to be true
+          expect(pawn.en_passant_captures.include?([2, 5])).to be true
         end
       end
     end

@@ -50,6 +50,7 @@ module Chess
         @en_passant_captures = find_en_passant unless find_en_passant.nil?
       elsif color == 'black'
         @captures = find_captures(BLACK_CAPTURES)
+        @en_passant_captures = find_en_passant unless find_en_passant.nil?
       end
     end
 
@@ -70,7 +71,7 @@ module Chess
     end
 
     def find_en_passant(result = [])
-      return unless coordinate[1] == 3
+      return unless en_passant_correct_row?
 
       result << left_en_passant unless left_en_passant.nil?
       result << right_en_passant unless right_en_passant.nil?
@@ -82,7 +83,8 @@ module Chess
       left_tile = board[left_coordinate[1]][left_coordinate[0]] if within_board?(left_coordinate)
       return nil unless left_tile.class == Pawn && left_tile.two_squared
 
-      [left_coordinate[0], left_coordinate[1] - 1]
+      return [left_coordinate[0], left_coordinate[1] - 1] if color == 'white'
+      return [left_coordinate[0], left_coordinate[1] + 1] if color == 'black'
     end
 
     def right_en_passant(right_tile = nil)
@@ -90,7 +92,16 @@ module Chess
       right_tile = board[right_coordinate[1]][right_coordinate[0]] if within_board?(right_coordinate)
       return nil unless right_tile.class == Pawn && right_tile.two_squared
 
-      [right_coordinate[0], right_coordinate[1] - 1]
+      return [right_coordinate[0], right_coordinate[1] - 1] if color == 'white'
+      return [right_coordinate[0], right_coordinate[1] + 1] if color == 'black'
+    end
+
+    def en_passant_correct_row?
+      if color == 'white'
+        coordinate[1] == 3
+      elsif color == 'black'
+        coordinate[1] == 4
+      end
     end
   end
 end

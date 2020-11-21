@@ -3,14 +3,13 @@
 module Chess
   # Piece Superclass
   class Piece
-    attr_reader :coordinate, :board, :color, :moved
-    attr_accessor :movements, :captures
-    def initialize(content: nil, x_coordinate: nil, y_coordinate: nil, color: nil, board: nil)
-      @content = content
-      @coordinate = [x_coordinate, y_coordinate]
-      @board = board
-      @color = color
-      @moved = false
+    attr_reader :coordinate, :board, :color
+    attr_reader :movements, :captures
+    def initialize(**args)
+      @content = args[:content]
+      @coordinate = [args[:x_coordinate], args[:y_coordinate]]
+      @board = args[:board]
+      @color = args[:color]
       @movements = []
       @captures = []
     end

@@ -421,6 +421,26 @@ module Chess
           expect(pawn.captures).to eq([[2, 2]])
         end
       end
+
+      context 'white en_passant' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { described_class.new(color: 'black') }
+
+        it 'assigns @captures a en_passant move when enemy has moved two squares' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [enemy, pawn, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 3])
+        end
+      end
     end
   end
 end

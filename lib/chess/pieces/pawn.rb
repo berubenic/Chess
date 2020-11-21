@@ -25,6 +25,13 @@ module Chess
       [-1, 1]
     ].freeze
 
+    attr_reader :moved
+
+    def initialize(**args)
+      @moved = false
+      super
+    end
+
     def possible_movements
       if color == 'white'
         first_possible_move(WHITE_MOVES)
@@ -45,7 +52,7 @@ module Chess
 
     def first_possible_move(moves)
       move = [coordinate[0], coordinate[1] + moves[0]]
-      movements << move if valid_move?(move)
+      @movements << move if valid_move?(move)
       return unless valid_move?(move)
       return if moved
 
@@ -54,7 +61,7 @@ module Chess
 
     def second_possible_move(moves)
       additional_move = [coordinate[0], coordinate[1] + moves[1]]
-      movements << additional_move if valid_move?(additional_move)
+      @movements << additional_move if valid_move?(additional_move)
     end
   end
 end

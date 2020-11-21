@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Movement and captures for Queen, Rook and Bishop
 module DirectionalMovement
   def find_moves(directions, moves = [])
     directions.each do |direction|

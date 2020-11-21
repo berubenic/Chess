@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Movements for King, Knight, and Pawn(captures)
+# movements and captures for King, Knight, and Pawn(captures)
 module SingleMovement
   def find_movements(moves, result = [])
     moves.each do |x, y|

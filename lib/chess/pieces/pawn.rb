@@ -78,22 +78,25 @@ module Chess
       result
     end
 
-    def left_en_passant(left_tile = nil)
+    def left_en_passant
       left_coordinate = [coordinate[0] - 1, coordinate[1]]
-      left_tile = board[left_coordinate[1]][left_coordinate[0]] if within_board?(left_coordinate)
-      return nil unless left_tile.class == Pawn && left_tile.two_squared
+      return nil unless tile_valid?(left_coordinate)
 
       return [left_coordinate[0], left_coordinate[1] - 1] if color == 'white'
       return [left_coordinate[0], left_coordinate[1] + 1] if color == 'black'
     end
 
-    def right_en_passant(right_tile = nil)
+    def right_en_passant
       right_coordinate = [coordinate[0] + 1, coordinate[1]]
-      right_tile = board[right_coordinate[1]][right_coordinate[0]] if within_board?(right_coordinate)
-      return nil unless right_tile.class == Pawn && right_tile.two_squared
+      return nil unless tile_valid?(right_coordinate)
 
       return [right_coordinate[0], right_coordinate[1] - 1] if color == 'white'
       return [right_coordinate[0], right_coordinate[1] + 1] if color == 'black'
+    end
+
+    def tile_valid?(coordinate)
+      tile = board[coordinate[1]][coordinate[0]] if within_board?(coordinate)
+      tile.class == Pawn && tile.two_squared
     end
 
     def en_passant_correct_row?

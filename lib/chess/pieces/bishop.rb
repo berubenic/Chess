@@ -17,10 +17,11 @@ module Chess
       end
     end
 
-    def possible_captures
+    def possible_captures(result = [])
       DIRECTIONS.each do |direction|
-        validate_captures(direction)
+        result << validate_captures(direction) unless validate_captures(direction).nil?
       end
+      @captures = result
     end
 
     private
@@ -36,15 +37,15 @@ module Chess
       end
     end
 
-    def validate_captures(direction, result = [], current = coordinate)
-      return unless within_board?(current)
+    def validate_captures(direction, current = coordinate)
+      return nil unless within_board?(current)
 
       next_move = [current[0] + direction[0], current[1] + direction[1]]
       if valid_capture?(next_move)
-        captures << next_move
+        next_move
       else
         current = next_move
-        validate_captures(direction, result, current)
+        validate_captures(direction, current)
       end
     end
   end

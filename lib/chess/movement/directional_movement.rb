@@ -20,19 +20,22 @@ module DirectionalMovement
     end
   end
 
-  def possible_captures
-    DIRECTIONS.each do |direction|
-      validate_captures(direction)
+  def find_captures(directions, result = [])
+    directions.each do |direction|
+      result << validate_captures(direction) unless validate_captures(direction).nil?
     end
+    result
   end
 
-  def validate_captures(direction, result = [], current = coordinate)
+  def validate_captures(direction, current = coordinate)
+    return nil unless within_board?(current)
+
     next_move = [current[0] + direction[0], current[1] + direction[1]]
     if valid_capture?(next_move)
-      captures << next_move
+      next_move
     else
       current = next_move
-      validate_movements(direction, result, current)
+      validate_captures(direction, current)
     end
   end
 end

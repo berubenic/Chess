@@ -218,12 +218,14 @@ module Chess
         subject(:bishop) { described_class.new(color: 'white') }
         let(:enemy_1) { instance_double(Piece, color: 'black') }
         let(:enemy_2) { instance_double(Piece, color: 'black') }
+        let(:enemy_3) { instance_double(Piece, color: 'black') }
+        let(:enemy_4) { instance_double(Piece, color: 'black') }
 
         it "assigns @captures an array with it's possible captures" do
           board = [
-            [enemy_1, '', '', '', '', '', '', ''],
+            [enemy_1, '', enemy_4, '', '', '', '', ''],
             ['', bishop, '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
+            [enemy_3, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -235,6 +237,8 @@ module Chess
           bishop.possible_captures
           expect(bishop.captures.include?([0, 0])).to be true
           expect(bishop.captures.include?([7, 7])).to be true
+          expect(bishop.captures.include?([2, 0])).to be true
+          expect(bishop.captures.include?([0, 2])).to be true
         end
       end
     end

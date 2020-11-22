@@ -26,6 +26,11 @@ module EnPassant
     return [right_coordinate[0], right_coordinate[1] + 1] if color == 'black'
   end
 
+  def tile_valid?(coordinate)
+    tile = board[coordinate[1]][coordinate[0]] if within_board?(coordinate)
+    tile.class == Pawn && tile.two_squared
+  end
+
   def en_passant_correct_row?
     if color == 'white'
       coordinate[1] == 3

@@ -32,5 +32,9 @@ module Chess
     def checkmate
       @checkmate = true
     end
+
+    def not_checkmate
+      @checkmate = false
+    end
   end
 end

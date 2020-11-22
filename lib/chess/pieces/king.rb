@@ -19,6 +19,7 @@ module Chess
     def initialize(**args)
       @check = false
       @mate = false
+      @stalemate = false
       super
     end
 
@@ -40,6 +41,10 @@ module Chess
 
     def mate
       @mate = true
+    end
+
+    def stalemate
+      @stalemate = true
     end
   end
 end

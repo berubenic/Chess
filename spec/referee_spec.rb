@@ -141,10 +141,55 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
         referee.instance_variable_set(:@board, board)
-        referee.instance_variable_set(:@black_king, black_king)
         black_king.instance_variable_set(:@check, true)
         expect(black_king).not_to receive(:mate)
         referee.mate(black_king)
+      end
+    end
+    describe '#stalemate' do
+      subject(:referee) { described_class.new }
+      let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 0]) }
+      let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 2]) }
+      let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [4, 0]) }
+
+      before do
+        allow(black_king).to receive(:mate)
+        allow(black_king).to receive(:possible_movements)
+        allow(black_king).to receive(:movements).and_return([[6, 0], [7, 1], [6, 1]])
+        allow(white_rook).to receive(:movements).and_return([[6, 0], [6, 1], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [0, 2], [0, 3], [0, 4], [0, 5]])
+        allow(white_king).to receive(:movements).and_return([[7, 1], [6, 1], [6, 3], [7, 3]])
+      end
+
+      it 'sends #stalemate to black king' do
+        board = [
+          ['', '', '', '', '', '', '', black_king],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', white_rook, white_king],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+        referee.instance_variable_set(:@board, board)
+        expect(black_king).to receive(:stalemate)
+        referee.stalemate(black_king)
+      end
+
+      it 'does not send #stalemate to black king' do
+        board = [
+          ['', '', '', '', '', '', '', black_king],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', white_rook, ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+        referee.instance_variable_set(:@board, board)
+        expect(black_king).not_to receive(:stalemate)
+        referee.stalemate(black_king)
       end
     end
   end

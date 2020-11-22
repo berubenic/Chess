@@ -30,15 +30,11 @@ module Chess
       king.mate
     end
 
-    def no_check?(move, king)
-      board.each do |row|
-        row.each do |tile|
-          next if tile == ''
-          next if tile == king
+    def stalemate(king)
+      king.possible_movements
+      return if king.movements.any? { |move| no_check?(move, king) }
 
-          return false if tile.movements.include?(move)
-        end
-      end
+      king.stalemate
     end
 
     def find_kings
@@ -47,6 +43,19 @@ module Chess
           next if tile == ''
 
           assign_kings(tile)
+        end
+      end
+    end
+
+    private
+
+    def no_check?(move, king)
+      board.each do |row|
+        row.each do |tile|
+          next if tile == ''
+          next if tile == king
+
+          return false if tile.movements.include?(move)
         end
       end
     end

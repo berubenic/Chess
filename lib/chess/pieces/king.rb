@@ -17,7 +17,8 @@ module Chess
     ].freeze
 
     def initialize(**args)
-      @checkmate = false
+      @check = false
+      @mate = false
       super
     end
 
@@ -29,12 +30,16 @@ module Chess
       @captures = find_captures(MOVES)
     end
 
-    def checkmate
-      @checkmate = true
+    def check
+      @check = true
     end
 
-    def not_checkmate
-      @checkmate = false
+    def not_check
+      @check = false
+    end
+
+    def mate
+      @mate = true
     end
   end
 end

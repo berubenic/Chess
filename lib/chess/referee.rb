@@ -11,16 +11,34 @@ module Chess
       @black_king = nil
     end
 
-    def checkmate(king)
+    def check(king)
       board.each do |row|
         row.each do |tile|
           next if tile == ''
           next if tile == king
 
-          return king.checkmate if tile.captures.include?(king.coordinate)
+          return king.check if tile.captures.include?(king.coordinate)
         end
       end
-      king.not_checkmate
+      king.not_check
+    end
+
+    def mate(king)
+      king.possible_movements
+      return if king.movements.any? { |move| no_check?(move, king) }
+
+      king.mate
+    end
+
+    def no_check?(move, king)
+      board.each do |row|
+        row.each do |tile|
+          next if tile == ''
+          next if tile == king
+
+          return false if tile.movements.include?(move)
+        end
+      end
     end
 
     def find_kings

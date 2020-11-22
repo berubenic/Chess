@@ -3,7 +3,7 @@
 module Chess
   describe Referee do
     describe '#checkmate' do
-      context 'white king can be captured by rook' do
+      context 'white king can be captured' do
         subject(:referee) { described_class.new }
         let(:king) { instance_double(King, color: 'white', coordinate: [0, 7]) }
         let(:rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
@@ -26,32 +26,6 @@ module Chess
           ]
           referee.instance_variable_set(:@board, board)
           expect(king).to receive(:checkmate)
-          referee.checkmate(king)
-        end
-      end
-      context 'white king can not be captured by rook' do
-        subject(:referee) { described_class.new }
-        let(:king) { instance_double(King, color: 'white', coordinate: [0, 7]) }
-        let(:rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
-
-        before do
-          allow(king).to receive(:not_checkmate)
-          allow(rook).to receive(:captures).and_return([])
-        end
-
-        it 'sends #not_checkmate to white king' do
-          board = [
-            ['', rook, '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            [king, '', '', '', '', '', '', '']
-          ]
-          referee.instance_variable_set(:@board, board)
-          expect(king).to receive(:not_checkmate)
           referee.checkmate(king)
         end
       end

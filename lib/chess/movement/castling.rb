@@ -5,6 +5,8 @@ module Castling
     return unless king_and_rook_valid_for_short?(king, rook)
     return unless empty_tiles_for_short_castling?(king, rook)
 
+    # return if empty_tile_for_king_can_be_attacked?(king, rook)
+
     king.short_castling
     rook.short_castling
   end
@@ -15,6 +17,26 @@ module Castling
 
     king.long_castling
     rook.long_castling
+  end
+
+  def empty_tile_for_king_can_be_attacked?(king, _rook)
+    move = short_castle_king_coordinate(king)
+    board.each do |row|
+      row.each do |tile|
+        next if tile == ''
+        next if tile.color == king.color
+
+        return false if tile.movements.include?(move)
+      end
+    end
+  end
+
+  def short_castle_king_coordinate(king)
+    if king.color == 'white'
+      [6, 7]
+    elsif king.color == 'black'
+      [6, 0]
+    end
   end
 
   def king_and_rook_valid_for_long?(king, rook)

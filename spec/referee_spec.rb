@@ -199,11 +199,15 @@ module Chess
         let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
         let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
         let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
+        let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [7, 6]) }
+        let(:black_knight) { instance_double(Knight, color: 'black', coordinate: [7, 5]) }
 
         before do
           allow(white_king).to receive(:check).and_return(false)
           allow(white_king).to receive(:moved).and_return(false)
           allow(white_rook).to receive(:moved).and_return(false)
+          allow(black_pawn).to receive(:class).and_return(Pawn)
+          allow(black_knight).to receive(:movements).and_return([[6, 7], [5, 6], [5, 4], [6, 3]])
         end
         it 'sends #short_castling to king and rook' do
           board = [
@@ -232,6 +236,40 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', white_king, white_bishop, '', white_rook]
+          ]
+          referee.instance_variable_set(:@board, board)
+          expect(white_king).not_to receive(:short_castling)
+          expect(white_rook).not_to receive(:short_castling)
+          referee.castling(white_king, white_rook)
+        end
+
+        it 'does not send #short_castling to king and rook' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', black_pawn],
+            ['', '', '', '', white_king, '', '', white_rook]
+          ]
+          referee.instance_variable_set(:@board, board)
+          expect(white_king).not_to receive(:short_castling)
+          expect(white_rook).not_to receive(:short_castling)
+          referee.castling(white_king, white_rook)
+        end
+
+        it 'does not send #short_castling to king and rook' do
+          board = [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', black_knight],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', white_king, '', '', white_rook]
           ]
           referee.instance_variable_set(:@board, board)
           expect(white_king).not_to receive(:short_castling)

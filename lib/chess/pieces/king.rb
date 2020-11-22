@@ -16,6 +16,8 @@ module Chess
       [-1, -1]
     ].freeze
 
+    attr_reader :moved
+
     def initialize(**args)
       @moved = false
       @check = false
@@ -52,6 +54,10 @@ module Chess
 
     def short_castling
       @short_castling = true
+    end
+
+    def long_castling
+      @long_castling = true
     end
   end
 end

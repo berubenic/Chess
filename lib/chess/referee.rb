@@ -3,6 +3,8 @@
 module Chess
   # looks for check, checkmate and stalemate
   class Referee
+    include Castling
+
     attr_reader :board, :white_king, :black_king
 
     def initialize(board: nil)
@@ -39,28 +41,7 @@ module Chess
 
     def castling(king, rook)
       short_castling(king, rook)
-    end
-
-    def short_castling(king, rook)
-      return unless empty_tiles_for_short_castling?(king, rook)
-
-      king.short_castling
-      rook.short_castling
-    end
-
-    def empty_tiles_for_short_castling?(king, rook)
-      color = validate_color(king, rook)
-      if color == 'white'
-        board[7][5] == '' && board[7][6] == ''
-      elsif color == 'black'
-        board[0][5] == '' && board[0][6] == ''
-      end
-    end
-
-    def validate_color(king, rook)
-      color = 'white' if king.color == 'white' && rook.color == 'white'
-      color = 'black' if king.color == 'black' && rook.color == 'black'
-      color
+      long_castling(king, rook)
     end
 
     def find_kings

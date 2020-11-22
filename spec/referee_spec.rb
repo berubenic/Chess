@@ -205,8 +205,10 @@ module Chess
         let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
 
         before do
+          allow(white_king).to receive(:check).and_return(false)
           allow(white_king).to receive(:moved).and_return(false)
           allow(white_rook).to receive(:moved).and_return(false)
+          allow(black_king).to receive(:check).and_return(false)
           allow(black_king).to receive(:moved).and_return(false)
           allow(black_rook).to receive(:moved).and_return(false)
         end
@@ -288,8 +290,10 @@ module Chess
         let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
 
         before do
+          allow(white_king).to receive(:check).and_return(false)
           allow(white_king).to receive(:moved).and_return(false)
           allow(white_rook).to receive(:moved).and_return(false)
+          allow(black_king).to receive(:check).and_return(false)
           allow(black_king).to receive(:moved).and_return(false)
           allow(black_rook).to receive(:moved).and_return(false)
         end

@@ -27,19 +27,21 @@ module Chess
 
     def mate(king)
       king.possible_movements
-      return if king.movements.any? { |move| no_check?(move, king) }
+      return if king.movements.any? { |move| no_possible_check?(move, king) }
 
       king.mate
     end
 
     def stalemate(king)
       king.possible_movements
-      return if king.movements.any? { |move| no_check?(move, king) }
+      return if king.movements.any? { |move| no_possible_check?(move, king) }
 
       king.stalemate
     end
 
     def castling(king, rook)
+      return if king.check
+
       short_castling(king, rook)
       long_castling(king, rook)
     end
@@ -56,7 +58,7 @@ module Chess
 
     private
 
-    def no_check?(move, king)
+    def no_possible_check?(move, king)
       board.each do |row|
         row.each do |tile|
           next if tile == ''

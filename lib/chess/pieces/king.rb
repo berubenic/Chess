@@ -17,9 +17,12 @@ module Chess
     ].freeze
 
     def initialize(**args)
+      @moved = false
       @check = false
       @mate = false
       @stalemate = false
+      @short_castling = false
+      @long_castling = false
       super
     end
 
@@ -45,6 +48,10 @@ module Chess
 
     def stalemate
       @stalemate = true
+    end
+
+    def short_castling
+      @short_castling = true
     end
   end
 end

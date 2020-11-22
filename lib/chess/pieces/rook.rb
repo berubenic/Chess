@@ -12,12 +12,22 @@ module Chess
       [-1, 0]
     ].freeze
 
+    def initialize(**args)
+      @moved = false
+      @short_castling = false
+      super
+    end
+
     def possible_movements
       @movements = find_moves(DIRECTIONS)
     end
 
     def possible_captures
       @captures = find_captures(DIRECTIONS)
+    end
+
+    def short_castling
+      @short_castling = true
     end
   end
 end

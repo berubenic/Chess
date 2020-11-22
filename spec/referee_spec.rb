@@ -192,5 +192,52 @@ module Chess
         referee.stalemate(black_king)
       end
     end
+
+    describe '#castling' do
+      subject(:referee) { described_class.new }
+      let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
+      let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
+      let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
+      let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 4]) }
+      let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
+      let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
+
+      before do
+      end
+
+      it 'sends #short_castling to king and rook' do
+        board = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', white_king, '', '', white_rook]
+        ]
+        referee.instance_variable_set(:@board, board)
+        expect(white_king).to receive(:short_castling)
+        expect(white_rook).to receive(:short_castling)
+        referee.castling(white_king, white_rook)
+      end
+
+      it 'does not send #short_castling to king and rook' do
+        board = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', white_king, white_bishop, '', white_rook]
+        ]
+        referee.instance_variable_set(:@board, board)
+        expect(white_king).not_to receive(:short_castling)
+        expect(white_rook).not_to receive(:short_castling)
+        referee.castling(white_king, white_rook)
+      end
+    end
   end
 end

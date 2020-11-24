@@ -7,7 +7,7 @@ module Chess
 
     attr_reader :board, :white_king, :black_king
 
-    def initialize(board: nil)
+    def initialize(board:)
       @board = board
       @white_king = nil
       @black_king = nil

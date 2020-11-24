@@ -6,13 +6,15 @@ require_relative 'chess/version'
 module Chess
 end
 
+require 'observer'
+
 require_relative './chess/movement/single_movement'
 require_relative './chess/movement/directional_movement'
 require_relative './chess/movement/en_passant'
 require_relative './chess/movement/castling'
 require_relative './chess/pieces/piece'
-require_relative './chess/pieces/pawn'
 require_relative './chess/pieces/rook'
+require_relative './chess/pieces/pawn'
 require_relative './chess/pieces/knight'
 require_relative './chess/pieces/bishop'
 require_relative './chess/pieces/queen'

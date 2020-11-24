@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Chess
+  # castling for King and Rook
   module Castling
     def short_castling(king, rook)
       return unless king_and_rook_valid_for_short?(king, rook)

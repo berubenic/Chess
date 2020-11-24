@@ -8,6 +8,8 @@ require 'tty-prompt'
 module Chess
   # Prints Board and messages
   module Display
+    COLUMN_HEADER = '   A  B  C  D  E  F  G  H'
+
     def title_message
       clear
       puts '--------'.art
@@ -28,6 +30,41 @@ module Chess
 
     def clear
       system('clear') || system('cls')
+    end
+
+    def display_board(board)
+      clear
+      puts COLUMN_HEADER
+      board.each_with_index do |row, y|
+        print "#{y + 1} "
+        odd_row(row) if y.odd?
+        even_row(row) if y.even?
+        print " #{y + 1} "
+        print "\n"
+      end
+      puts COLUMN_HEADER
+    end
+
+    def odd_row(row)
+      row.each_with_index do |tile, x|
+        primary_color_tile(tile) if x.odd?
+        secondary_color_tile(tile) if x.even?
+      end
+    end
+
+    def even_row(row)
+      row.each_with_index do |tile, x|
+        primary_color_tile(tile) if x.even?
+        secondary_color_tile(tile) if x.odd?
+      end
+    end
+
+    def primary_color_tile(tile)
+      print " #{tile}  ".bg_primary
+    end
+
+    def secondary_color_tile(tile)
+      print " #{tile}  ".bg_secondary
     end
   end
 end

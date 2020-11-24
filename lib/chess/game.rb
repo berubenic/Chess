@@ -11,8 +11,10 @@ module Chess
 
     Player = Struct.new(:name, :number)
 
-    def setup_game
+    def intro
       title_message
+      welcome_message
+      ask_game_mode
     end
   end
 end

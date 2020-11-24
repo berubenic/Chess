@@ -19,5 +19,6 @@ require_relative './chess/pieces/queen'
 require_relative './chess/pieces/king'
 require_relative './chess/referee'
 require_relative './chess/board'
+require_relative './chess/game'
 
 require_relative './string'

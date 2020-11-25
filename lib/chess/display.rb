@@ -20,16 +20,29 @@ module Chess
 
     def welcome_message
       puts "Let's play Chess!"
+      puts "\n"
     end
 
     def ask_game_mode
       prompt = TTY::Prompt.new
-      choices = { single_player: 1, multiplayer: 2 }
+      choices = { single_player: 1, local_multiplayer: 2 }
       prompt.select('Select a game mode.', choices)
     end
 
     def clear
       system('clear') || system('cls')
+    end
+
+    def ask_player_name(player)
+      clear
+      title_message
+      prompt = TTY::Prompt.new
+      prompt.ask("What is your name? (#{player})")
+    end
+
+    def welcome_player_message(name, color)
+      puts "Welcome, #{name}. You are assigned the #{color} pieces."
+      sleep 1.5
     end
 
     def display_board(board)

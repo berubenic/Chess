@@ -45,6 +45,15 @@ module Chess
       sleep 1.5
     end
 
+    def ask_to_select_piece(player)
+      prompt = TTY::Prompt.new
+      prompt.ask("#{player}, select a piece to move (ex. A1)")
+    end
+
+    def invalid_selection_message
+      puts 'Invalid selection, please select a valid piece'
+    end
+
     def display_board(board)
       clear
       puts COLUMN_HEADER

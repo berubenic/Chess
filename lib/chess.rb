@@ -9,6 +9,7 @@ end
 require 'observer'
 require_relative './string'
 require_relative './chess/display'
+require_relative './chess/translator'
 require_relative './chess/movement/single_movement'
 require_relative './chess/movement/directional_movement'
 require_relative './chess/movement/en_passant'

@@ -7,10 +7,17 @@ module Chess
 
     attr_reader :board, :white_king, :black_king
 
-    def initialize(board:)
+    def initialize(board: nil)
       @board = board
       @white_king = nil
       @black_king = nil
+    end
+
+    def valid_selection?(selection, color)
+      tile = board[selection[1]][selection[0]]
+      return false if tile == '' || tile.color != color
+
+      true
     end
 
     def check(king)

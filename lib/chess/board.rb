@@ -26,6 +26,8 @@ module Chess
       setup_black_pieces
     end
 
+    private
+
     def setup_white_pieces
       setup_white_rooks
       setup_white_knights

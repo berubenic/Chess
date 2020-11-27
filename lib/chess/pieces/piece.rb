@@ -4,7 +4,7 @@ module Chess
   # Piece Superclass
   class Piece
     attr_reader :coordinate, :board, :color, :content
-    attr_reader :movements, :captures
+    attr_reader :movements, :captures, :selected
     def initialize(**args)
       @content = args[:content]
       @coordinate = [args[:x_coordinate], args[:y_coordinate]]
@@ -24,11 +24,15 @@ module Chess
     end
 
     def highlight_selected
-      @selected = false
+      @selected = true
     end
 
     def to_s
-      content
+      if selected == false
+        content
+      elsif selected == true
+        content.green
+      end
     end
 
     private

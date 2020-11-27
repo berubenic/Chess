@@ -29,6 +29,7 @@ module Chess
     def highlight_selection(selection)
       piece = find_piece(selection)
       piece.highlight_selected
+      self
     end
 
     private

@@ -90,14 +90,22 @@ module Chess
     end
 
     def primary_color_tile(tile)
-      print " #{print_content(tile)} ".bg_primary
+      if tile == '' || tile.selected == false
+        print " #{print_tile(tile)} ".bg_primary
+      elsif tile.selected
+        print " #{print_tile(tile)} ".bg_green
+      end
     end
 
     def secondary_color_tile(tile)
-      print " #{print_content(tile)} ".bg_secondary
+      if tile == '' || tile.selected == false
+        print " #{print_tile(tile)} ".bg_secondary
+      elsif tile.selected
+        print " #{print_tile(tile)} ".bg_green
+      end
     end
 
-    def print_content(tile)
+    def print_tile(tile)
       if tile == ''
         ' '
       else

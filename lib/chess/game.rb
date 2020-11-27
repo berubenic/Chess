@@ -33,7 +33,8 @@ module Chess
       display_board(board.board)
       @current_player = player_one
       loop until select_piece_loop == true
-      board.highlight_selection(selection)
+      @board = board.highlight_selection(selection)
+      display_board(board.board)
     end
 
     def setup_two_players

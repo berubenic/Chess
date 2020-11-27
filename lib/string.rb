@@ -25,4 +25,8 @@ class String
   def black
     "\e[30m#{self}"
   end
+
+  def bg_green
+    "\e[102m#{self}"
+  end
 end

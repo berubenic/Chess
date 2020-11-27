@@ -7,7 +7,8 @@ module Chess
     include Translator
 
     attr_reader :board, :player_one, :player_two, :current_player
-    attr_accessor :selection
+    attr_reader :selection, :referee
+
     def initialize(board = Board.new)
       @board = board
       @referee = Referee.new(board: board)
@@ -43,10 +44,11 @@ module Chess
     end
 
     def select_piece
-      selection = ask_to_select_piece(player_one.name)
-      selection = translate(selection)
+      @selection = ask_to_select_piece(current_player.name)
+      @selection = translate(selection)
       if selection == false
         invalid_selection_message
+        revert_selection
         select_piece
       end
 
@@ -54,6 +56,10 @@ module Chess
 
       invalid_selection_message
       select_piece
+    end
+
+    def revert_selection
+      @selection = nil
     end
 
     def create_player_one

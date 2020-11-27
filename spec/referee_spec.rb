@@ -501,5 +501,60 @@ module Chess
         referee.castling(black_king, black_rook)
       end
     end
+    describe '#valid_selection?' do
+      subject(:referee) { described_class.new }
+      let(:pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 6]) }
+
+      it 'returns true' do
+        board = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          [pawn, '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+        referee.instance_variable_set(:@board, board)
+        selection = [0, 6]
+        color = 'white'
+        expect(referee.valid_selection?(selection, color)).to be true
+      end
+
+      it 'returns false' do
+        board = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          [pawn, '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+        referee.instance_variable_set(:@board, board)
+        selection = [0, 6]
+        color = 'black'
+        expect(referee.valid_selection?(selection, color)).to be false
+      end
+
+      it 'returns false' do
+        board = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          [pawn, '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+        referee.instance_variable_set(:@board, board)
+        selection = [1, 6]
+        color = 'white'
+        expect(referee.valid_selection?(selection, color)).to be false
+      end
+    end
   end
 end

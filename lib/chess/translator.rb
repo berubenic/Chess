@@ -28,7 +28,6 @@ module Chess
       if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
         move = move.downcase
       else
-        puts 'Invalid input, please try again.'
         false
       end
     end

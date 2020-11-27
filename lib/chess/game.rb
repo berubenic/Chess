@@ -47,17 +47,19 @@ module Chess
 
     def select_piece
       selection = ask_to_select_piece(current_player.name)
-      translated_selection = translate(selection)
-      selection = translated_selection
+      selection = translate(selection)
       if selection == false
-        invalid_selection_message
+        invalid_input_message
         revert_selection
+        display_board(board.board)
         select_piece
       end
 
       return if referee.valid_selection?(selection, current_player.color)
 
       invalid_selection_message
+      revert_selection
+      display_board(board.board)
       select_piece
     end
 

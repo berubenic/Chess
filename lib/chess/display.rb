@@ -50,8 +50,16 @@ module Chess
       prompt.ask("#{player}, select a piece to move (ex. A1)")
     end
 
+    def invalid_input_message
+      puts 'Invalid input, please try again'
+      sleep 1
+      clear
+    end
+
     def invalid_selection_message
       puts 'Invalid selection, please select a valid piece'
+      sleep 1
+      clear
     end
 
     def display_board(board)

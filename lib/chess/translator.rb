@@ -19,14 +19,15 @@ module Chess
 
       result << LETTERS.values_at(move[0])[0]
       result << move[1].to_i - 1
-      @move = result
+      result
     end
 
     def verify_move(move)
-      if move.length == 2 && move[0].downcase == /[A-Ga-g]/ && move[1] >= 1 && move[1] <= 8
+      move = move.dup
+      if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
         move.downcase!
       else
-        puts 'Invalid move, please try again.'
+        puts 'Invalid input, please try again.'
         false
       end
     end

@@ -1,4 +1,6 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
+
+require 'pry'
 
 module Chess
   module Translator
@@ -15,7 +17,7 @@ module Chess
 
     def translate(move, result = [])
       move = verify_move(move)
-      return move unless move
+      return move if move == false
 
       result << LETTERS.values_at(move[0])[0]
       result << move[1].to_i - 1
@@ -23,9 +25,8 @@ module Chess
     end
 
     def verify_move(move)
-      move = move.dup
       if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
-        move.downcase!
+        move = move.downcase
       else
         puts 'Invalid input, please try again.'
         false

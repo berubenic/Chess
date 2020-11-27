@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # controls the game flow
   class Game
     include Display
     include Translator
 
-    attr_reader :board, :player_one, :player_two, :current_player
-    attr_reader :selection, :referee
+    attr_reader :board, :player_one, :player_two, :current_player, :referee
+    attr_accessor :selection
 
     def initialize(board = Board.new)
       @board = board
@@ -44,15 +46,16 @@ module Chess
     end
 
     def select_piece
-      @selection = ask_to_select_piece(current_player.name)
-      @selection = translate(selection)
+      selection = ask_to_select_piece(current_player.name)
+      translated_selection = translate(selection)
+      selection = translated_selection
       if selection == false
         invalid_selection_message
         revert_selection
         select_piece
       end
 
-      return selection if referee.valid_selection?(selection, current_player.color)
+      return if referee.valid_selection?(selection, current_player.color)
 
       invalid_selection_message
       select_piece

@@ -14,7 +14,7 @@ module Chess
     end
 
     def valid_selection?(selection, color)
-      tile = board[selection[1]][selection[0]]
+      tile = board.board[selection[1]][selection[0]]
       return false if tile == '' || tile.color != color
 
       true

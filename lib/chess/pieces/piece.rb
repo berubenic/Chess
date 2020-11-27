@@ -27,6 +27,10 @@ module Chess
       @selected = true
     end
 
+    def unhighlight_selected
+      @selected = false
+    end
+
     def to_s
       if selected == false
         content

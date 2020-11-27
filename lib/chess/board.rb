@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # Board
   class Board
@@ -27,16 +29,26 @@ module Chess
     end
 
     def highlight_selection(selection)
-      piece = find_piece(selection)
+      piece = find_tile(selection)
       piece.highlight_selected
-      self
+    end
+
+    def revert_highlight(selection)
+      piece = find_tile(selection)
+      piece.unhightlight_selected
+    end
+
+    def add_moves(moves)
+      moves.each do |move|
+        board[move[1]][move[0]] = 'o'
+      end
+    end
+
+    def find_tile(coordinate)
+      board[coordinate[1]][coordinate[0]]
     end
 
     private
-
-    def find_piece(coordinate)
-      board[coordinate[1]][coordinate[0]]
-    end
 
     def setup_white_pieces
       setup_white_rooks
@@ -48,31 +60,31 @@ module Chess
     end
 
     def setup_white_rooks
-      board[7][0] = Rook.new(color: 'white', x_coordinate: 0, y_coordinate: 7, content: WHITE_ROOK)
-      board[7][7] = Rook.new(color: 'white', x_coordinate: 7, y_coordinate: 7, content: WHITE_ROOK)
+      board[7][0] = Rook.new(color: 'white', x_coordinate: 0, y_coordinate: 7, content: WHITE_ROOK, board: board)
+      board[7][7] = Rook.new(color: 'white', x_coordinate: 7, y_coordinate: 7, content: WHITE_ROOK, board: board)
     end
 
     def setup_white_knights
-      board[7][1] = Knight.new(color: 'white', x_coordinate: 1, y_coordinate: 7, content: WHITE_KNIGHT)
-      board[7][6] = Knight.new(color: 'white', x_coordinate: 6, y_coordinate: 7, content: WHITE_KNIGHT)
+      board[7][1] = Knight.new(color: 'white', x_coordinate: 1, y_coordinate: 7, content: WHITE_KNIGHT, board: board)
+      board[7][6] = Knight.new(color: 'white', x_coordinate: 6, y_coordinate: 7, content: WHITE_KNIGHT, board: board)
     end
 
     def setup_white_bishops
-      board[7][2] = Bishop.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_BISHOP)
-      board[7][5] = Bishop.new(color: 'white', x_coordinate: 5, y_coordinate: 7, content: WHITE_BISHOP)
+      board[7][2] = Bishop.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_BISHOP, board: board)
+      board[7][5] = Bishop.new(color: 'white', x_coordinate: 5, y_coordinate: 7, content: WHITE_BISHOP, board: board)
     end
 
     def setup_white_queen
-      board[7][3] = Queen.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_QUEEN)
+      board[7][3] = Queen.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_QUEEN, board: board)
     end
 
     def setup_white_king
-      board[7][4] = King.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_KING)
+      board[7][4] = King.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_KING, board: board)
     end
 
     def setup_white_pawns
       board[6].each_with_index do |_tile, index|
-        board[6][index] = Pawn.new(color: 'white', x_coordinate: index, y_coordinate: 6, content: WHITE_PAWN)
+        board[6][index] = Pawn.new(color: 'white', x_coordinate: index, y_coordinate: 6, content: WHITE_PAWN, board: board)
       end
     end
 
@@ -86,31 +98,31 @@ module Chess
     end
 
     def setup_black_rooks
-      board[0][0] = Rook.new(color: 'black', x_coordinate: 0, y_coordinate: 0, content: BLACK_ROOK)
-      board[0][7] = Rook.new(color: 'black', x_coordinate: 7, y_coordinate: 0, content: BLACK_ROOK)
+      board[0][0] = Rook.new(color: 'black', x_coordinate: 0, y_coordinate: 0, content: BLACK_ROOK, board: board)
+      board[0][7] = Rook.new(color: 'black', x_coordinate: 7, y_coordinate: 0, content: BLACK_ROOK, board: board)
     end
 
     def setup_black_knights
-      board[0][1] = Knight.new(color: 'black', x_coordinate: 1, y_coordinate: 0, content: BLACK_KNIGHT)
-      board[0][6] = Knight.new(color: 'black', x_coordinate: 6, y_coordinate: 0, content: BLACK_KNIGHT)
+      board[0][1] = Knight.new(color: 'black', x_coordinate: 1, y_coordinate: 0, content: BLACK_KNIGHT, board: board)
+      board[0][6] = Knight.new(color: 'black', x_coordinate: 6, y_coordinate: 0, content: BLACK_KNIGHT, board: board)
     end
 
     def setup_black_bishops
-      board[0][2] = Bishop.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_BISHOP)
-      board[0][5] = Bishop.new(color: 'black', x_coordinate: 5, y_coordinate: 0, content: BLACK_BISHOP)
+      board[0][2] = Bishop.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_BISHOP, board: board)
+      board[0][5] = Bishop.new(color: 'black', x_coordinate: 5, y_coordinate: 0, content: BLACK_BISHOP, board: board)
     end
 
     def setup_black_queen
-      board[0][3] = Queen.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_QUEEN)
+      board[0][3] = Queen.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_QUEEN, board: board)
     end
 
     def setup_black_king
-      board[0][4] = King.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_KING)
+      board[0][4] = King.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_KING, board: board)
     end
 
     def setup_black_pawns
       board[1].each_with_index do |_tile, index|
-        board[1][index] = Pawn.new(color: 'black', x_coordinate: index, y_coordinate: 1, content: BLACK_PAWN)
+        board[1][index] = Pawn.new(color: 'black', x_coordinate: index, y_coordinate: 1, content: BLACK_PAWN, board: board)
       end
     end
   end

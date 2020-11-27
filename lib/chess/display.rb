@@ -62,6 +62,12 @@ module Chess
       clear
     end
 
+    def no_movements_or_captures_message
+      puts 'No possible moves or captures, please select a valid piece'
+      sleep 1
+      clear
+    end
+
     def display_board(board)
       clear
       puts COLUMN_HEADER
@@ -90,7 +96,7 @@ module Chess
     end
 
     def primary_color_tile(tile)
-      if tile == '' || tile.selected == false
+      if tile.is_a?(String) || tile.selected == false
         print " #{print_tile(tile)} ".bg_primary
       elsif tile.selected
         print " #{print_tile(tile)} ".bg_green
@@ -98,7 +104,7 @@ module Chess
     end
 
     def secondary_color_tile(tile)
-      if tile == '' || tile.selected == false
+      if tile.is_a?(String) || tile.selected == false
         print " #{print_tile(tile)} ".bg_secondary
       elsif tile.selected
         print " #{print_tile(tile)} ".bg_green
@@ -108,6 +114,8 @@ module Chess
     def print_tile(tile)
       if tile == ''
         ' '
+      elsif tile == 'o'
+        tile
       else
         tile.content.to_s
       end

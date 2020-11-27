@@ -8,8 +8,7 @@ module Chess
     include Display
     include Translator
 
-    attr_reader :board, :player_one, :player_two, :current_player, :referee
-    attr_accessor :selection
+    attr_reader :board, :player_one, :player_two, :current_player, :referee, :selection
 
     def initialize(board = Board.new)
       @board = board
@@ -33,7 +32,8 @@ module Chess
       setup_board
       display_board(board.board)
       @current_player = player_one
-      select_piece
+      loop until select_piece_loop == true
+      board.highlight_selection(selection)
     end
 
     def setup_two_players
@@ -45,22 +45,31 @@ module Chess
       board.setup_board
     end
 
-    def select_piece
-      selection = ask_to_select_piece(current_player.name)
-      selection = translate(selection)
+    def select_piece_loop
+      select_piece
+      translate_piece
+      # piece can't be translated
       if selection == false
         invalid_input_message
         revert_selection
         display_board(board.board)
-        select_piece
+        return false
       end
 
-      return if referee.valid_selection?(selection, current_player.color)
+      return true if referee.valid_selection?(selection, current_player.color)
 
       invalid_selection_message
       revert_selection
       display_board(board.board)
-      select_piece
+      false
+    end
+
+    def select_piece
+      @selection = ask_to_select_piece(current_player.name)
+    end
+
+    def translate_piece
+      @selection = translate(selection)
     end
 
     def revert_selection

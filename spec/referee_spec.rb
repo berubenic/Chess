@@ -504,9 +504,8 @@ module Chess
     describe '#valid_selection?' do
       subject(:referee) { described_class.new }
       let(:pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 6]) }
-
-      it 'returns true' do
-        board = [
+      let(:board_array) do
+        [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -516,6 +515,13 @@ module Chess
           [pawn, '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', '']
         ]
+      end
+      let(:board) { instance_double(Board, board: board_array) }
+
+      before do
+      end
+
+      it 'returns true' do
         referee.instance_variable_set(:@board, board)
         selection = [0, 6]
         color = 'white'
@@ -523,16 +529,6 @@ module Chess
       end
 
       it 'returns false' do
-        board = [
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          [pawn, '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '']
-        ]
         referee.instance_variable_set(:@board, board)
         selection = [0, 6]
         color = 'black'
@@ -540,16 +536,6 @@ module Chess
       end
 
       it 'returns false' do
-        board = [
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          [pawn, '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '']
-        ]
         referee.instance_variable_set(:@board, board)
         selection = [1, 6]
         color = 'white'

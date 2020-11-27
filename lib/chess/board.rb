@@ -26,7 +26,16 @@ module Chess
       setup_black_pieces
     end
 
+    def highlight_selection(selection)
+      piece = find_piece(selection)
+      piece.highlight_selected
+    end
+
     private
+
+    def find_piece(coordinate)
+      board[coordinate[1]][coordinate[0]]
+    end
 
     def setup_white_pieces
       setup_white_rooks

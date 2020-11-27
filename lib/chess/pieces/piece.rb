@@ -12,6 +12,7 @@ module Chess
       @color = args[:color]
       @movements = []
       @captures = []
+      @selected = false
     end
 
     def possible_movements
@@ -20,6 +21,10 @@ module Chess
 
     def possible_captures
       raise 'Called abstract method: possible_captures'
+    end
+
+    def highlight_selected
+      @selected = false
     end
 
     def to_s

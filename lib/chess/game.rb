@@ -32,8 +32,8 @@ module Chess
       setup_board
       display_board(board.board)
       @current_player = player_one
-      loop until select_piece_loop == true
-      @board = board.highlight_selection(selection)
+      select_piece_loop
+      board.highlight_selection(selection)
       display_board(board.board)
     end
 
@@ -54,7 +54,7 @@ module Chess
         invalid_input_message
         revert_selection
         display_board(board.board)
-        return false
+        return select_piece_loop
       end
 
       return true if referee.valid_selection?(selection, current_player.color)
@@ -62,7 +62,7 @@ module Chess
       invalid_selection_message
       revert_selection
       display_board(board.board)
-      false
+      select_piece_loop
     end
 
     def select_piece

@@ -3,7 +3,7 @@
 module Chess
   # Piece Superclass
   class Piece
-    attr_reader :coordinate, :board, :color
+    attr_reader :coordinate, :board, :color, :content
     attr_reader :movements, :captures
     def initialize(**args)
       @content = args[:content]
@@ -20,6 +20,10 @@ module Chess
 
     def possible_captures
       raise 'Called abstract method: possible_captures'
+    end
+
+    def to_s
+      content
     end
 
     private

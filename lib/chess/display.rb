@@ -73,11 +73,19 @@ module Chess
     end
 
     def primary_color_tile(tile)
-      print " #{tile}  ".bg_primary
+      print " #{print_content(tile)} ".bg_primary
     end
 
     def secondary_color_tile(tile)
-      print " #{tile}  ".bg_secondary
+      print " #{print_content(tile)} ".bg_secondary
+    end
+
+    def print_content(tile)
+      if tile == ''
+        ' '
+      else
+        tile.content.to_s
+      end
     end
   end
 end

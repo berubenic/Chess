@@ -26,8 +26,10 @@ module Chess
     end
 
     def setup_two_players
-      create_player_one
-      create_player_two
+      # create_player_one
+      # create_player_two
+      board.setup_board
+      display_board(board.board)
     end
 
     def create_player_one

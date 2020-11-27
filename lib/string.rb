@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Can colorize strings
+# to colorize strings
 class String
   def primary
     "\e[37m#{self}\e[0m"
@@ -16,5 +16,13 @@ class String
 
   def bg_secondary
     "\e[48;5;52m#{self}\e[0m"
+  end
+
+  def white
+    "\e[97m#{self}"
+  end
+
+  def black
+    "\e[30m#{self}"
   end
 end

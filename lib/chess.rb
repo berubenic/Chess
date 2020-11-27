@@ -7,7 +7,7 @@ module Chess
 end
 
 require 'observer'
-
+require_relative './string'
 require_relative './chess/display'
 require_relative './chess/movement/single_movement'
 require_relative './chess/movement/directional_movement'
@@ -23,5 +23,3 @@ require_relative './chess/pieces/king'
 require_relative './chess/referee'
 require_relative './chess/board'
 require_relative './chess/game'
-
-require_relative './string'

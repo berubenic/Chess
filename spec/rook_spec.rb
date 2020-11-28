@@ -3,7 +3,7 @@
 # Knight spec
 
 module Chess
-  describe Rook do
+  xdescribe Rook do
     describe '#possible_movements' do
       context 'Board is empty except for Rook' do
         subject(:rook) { described_class.new }

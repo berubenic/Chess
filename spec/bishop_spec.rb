@@ -3,7 +3,7 @@
 # Bishop
 
 module Chess
-  describe Bishop do
+  xdescribe Bishop do
     describe '#possible_movements' do
       context 'Board is empty except for bishop' do
         subject(:bishop) { described_class.new }

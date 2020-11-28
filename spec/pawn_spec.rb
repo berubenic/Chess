@@ -3,7 +3,7 @@
 # Pawn
 
 module Chess
-  describe Pawn do
+  xdescribe Pawn do
     describe '#possible_movements' do
       context 'white pawn is at starting square' do
         subject(:pawn) { described_class.new(color: 'white') }

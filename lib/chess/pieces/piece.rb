@@ -50,7 +50,7 @@ module Chess
     end
 
     def not_occupied?(move)
-      board_tile = board[move[1]][move[0]]
+      board_tile = board.board[move[1]][move[0]]
       board_tile == ''
     end
 
@@ -59,7 +59,7 @@ module Chess
     end
 
     def friendly_occupied?(capture)
-      piece = board[capture[1]][capture[0]]
+      piece = board.board[capture[1]][capture[0]]
       piece.color == color
     end
   end

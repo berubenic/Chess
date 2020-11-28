@@ -3,7 +3,7 @@
 # Queen
 
 module Chess
-  describe Queen do
+  xdescribe Queen do
     describe '#possible_movements' do
       context 'Board is empty except for Rook' do
         subject(:queen) { described_class.new }

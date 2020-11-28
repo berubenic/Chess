@@ -9,9 +9,8 @@ module Chess
     describe '#possible_movements' do
       context 'Board is empty except for Knight' do
         subject(:king) { described_class.new }
-
-        it 'assigns @movements an array of possible moves when at [0, 0]' do
-          board = [
+        let(:array) do
+          [
             [king, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -21,16 +20,18 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 0]' do
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [0, 0])
           king.possible_movements
-          expect(king.movements.include?([1, 0])).to be true
-          expect(king.movements.include?([1, 1])).to be true
-          expect(king.movements.include?([0, 1])).to be true
+          expect(king.movements).to contain_exactly([1, 0], [1, 1], [0, 1])
         end
 
         it 'assigns @movements an array of possible moves when at [3, 3]' do
-          board = [
+          array = [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -40,25 +41,18 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+          board.instance_variable_set(:@board, array)
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [3, 3])
           king.possible_movements
-          expect(king.movements.include?([3, 2])).to be true
-          expect(king.movements.include?([4, 2])).to be true
-          expect(king.movements.include?([4, 3])).to be true
-          expect(king.movements.include?([4, 4])).to be true
-          expect(king.movements.include?([3, 4])).to be true
-          expect(king.movements.include?([2, 4])).to be true
-          expect(king.movements.include?([2, 3])).to be true
-          expect(king.movements.include?([2, 2])).to be true
+          expect(king.movements).to contain_exactly([3, 2], [4, 2], [4, 3], [4, 4], [3, 4], [2, 4], [2, 3], [2, 2])
         end
       end
       context "A friendly piece occupies one of it's possible moves" do
         subject(:king) { described_class.new(color: 'white') }
         let(:friendly) { instance_double(Piece, color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [0, 0]' do
-          board = [
+        let(:array) do
+          [
             [king, '', '', '', '', '', '', ''],
             [friendly, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -68,21 +62,22 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 0]' do
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [0, 0])
           king.possible_movements
-          expect(king.movements.include?([1, 0])).to be true
-          expect(king.movements.include?([1, 1])).to be true
-          expect(king.movements.include?([0, 1])).to be false
+          expect(king.movements).to contain_exactly([1, 0], [1, 1])
         end
       end
       context "Multiple friendly pieces occupying it's possible moves" do
         subject(:king) { described_class.new(color: 'black') }
         let(:friendly_1) { instance_double(Piece, color: 'black') }
         let(:friendly_2) { instance_double(Piece, color: 'black') }
-
-        it 'assigns @movements an array of possible moves when at [4, 4]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -92,26 +87,22 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [4, 4]' do
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [4, 4])
           king.possible_movements
-          expect(king.movements.include?([3, 3])).to be true
-          expect(king.movements.include?([4, 3])).to be true
-          expect(king.movements.include?([5, 3])).to be true
-          expect(king.movements.include?([5, 4])).to be true
-          expect(king.movements.include?([5, 5])).to be true
-          expect(king.movements.include?([3, 5])).to be true
-          expect(king.movements.include?([4, 5])).to be false
-          expect(king.movements.include?([3, 4])).to be false
+          expect(king.movements).to contain_exactly([3, 3], [4, 3], [5, 3], [5, 4], [5, 5], [3, 5])
         end
       end
       context "Enemy pieces don't matter" do
         subject(:king) { described_class.new(color: 'black') }
         let(:enemy_1) { instance_double(Piece, color: 'white') }
         let(:enemy_2) { instance_double(Piece, color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [4, 4]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -121,25 +112,21 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [4, 4]' do
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [4, 4])
           king.possible_movements
-          expect(king.movements.include?([3, 3])).to be true
-          expect(king.movements.include?([4, 3])).to be true
-          expect(king.movements.include?([5, 3])).to be true
-          expect(king.movements.include?([5, 4])).to be true
-          expect(king.movements.include?([5, 5])).to be true
-          expect(king.movements.include?([3, 5])).to be true
-          expect(king.movements.include?([4, 5])).to be false
-          expect(king.movements.include?([3, 4])).to be false
+          expect(king.movements).to contain_exactly([3, 3], [4, 3], [5, 3], [5, 4], [5, 5], [3, 5])
         end
       end
       describe '#possible_captures' do
         context 'Board is empty except for King' do
           subject(:king) { described_class.new }
-
-          it 'assigns @captures an empty array' do
-            board = [
+          let(:array) do
+            [
               [king, '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
@@ -149,6 +136,10 @@ module Chess
               ['', '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', '']
             ]
+          end
+          let(:board) { instance_double(Board, board: array) }
+
+          it 'assigns @captures an empty array' do
             king.instance_variable_set(:@board, board)
             king.instance_variable_set(:@coordinate, [0, 0])
             king.possible_captures
@@ -158,9 +149,8 @@ module Chess
         context 'A enemy piece is in range' do
           subject(:king) { described_class.new(color: 'white') }
           let(:enemy) { instance_double(Piece, color: 'black') }
-
-          it "assigns @captures an array with it's possible capture" do
-            board = [
+          let(:array) do
+            [
               [king, '', '', '', '', '', '', ''],
               [enemy, '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
@@ -170,19 +160,22 @@ module Chess
               ['', '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', '']
             ]
+          end
+          let(:board) { instance_double(Board, board: array) }
+
+          it "assigns @captures an array with it's possible capture" do
             king.instance_variable_set(:@board, board)
             king.instance_variable_set(:@coordinate, [0, 0])
             king.possible_captures
-            expect(king.captures).to eq([[0, 1]])
+            expect(king.captures).to contain_exactly([0, 1])
           end
         end
         context 'A enemy and friendly piece is in range' do
           subject(:king) { described_class.new(color: 'white') }
           let(:friendly) { instance_double(Piece, color: 'white') }
           let(:enemy) { instance_double(Piece, color: 'black') }
-
-          it "assigns @captures an array with it's possible capture" do
-            board = [
+          let(:array) do
+            [
               [king, friendly, '', '', '', '', '', ''],
               [enemy, '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
@@ -192,19 +185,22 @@ module Chess
               ['', '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', '']
             ]
+          end
+          let(:board) { instance_double(Board, board: array) }
+
+          it "assigns @captures an array with it's possible capture" do
             king.instance_variable_set(:@board, board)
             king.instance_variable_set(:@coordinate, [0, 0])
             king.possible_captures
-            expect(king.captures).to eq([[0, 1]])
+            expect(king.captures).to contain_exactly([0, 1])
           end
         end
         context 'Two enemy pieces in range' do
           subject(:king) { described_class.new(color: 'white') }
           let(:enemy_1) { instance_double(Piece, color: 'black') }
           let(:enemy_2) { instance_double(Piece, color: 'black') }
-
-          it "assigns @captures an array with it's possible captures" do
-            board = [
+          let(:array) do
+            [
               [king, enemy_1, '', '', '', '', '', ''],
               [enemy_2, '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', ''],
@@ -214,11 +210,14 @@ module Chess
               ['', '', '', '', '', '', '', ''],
               ['', '', '', '', '', '', '', '']
             ]
+          end
+          let(:board) { instance_double(Board, board: array) }
+
+          it "assigns @captures an array with it's possible captures" do
             king.instance_variable_set(:@board, board)
             king.instance_variable_set(:@coordinate, [0, 0])
             king.possible_captures
-            expect(king.captures.include?([1, 0])).to be true
-            expect(king.captures.include?([0, 1])).to be true
+            expect(king.captures).to contain_exactly([1, 0], [0, 1])
           end
         end
       end

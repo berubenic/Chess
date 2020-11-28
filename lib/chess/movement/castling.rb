@@ -25,7 +25,7 @@ module Chess
 
     def empty_tile_for_king_can_be_attacked?(king, rook)
       king_coordinate = castled_king_coordinate(rook)
-      board.each do |row|
+      board.board.each do |row|
         row.each do |tile|
           next if tile == ''
           next if tile.color == king.color
@@ -59,9 +59,9 @@ module Chess
     def empty_tiles_for_long_castling?(king, rook)
       color = validate_color(king, rook)
       if color == 'white'
-        board[7][1] == '' && board[7][2] == '' && board[7][3] == ''
+        board.board[7][1] == '' && board.board[7][2] == '' && board.board[7][3] == ''
       elsif color == 'black'
-        board[0][1] == '' && board[0][2] == '' && board[0][3] == ''
+        board.board[0][1] == '' && board.board[0][2] == '' && board.board[0][3] == ''
       end
     end
 
@@ -90,9 +90,9 @@ module Chess
     def empty_tiles_for_short_castling?(king, rook)
       color = validate_color(king, rook)
       if color == 'white'
-        board[7][5] == '' && board[7][6] == ''
+        board.board[7][5] == '' && board.board[7][6] == ''
       elsif color == 'black'
-        board[0][5] == '' && board[0][6] == ''
+        board.board[0][5] == '' && board.board[0][6] == ''
       end
     end
 

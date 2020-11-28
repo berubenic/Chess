@@ -21,7 +21,7 @@ module Chess
     end
 
     def check(king)
-      board.each do |row|
+      board.board.each do |row|
         row.each do |tile|
           next if tile == ''
           next if tile == king
@@ -54,7 +54,7 @@ module Chess
     end
 
     def find_kings
-      board.each do |row|
+      board.board.each do |row|
         row.each do |tile|
           next if tile == ''
 
@@ -66,7 +66,7 @@ module Chess
     private
 
     def no_possible_check?(move, king)
-      board.each do |row|
+      board.board.each do |row|
         row.each do |tile|
           next if tile == ''
           next if tile == king

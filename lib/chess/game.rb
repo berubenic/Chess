@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 module Chess
   # controls the game flow
   class Game
@@ -42,7 +40,6 @@ module Chess
     end
 
     def find_movements_and_captures
-      # binding.pry
       piece = board.find_tile(selection)
       @movements = piece.possible_movements
       @captures = piece.possible_captures

@@ -1,7 +1,5 @@
 # frozen_string_literal: false
 
-require 'pry'
-
 module Chess
   module Translator
     LETTERS = {
@@ -26,7 +24,7 @@ module Chess
 
     def verify_move(move)
       if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
-        move = move.downcase
+        move.downcase
       else
         false
       end

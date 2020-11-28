@@ -13,7 +13,8 @@ module Chess
       @black_king = nil
     end
 
-    def valid_selection?(selection, color)
+    def valid_selection?(selection, player)
+      color = player.color
       tile = board.board[selection[1]][selection[0]]
       return false if tile == '' || tile.color != color
 

@@ -47,7 +47,7 @@ module Chess
 
     def ask_to_select_piece(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player}, select a piece to move (ex. A1)")
+      prompt.ask("#{player.name}, select a piece to move (ex. A1)")
     end
 
     def invalid_input_message

@@ -758,26 +758,25 @@ module Chess
         ]
       end
       let(:board) { instance_double(Board, board: array) }
+      let(:white_player) { double('white_player', color: 'white') }
+      let(:black_player) { double('black_player', color: 'black') }
 
       it 'returns true' do
         referee.instance_variable_set(:@board, board)
         selection = [0, 6]
-        color = 'white'
-        expect(referee.valid_selection?(selection, color)).to be true
+        expect(referee.valid_selection?(selection, white_player)).to be true
       end
 
       it 'returns false' do
         referee.instance_variable_set(:@board, board)
         selection = [0, 6]
-        color = 'black'
-        expect(referee.valid_selection?(selection, color)).to be false
+        expect(referee.valid_selection?(selection, black_player)).to be false
       end
 
       it 'returns false' do
         referee.instance_variable_set(:@board, board)
         selection = [1, 6]
-        color = 'white'
-        expect(referee.valid_selection?(selection, color)).to be false
+        expect(referee.valid_selection?(selection, white_player)).to be false
       end
     end
   end

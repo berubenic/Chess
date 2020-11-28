@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 module Chess
+  # translates player input to coordinate
   module Translator
     LETTERS = {
       'a' => 0,

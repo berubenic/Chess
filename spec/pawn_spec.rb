@@ -3,13 +3,12 @@
 # Pawn
 
 module Chess
-  xdescribe Pawn do
+  describe Pawn do
     describe '#possible_movements' do
       context 'white pawn is at starting square' do
         subject(:pawn) { described_class.new(color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [0, 6]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -19,19 +18,21 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 6]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 5])).to be true
-          expect(pawn.movements.include?([0, 4])).to be true
+          expect(pawn.movements).to contain_exactly([0, 5], [0, 4])
         end
       end
 
       context 'black pawn is at starting square' do
         subject(:pawn) { described_class.new(color: 'black') }
-
-        it 'assigns @movements an array of possible moves when at [0, 1]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -41,19 +42,21 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 1]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 2])).to be true
-          expect(pawn.movements.include?([0, 3])).to be true
+          expect(pawn.movements).to contain_exactly([0, 2], [0, 3])
         end
       end
 
       context 'white pawn has moved from starting square' do
         subject(:pawn) { described_class.new(color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [0, 4]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -63,20 +66,22 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 4]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 4])
           pawn.instance_variable_set(:@moved, true)
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 3])).to be true
-          expect(pawn.movements.include?([0, 2])).to be false
+          expect(pawn.movements).to contain_exactly([0, 3])
         end
       end
 
       context 'black pawn has moved from starting square' do
         subject(:pawn) { described_class.new(color: 'black') }
-
-        it 'assigns @movements an array of possible moves when at [0, 4]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -86,21 +91,23 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 4]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 4])
           pawn.instance_variable_set(:@moved, true)
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 5])).to be true
-          expect(pawn.movements.include?([0, 6])).to be false
+          expect(pawn.movements).to contain_exactly([0, 5])
         end
       end
 
       context "white pawn has a friendly piece occupying it's possible move" do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:friendly) { instance_double(Piece, color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [0, 6]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -110,15 +117,21 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 6]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 5])).to be true
-          expect(pawn.movements.include?([0, 4])).to be false
+          expect(pawn.movements).to contain_exactly([0, 5])
         end
-
-        it 'assigns @movements an empty array]' do
-          board = [
+      end
+      context "white pawn has a friendly piece occupying it's possible move" do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:friendly) { instance_double(Piece, color: 'white') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -128,6 +141,10 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an empty array]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_movements
@@ -138,9 +155,8 @@ module Chess
       context "black pawn has a friendly piece occupying it's possible move" do
         subject(:pawn) { described_class.new(color: 'black') }
         let(:friendly) { instance_double(Piece, color: 'black') }
-
-        it 'assigns @movements an array of possible moves when at [0, 1]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -150,15 +166,21 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 1]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 2])).to be true
-          expect(pawn.movements.include?([0, 3])).to be false
+          expect(pawn.movements).to contain_exactly([0, 2])
         end
-
-        it 'assigns @movements an empty array' do
-          board = [
+      end
+      context "black pawn has a friendly piece occupying it's possible move" do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:friendly) { instance_double(Piece, color: 'black') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             [friendly, '', '', '', '', '', '', ''],
@@ -168,6 +190,9 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        it 'assigns @movements an empty array' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_movements
@@ -178,9 +203,8 @@ module Chess
       context "white pawn has a enemy piece occupying it's possible move" do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:enemy) { instance_double(Piece, color: 'black') }
-
-        it 'assigns @movements an array of possible moves when at [0, 6]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -190,15 +214,21 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 6]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 5])).to be true
-          expect(pawn.movements.include?([0, 4])).to be false
+          expect(pawn.movements).to contain_exactly([0, 5])
         end
-
-        it 'assigns @movements an empty array]' do
-          board = [
+      end
+      context "white pawn has a enemy piece occupying it's possible move" do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Piece, color: 'black') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -208,6 +238,10 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an empty array]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_movements
@@ -218,9 +252,8 @@ module Chess
       context "black pawn has a enemy piece occupying it's possible move" do
         subject(:pawn) { described_class.new(color: 'black') }
         let(:enemy) { instance_double(Piece, color: 'white') }
-
-        it 'assigns @movements an array of possible moves when at [0, 1]' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -230,15 +263,21 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 1]' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_movements
-          expect(pawn.movements.include?([0, 2])).to be true
-          expect(pawn.movements.include?([0, 3])).to be false
+          expect(pawn.movements).to contain_exactly([0, 2])
         end
-
-        it 'assigns @movements an empty array' do
-          board = [
+      end
+      context "black pawn has a enemy piece occupying it's possible move" do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Piece, color: 'white') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             [enemy, '', '', '', '', '', '', ''],
@@ -248,6 +287,10 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an empty array' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_movements
@@ -258,9 +301,8 @@ module Chess
     describe '#possible_captures' do
       context 'Board is empty except for white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
-
-        it 'assigns @captures an empty array' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -270,6 +312,10 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @captures an empty array' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_captures
@@ -279,9 +325,8 @@ module Chess
 
       context 'Board is empty except for black pawn' do
         subject(:pawn) { described_class.new(color: 'black') }
-
-        it 'assigns @captures an empty array' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -291,6 +336,10 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @captures an empty array' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_captures
@@ -301,9 +350,8 @@ module Chess
       context 'A enemy piece is in range of the white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:enemy) { instance_double(Pawn, color: 'black') }
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -313,14 +361,21 @@ module Chess
             [pawn, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 6])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[1, 5]])
+          expect(pawn.captures).to contain_exactly([1, 5])
         end
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+      end
+      context 'A enemy piece is in range of the white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -330,19 +385,22 @@ module Chess
             ['', pawn, '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 6])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[0, 5]])
+          expect(pawn.captures).to contain_exactly([0, 5])
         end
       end
 
       context 'A enemy piece is in range of the black pawn' do
         subject(:pawn) { described_class.new(color: 'black') }
         let(:enemy) { instance_double(Pawn, color: 'white') }
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             [pawn, '', '', '', '', '', '', ''],
             ['', enemy, '', '', '', '', '', ''],
@@ -352,14 +410,21 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 1])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[1, 2]])
+          expect(pawn.captures).to contain_exactly([1, 2])
         end
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+      end
+      context 'A enemy piece is in range of the black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white') }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', pawn, '', '', '', '', '', ''],
             [enemy, '', '', '', '', '', '', ''],
@@ -369,10 +434,14 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 1])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[0, 2]])
+          expect(pawn.captures).to contain_exactly([0, 2])
         end
       end
 
@@ -380,9 +449,8 @@ module Chess
         subject(:pawn) { described_class.new(color: 'white') }
         let(:friendly) { instance_double(Pawn, color: 'white') }
         let(:enemy) { instance_double(Pawn, color: 'black') }
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -392,10 +460,14 @@ module Chess
             ['', pawn, '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 6])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[2, 5]])
+          expect(pawn.captures).to contain_exactly([2, 5])
         end
       end
 
@@ -403,9 +475,8 @@ module Chess
         subject(:pawn) { described_class.new(color: 'black') }
         let(:friendly) { instance_double(Pawn, color: 'black') }
         let(:enemy) { instance_double(Pawn, color: 'white') }
-
-        it "assigns @captures an array with it's possible captures" do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', pawn, '', '', '', '', '', ''],
             [friendly, '', enemy, '', '', '', '', ''],
@@ -415,23 +486,22 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 1])
           pawn.possible_captures
-          expect(pawn.captures).to eq([[2, 2]])
+          expect(pawn.captures).to contain_exactly([2, 2])
         end
       end
 
       context 'left en_passant for white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
-
-        before do
-          allow(enemy).to receive(:class).and_return(Pawn)
-        end
-
-        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -441,14 +511,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [1, 3])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[0, 2]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([0, 2])
+        end
+      end
+      context 'left en_passant for white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -458,14 +539,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [2, 3])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[1, 2]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [2, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([1, 2])
+        end
+      end
+      context 'left en_passant for white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -475,23 +567,26 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [7, 3])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[6, 2]])
         end
-      end
-
-      context 'right en_passant for white pawn' do
-        subject(:pawn) { described_class.new(color: 'white') }
-        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:board) { instance_double(Board, board: array) }
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [7, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([6, 2])
+        end
+      end
+
+      context 'right en_passant for white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -501,14 +596,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [1, 3])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[2, 2]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([2, 2])
+        end
+      end
+      context 'right en_passant for white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -518,23 +624,26 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [0, 3])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[1, 2]])
         end
-      end
-
-      context 'left and right en_passant for white pawn' do
-        subject(:pawn) { described_class.new(color: 'white') }
-        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:board) { instance_double(Board, board: array) }
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [0, 3])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([1, 2])
+        end
+      end
+
+      context 'left and right en_passant for white pawn' do
+        subject(:pawn) { described_class.new(color: 'white') }
+        let(:enemy) { instance_double(Pawn, color: 'black', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -544,24 +653,26 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left and right en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 3])
           pawn.possible_captures
-          expect(pawn.en_passant_captures.include?([0, 2])).to be true
-          expect(pawn.en_passant_captures.include?([2, 2])).to be true
+          expect(pawn.en_passant_captures).to contain_exactly([0, 2], [2, 2])
         end
       end
 
       context 'enemy is not a pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:enemy) { instance_double(Queen, color: 'black') }
-
-        before do
-          allow(enemy).to receive(:class).and_return(Queen)
-        end
-
-        it 'does not assign @en_passant_captures when the enemy has not moved in previous turn' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -571,6 +682,14 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Queen)
+        end
+
+        it 'does not assign @en_passant_captures when the enemy has not moved in previous turn' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 3])
           pawn.possible_captures
@@ -581,13 +700,8 @@ module Chess
       context 'enemy pawn has not moved two squares in previous turn' do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:enemy) { instance_double(Pawn, color: 'black', two_squared: false) }
-
-        before do
-          allow(enemy).to receive(:class).and_return(Pawn)
-        end
-
-        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -597,6 +711,14 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 3])
           pawn.possible_captures
@@ -606,13 +728,8 @@ module Chess
       context 'left en_passant for black pawn' do
         subject(:pawn) { described_class.new(color: 'black') }
         let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
-
-        before do
-          allow(enemy).to receive(:class).and_return(Pawn)
-        end
-
-        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -622,14 +739,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [1, 4])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[0, 5]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([0, 5])
+        end
+      end
+      context 'left en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -639,14 +767,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [2, 4])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[1, 5]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [2, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([1, 5])
+        end
+      end
+      context 'left en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -656,22 +795,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [7, 4])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[6, 5]])
         end
-      end
-      context 'right en_passant for black pawn' do
-        subject(:pawn) { described_class.new(color: 'black') }
-        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:board) { instance_double(Board, board: array) }
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [7, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([6, 5])
+        end
+      end
+      context 'right en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -681,14 +823,26 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [1, 4])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[2, 5]])
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([2, 5])
+        end
+      end
+
+      context 'right en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -698,22 +852,25 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          pawn.instance_variable_set(:@board, board)
-          pawn.instance_variable_set(:@coordinate, [0, 4])
-          pawn.possible_captures
-          expect(pawn.en_passant_captures).to eq([[1, 5]])
         end
-      end
-      context 'left and right en_passant for black pawn' do
-        subject(:pawn) { described_class.new(color: 'black') }
-        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:board) { instance_double(Board, board: array) }
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
-          board = [
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [0, 4])
+          pawn.possible_captures
+          expect(pawn.en_passant_captures).to contain_exactly([1, 5])
+        end
+      end
+      context 'left and right en_passant for black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white', two_squared: true) }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -723,11 +880,18 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        before do
+          allow(enemy).to receive(:class).and_return(Pawn)
+        end
+
+        it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 4])
           pawn.possible_captures
-          expect(pawn.en_passant_captures.include?([0, 5])).to be true
-          expect(pawn.en_passant_captures.include?([2, 5])).to be true
+          expect(pawn.en_passant_captures).to contain_exactly([0, 5], [2, 5])
         end
       end
     end

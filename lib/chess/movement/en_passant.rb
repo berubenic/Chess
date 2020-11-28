@@ -28,7 +28,7 @@ module Chess
     end
 
     def tile_valid?(coordinate)
-      tile = board[coordinate[1]][coordinate[0]] if within_board?(coordinate)
+      tile = board.board[coordinate[1]][coordinate[0]] if within_board?(coordinate)
       tile.class == Pawn && tile.two_squared
     end
 

@@ -2,7 +2,7 @@
 
 # Game spec
 module Chess
-  describe Game do
+  xdescribe Game do
     describe '#intro' do
       let(:board) { instance_double(Board) }
       subject(:game) { described_class.new(board: board) }

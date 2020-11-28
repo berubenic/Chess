@@ -31,6 +31,10 @@ module Chess
       @selected = false
     end
 
+    def update_coordinate(coordinate)
+      @coordinate = coordinate
+    end
+
     def to_s
       if selected == false
         content

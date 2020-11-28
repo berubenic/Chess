@@ -13,6 +13,8 @@ module Chess
 
     def validate_movements(direction, result = [], current = coordinate)
       next_move = [current[0] + direction[0], current[1] + direction[1]]
+      return result if friendly_occupied?(next_move)
+
       if valid_move?(next_move)
         result << next_move
         current = next_move

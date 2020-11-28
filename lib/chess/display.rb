@@ -47,23 +47,34 @@ module Chess
 
     def ask_to_select_piece(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a piece to move (ex. A1)")
+      prompt.ask("#{player.name}, select a piece to move. (ex. A1)")
+    end
+
+    def ask_to_select_movement_or_capture(player)
+      prompt = TTY::Prompt.new
+      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)")
+    end
+
+    def invalid_movement_or_capture_message
+      puts 'Invalid movement or capture, please try again.'
+      sleep 1
+      clear
     end
 
     def invalid_input_message
-      puts 'Invalid input, please try again'
+      puts 'Invalid input, please try again.'
       sleep 1
       clear
     end
 
     def invalid_selection_message
-      puts 'Invalid selection, please select a valid piece'
+      puts 'Invalid selection, please select a valid piece.'
       sleep 1
       clear
     end
 
     def no_movements_or_captures_message
-      puts 'No possible moves or captures, please select a valid piece'
+      puts 'No possible moves or captures, please select a valid piece.'
       sleep 1
       clear
     end

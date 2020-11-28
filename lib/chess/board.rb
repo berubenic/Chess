@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # Board
   class Board
@@ -33,12 +35,31 @@ module Chess
 
     def revert_highlight(selection)
       piece = find_tile(selection)
-      piece.unhightlight_selected
+      piece.unhighlight_selected
+    end
+
+    def execute_move(action, selection)
+      piece = find_tile(selection)
+      piece.update_coordinate(action)
+      update_board(action, selection, piece)
+    end
+
+    def update_board(action, selection, piece)
+      board[selection[1]][selection[0]] = ''
+      board[action[1]][action[0]] = piece
     end
 
     def add_moves(moves)
       moves.each do |move|
         board[move[1]][move[0]] = 'o'
+      end
+    end
+
+    def remove_moves(moves, action)
+      moves.each do |move|
+        next if move == action
+
+        board[move[1]][move[0]] = ''
       end
     end
 
@@ -73,11 +94,11 @@ module Chess
     end
 
     def setup_white_queen
-      board[7][3] = Queen.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_QUEEN, board: self)
+      board[7][3] = Queen.new(color: 'white', x_coordinate: 3, y_coordinate: 7, content: WHITE_QUEEN, board: self)
     end
 
     def setup_white_king
-      board[7][4] = King.new(color: 'white', x_coordinate: 2, y_coordinate: 7, content: WHITE_KING, board: self)
+      board[7][4] = King.new(color: 'white', x_coordinate: 4, y_coordinate: 7, content: WHITE_KING, board: self)
     end
 
     def setup_white_pawns
@@ -111,11 +132,11 @@ module Chess
     end
 
     def setup_black_queen
-      board[0][3] = Queen.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_QUEEN, board: self)
+      board[0][3] = Queen.new(color: 'black', x_coordinate: 3, y_coordinate: 0, content: BLACK_QUEEN, board: self)
     end
 
     def setup_black_king
-      board[0][4] = King.new(color: 'black', x_coordinate: 2, y_coordinate: 0, content: BLACK_KING, board: self)
+      board[0][4] = King.new(color: 'black', x_coordinate: 4, y_coordinate: 0, content: BLACK_KING, board: self)
     end
 
     def setup_black_pawns

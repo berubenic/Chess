@@ -106,7 +106,7 @@ module Chess
                                                      [3, 4], [5, 4], [6, 4], [7, 4])
         end
       end
-      context "Multiple friendly pieces occupying it's possible moves" do
+      context "Multiple enemy pieces occupying it's possible moves" do
         subject(:queen) { described_class.new(color: 'black') }
         let(:enemy_1) { instance_double(Piece, color: 'white') }
         let(:enemy_2) { instance_double(Piece, color: 'white') }
@@ -131,6 +131,44 @@ module Chess
           expect(queen.movements).to contain_exactly([4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7], [5, 3],
                                                      [6, 2], [7, 1], [5, 5], [6, 6], [7, 7], [0, 4], [1, 4], [2, 4],
                                                      [3, 4], [5, 4], [6, 4], [7, 4])
+        end
+      end
+      context "Multiple friendly pieces occupying it's possible moves" do
+        subject(:queen) { described_class.new(color: 'black') }
+        let(:friendly_1) { instance_double(Piece, color: 'black') }
+        let(:friendly_2) { instance_double(Piece, color: 'black') }
+        let(:friendly_3) { instance_double(Piece, color: 'black') }
+        let(:friendly_4) { instance_double(Piece, color: 'black') }
+        let(:friendly_5) { instance_double(Piece, color: 'black') }
+        let(:friendly_6) { instance_double(Piece, color: 'black') }
+        let(:friendly_7) { instance_double(Piece, color: 'black') }
+        let(:friendly_8) { instance_double(Piece, color: 'black') }
+        let(:friendly_9) { instance_double(Piece, color: 'black') }
+        let(:friendly_10) { instance_double(Piece, color: 'black') }
+        let(:friendly_11) { instance_double(Piece, color: 'black') }
+        let(:friendly_12) { instance_double(Piece, color: 'black') }
+        let(:friendly_13) { instance_double(Piece, color: 'black') }
+        let(:friendly_14) { instance_double(Piece, color: 'black') }
+
+        let(:array) do
+          [
+            [friendly_5, '', friendly_1, queen, friendly_2, friendly_14, friendly_13, friendly_12],
+            [friendly_7, friendly_6, friendly_4, friendly_3, friendly_8, friendly_9, friendly_10, friendly_11],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [4, 4]' do
+          queen.instance_variable_set(:@board, board)
+          queen.instance_variable_set(:@coordinate, [3, 0])
+          queen.possible_movements
+          expect(queen.movements.empty?).to be true
         end
       end
     end

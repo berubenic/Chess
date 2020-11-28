@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # Piece Superclass
   class Piece
@@ -50,16 +52,22 @@ module Chess
     end
 
     def not_occupied?(move)
+      return false unless within_board?(coordinate)
+
       board_tile = board.board[move[1]][move[0]]
       board_tile == ''
     end
 
-    def valid_capture?(capture)
-      within_board?(capture) && !not_occupied?(capture) && !friendly_occupied?(capture)
+    def valid_capture?(coordinate)
+      within_board?(coordinate) && !not_occupied?(coordinate) && !friendly_occupied?(coordinate)
     end
 
-    def friendly_occupied?(capture)
-      piece = board.board[capture[1]][capture[0]]
+    def friendly_occupied?(coordinate)
+      return false unless within_board?(coordinate)
+
+      piece = board.board[coordinate[1]][coordinate[0]]
+      return false if piece == ''
+
       piece.color == color
     end
   end

@@ -33,10 +33,14 @@ module Chess
       return nil unless within_board?(current)
 
       next_move = [current[0] + direction[0], current[1] + direction[1]]
+
       if valid_capture?(next_move)
         next_move
       else
+        return nil if friendly_occupied?(next_move)
+
         current = next_move
+
         validate_captures(direction, current)
       end
     end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Chess
   # Movement and captures for Queen, Rook and Bishop
   module DirectionalMovement

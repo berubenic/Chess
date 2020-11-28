@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Chess
   # movements and captures for King, Knight, and Pawn(captures)
   module SingleMovement

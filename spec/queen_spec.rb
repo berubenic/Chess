@@ -7,9 +7,8 @@ module Chess
     describe '#possible_movements' do
       context 'Board is empty except for Rook' do
         subject(:queen) { described_class.new }
-
-        it 'assigns @movements an array of possible moves when at [0, 0]' do
-          board = [
+        let(:array) do
+          [
             [queen, '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -19,33 +18,17 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [0, 0]' do
           queen.instance_variable_set(:@board, board)
           queen.instance_variable_set(:@coordinate, [0, 0])
           queen.possible_movements
-          expect(queen.movements.include?([1, 1])).to be true
-          expect(queen.movements.include?([2, 2])).to be true
-          expect(queen.movements.include?([3, 3])).to be true
-          expect(queen.movements.include?([4, 4])).to be true
-          expect(queen.movements.include?([5, 5])).to be true
-          expect(queen.movements.include?([6, 6])).to be true
-          expect(queen.movements.include?([7, 7])).to be true
-          expect(queen.movements.include?([0, 1])).to be true
-          expect(queen.movements.include?([0, 2])).to be true
-          expect(queen.movements.include?([0, 3])).to be true
-          expect(queen.movements.include?([0, 4])).to be true
-          expect(queen.movements.include?([0, 5])).to be true
-          expect(queen.movements.include?([0, 6])).to be true
-          expect(queen.movements.include?([0, 7])).to be true
-          expect(queen.movements.include?([1, 0])).to be true
-          expect(queen.movements.include?([2, 0])).to be true
-          expect(queen.movements.include?([3, 0])).to be true
-          expect(queen.movements.include?([4, 0])).to be true
-          expect(queen.movements.include?([5, 0])).to be true
-          expect(queen.movements.include?([6, 0])).to be true
-          expect(queen.movements.include?([7, 0])).to be true
+          expect(queen.movements).to contain_exactly([1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0])
         end
         it 'assigns @movements an array of possible moves when at [3, 3]' do
-          board = [
+          array = [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -55,9 +38,15 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
+          board.instance_variable_set(:@board, array)
           queen.instance_variable_set(:@board, board)
           queen.instance_variable_set(:@coordinate, [3, 3])
           queen.possible_movements
+          expect(queen.movements).to contain_exactly([0, 0], [1, 1], [2, 2], [4, 4], [5, 5], [6, 6], [7, 7], [0, 6],
+                                                     [1, 5], [2, 4], [4, 2], [5, 1], [6, 0], [3, 0], [3, 1], [3, 2],
+                                                     [3, 4], [3, 5], [3, 6], [3, 7], [0, 3], [1, 3], [2, 3], [4, 3],
+                                                     [5, 3], [6, 3], [7, 3])
+
           expect(queen.movements.include?([0, 0])).to be true
           expect(queen.movements.include?([1, 1])).to be true
           expect(queen.movements.include?([2, 2])).to be true

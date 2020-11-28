@@ -7,7 +7,7 @@
 module Chess
   describe King do
     describe '#possible_movements' do
-      context 'Board is empty except for Knight' do
+      context 'king is at [0, 0]' do
         subject(:king) { described_class.new }
         let(:array) do
           [
@@ -29,9 +29,11 @@ module Chess
           king.possible_movements
           expect(king.movements).to contain_exactly([1, 0], [1, 1], [0, 1])
         end
-
-        it 'assigns @movements an array of possible moves when at [3, 3]' do
-          array = [
+      end
+      context 'king is at [3, 3]' do
+        subject(:king) { described_class.new }
+        let(:array) do
+          [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -41,11 +43,37 @@ module Chess
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', '']
           ]
-          board.instance_variable_set(:@board, array)
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [3, 3]' do
           king.instance_variable_set(:@board, board)
           king.instance_variable_set(:@coordinate, [3, 3])
           king.possible_movements
           expect(king.movements).to contain_exactly([3, 2], [4, 2], [4, 3], [4, 4], [3, 4], [2, 4], [2, 3], [2, 2])
+        end
+      end
+      context 'king is at [1, 1]' do
+        subject(:king) { described_class.new }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', king, '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it 'assigns @movements an array of possible moves when at [1, 1]' do
+          king.instance_variable_set(:@board, board)
+          king.instance_variable_set(:@coordinate, [1, 1])
+          king.possible_movements
+          expect(king.movements).to contain_exactly([0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1])
         end
       end
       context "A friendly piece occupies one of it's possible moves" do

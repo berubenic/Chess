@@ -45,6 +45,10 @@ module Chess
       @capturable = false
     end
 
+    def moved_from_starting_square
+      @moved = true
+    end
+
     def to_s
       if selected == false
         content

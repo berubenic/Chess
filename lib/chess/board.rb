@@ -41,7 +41,19 @@ module Chess
     def execute_move(action, selection)
       piece = find_tile(selection)
       piece.update_coordinate(action)
+      piece.moved_from_starting_square
+      verify_pawn_moved_two_squares(piece, action, selection)
       update_board(action, selection, piece)
+    end
+
+    def verify_pawn_moved_two_squares(piece, action, selection)
+      return unless piece.is_a?(Pawn)
+
+      if (selection[1] - action[1]) == 2 || (selection[1] - action[1]) == -2
+        piece.moved_two_squares
+      else
+        piece.did_not_move_two_squares
+      end
     end
 
     def update_board(action, selection, piece)
@@ -51,7 +63,7 @@ module Chess
 
     def add_moves(moves)
       moves.each do |move|
-        board[move[1]][move[0]] = 'o'
+        board[move[1]][move[0]] = 'o'.white
       end
     end
 
@@ -59,6 +71,12 @@ module Chess
       captures.each do |capture|
         piece = board[capture[1]][capture[0]]
         piece.can_be_captured
+      end
+    end
+
+    def add_en_passant(captures)
+      captures.each do |capture|
+        board[capture[1]][capture[0]] = 'x'.red
       end
     end
 

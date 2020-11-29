@@ -8,7 +8,7 @@ module Chess
     include Display
     include Translator
 
-    attr_reader :board, :player_one, :player_two, :current_player, :referee, :selection, :action, :movements, :captures
+    attr_reader :board, :player_one, :player_two, :current_player, :referee, :selection, :action, :movements, :captures, :en_passant_captures
 
     def initialize(board = Board.new)
       @board = board
@@ -39,6 +39,39 @@ module Chess
       end
     end
 
+    def player_selection_loop
+      display_board(board.board)
+      select_piece
+      translate_selection
+      invalid_input if selection == false
+
+      return find_movements_and_captures if referee.valid_selection?(selection, current_player)
+
+      invalid_selection
+    end
+
+    def find_movements_and_captures
+      piece = board.find_tile(selection)
+      piece_possibilities(piece)
+      return no_movements_and_captures if no_movements? && no_captures? && no_en_passant?
+
+      add_move_and_captures
+      display_board(board.board)
+      execute_movement_or_capture
+    end
+
+    def execute_movement_or_capture
+      display_board(board.board)
+      select_movement_or_capture
+      translate_action
+      return invalid_movement_or_capture unless valid_action?
+
+      board.execute_move(action, selection)
+      remove_moves_and_captures
+    end
+
+    private
+
     def setup_two_player_game
       setup_two_players
       setup_board
@@ -61,17 +94,6 @@ module Chess
       end
     end
 
-    def player_selection_loop
-      display_board(board.board)
-      select_piece
-      translate_selection
-      invalid_input if selection == false
-
-      return find_movements_and_captures if referee.valid_selection?(selection, current_player)
-
-      invalid_selection
-    end
-
     def invalid_input
       invalid_input_message
       revert_selection
@@ -86,16 +108,6 @@ module Chess
       player_selection_loop
     end
 
-    def find_movements_and_captures
-      piece = board.find_tile(selection)
-      piece_possibilities(piece)
-      return no_movements_and_captures if no_movements? && no_captures?
-
-      add_move_and_captures
-      display_board(board.board)
-      execute_movement_or_capture
-    end
-
     def no_movements?
       movements.nil? || movements.empty?
     end
@@ -104,9 +116,14 @@ module Chess
       captures.nil? || captures.empty?
     end
 
+    def no_en_passant?
+      en_passant_captures.nil? || en_passant_captures.empty?
+    end
+
     def add_move_and_captures
       board.add_moves(movements) unless no_movements?
       board.add_captures(captures) unless no_captures?
+      board.add_en_passant(en_passant_captures) unless no_en_passant?
     end
 
     def piece_possibilities(piece)
@@ -115,13 +132,7 @@ module Chess
       @en_passant_captures = piece.possible_en_passant if piece.is_a?(Pawn)
     end
 
-    def execute_movement_or_capture
-      display_board(board.board)
-      select_movement_or_capture
-      translate_action
-      return invalid_movement_or_capture unless valid_action?
-
-      board.execute_move(action, selection)
+    def remove_moves_and_captures
       board.remove_moves(movements, action) unless no_movements?
       board.remove_captures(captures, action) unless no_captures?
     end

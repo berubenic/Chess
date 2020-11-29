@@ -125,7 +125,9 @@ module Chess
     def print_tile(tile)
       if tile == ''
         ' '
-      elsif tile == 'o'
+      elsif tile == 'o'.white
+        tile
+      elsif tile == 'x'.red
         tile
       else
         tile.content.to_s

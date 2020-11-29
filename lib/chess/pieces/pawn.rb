@@ -49,13 +49,19 @@ module Chess
       @movements = []
     end
 
+    def moved_two_squares
+      @two_squared = true
+    end
+
+    def did_not_move_two_squares
+      @two_squared = false
+    end
+
     def possible_captures
       if color == 'white'
         @captures = find_captures(WHITE_CAPTURES)
-        # @en_passant_captures = find_en_passant unless find_en_passant.nil?
       elsif color == 'black'
         @captures = find_captures(BLACK_CAPTURES)
-        # @en_passant_captures = find_en_passant unless find_en_passant.nil?
       end
       @captures
     end
@@ -75,7 +81,7 @@ module Chess
       move = [coordinate[0], coordinate[1] + moves[0]]
       @movements << move if valid_move?(move)
       return unless valid_move?(move)
-      return if moved
+      return movements if moved
 
       second_possible_move(moves)
     end

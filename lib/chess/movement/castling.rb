@@ -4,23 +4,46 @@ module Chess
   # castling for King and Rook
   module Castling
     def short_castling(king, rook)
-      return unless king_and_rook_valid_for_short?(king, rook)
-      return unless empty_tiles_for_short_castling?(king, rook)
+      return unvalid_short_castling(king, rook) unless king_and_rook_valid_for_short?(king, rook)
+      return unvalid_short_castling(king, rook) unless empty_tiles_for_short_castling?(king, rook)
 
-      return if empty_tile_for_king_can_be_attacked?(king, rook)
+      return unvalid_short_castling(king, rook) if empty_tile_for_king_can_be_attacked?(king, rook)
 
-      king.short_castling
-      rook.short_castling
+      valid_short_castling(king, rook)
+    end
+
+    def unvalid_castling(king, rook)
+      unvalid_short_castling(king, rook)
+      unvalid_long_castling(king, rook)
+    end
+
+    def valid_short_castling(king, rook)
+      king.allow_short_castling
+      rook.allow_short_castling
+    end
+
+    def unvalid_short_castling(king, rook)
+      king.disallow_short_castling
+      rook.disallow_short_castling
     end
 
     def long_castling(king, rook)
-      return unless king_and_rook_valid_for_long?(king, rook)
-      return unless empty_tiles_for_long_castling?(king, rook)
+      return unvalid_long_castling(king, rook) unless king_and_rook_valid_for_long?(king, rook)
+      return unvalid_long_castling(king, rook) unless empty_tiles_for_long_castling?(king, rook)
 
-      return if empty_tile_for_king_can_be_attacked?(king, rook)
+      return unvalid_long_castling(king, rook) if empty_tile_for_king_can_be_attacked?(king, rook)
 
-      king.long_castling
-      rook.long_castling
+      valid_long_castling(king, rook)
+    end
+
+    def valid_long_castling(king, rook)
+      king.allow_long_castling
+      rook.allow_long_castling
+    end
+
+    def unvalid_long_castling(king, rook)
+      king.disallow_long_castling
+      rook.disallow_long_castling
     end
 
     def empty_tile_for_king_can_be_attacked?(king, rook)

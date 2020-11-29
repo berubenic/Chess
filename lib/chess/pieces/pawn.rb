@@ -26,12 +26,11 @@ module Chess
       [-1, 1]
     ].freeze
 
-    attr_reader :moved, :en_passant_captures
+    attr_reader :en_passant_captures
 
     attr_accessor :two_squared
 
     def initialize(**args)
-      @moved = false
       @two_squared = false
       @en_passant_captures = []
       super

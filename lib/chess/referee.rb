@@ -48,7 +48,7 @@ module Chess
     end
 
     def castling(king, rook)
-      return if king.check
+      return unvalid_castling(king, rook) if king.check
 
       short_castling(king, rook)
       long_castling(king, rook)

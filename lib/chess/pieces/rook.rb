@@ -12,11 +12,11 @@ module Chess
       [-1, 0]
     ].freeze
 
-    attr_reader :moved, :check, :mate, :stalemate
+    attr_reader :check, :mate, :stalemate, :short_castling, :long_castling
 
     def initialize(**args)
-      @moved = false
       @short_castling = false
+      @long_castling = false
       super
     end
 
@@ -28,12 +28,20 @@ module Chess
       @captures = find_captures(DIRECTIONS)
     end
 
-    def short_castling
+    def allow_short_castling
       @short_castling = true
     end
 
-    def long_castling
+    def disallow_short_castling
+      @short_castling = false
+    end
+
+    def allow_long_castling
       @long_castling = true
+    end
+
+    def disallow_long_castling
+      @long_castling = false
     end
   end
 end

@@ -284,10 +284,12 @@ module Chess
           allow(white_king).to receive(:check).and_return(true)
         end
 
-        it 'does not send #short_castling to king and rook' do
+        it 'does not send #short_castling and #long_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(white_king).not_to receive(:short_castling)
-          expect(white_rook).not_to receive(:short_castling)
+          expect(white_king).to receive(:disallow_short_castling)
+          expect(white_rook).to receive(:disallow_short_castling)
+          expect(white_king).to receive(:disallow_long_castling)
+          expect(white_rook).to receive(:disallow_long_castling)
           referee.castling(white_king, white_rook)
         end
       end
@@ -322,8 +324,10 @@ module Chess
 
         it 'sends #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:short_castling)
-          expect(white_rook).to receive(:short_castling)
+          expect(white_king).to receive(:allow_short_castling)
+          expect(white_rook).to receive(:allow_short_castling)
+          expect(white_rook).to receive(:disallow_long_castling)
+          expect(white_king).to receive(:disallow_long_castling)
           referee.castling(white_king, white_rook)
         end
       end
@@ -359,8 +363,10 @@ module Chess
 
         it 'does not send #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(white_king).not_to receive(:short_castling)
-          expect(white_rook).not_to receive(:short_castling)
+          expect(white_king).to receive(:disallow_short_castling)
+          expect(white_rook).to receive(:disallow_short_castling)
+          expect(white_king).to receive(:disallow_long_castling)
+          expect(white_rook).to receive(:disallow_long_castling)
           referee.castling(white_king, white_rook)
         end
       end
@@ -395,8 +401,10 @@ module Chess
 
         it 'does not send #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(white_king).not_to receive(:short_castling)
-          expect(white_rook).not_to receive(:short_castling)
+          expect(white_king).to receive(:disallow_short_castling)
+          expect(white_rook).to receive(:disallow_short_castling)
+          expect(white_king).to receive(:disallow_long_castling)
+          expect(white_rook).to receive(:disallow_long_castling)
           referee.castling(white_king, white_rook)
         end
       end
@@ -431,8 +439,10 @@ module Chess
 
         it 'does not send #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(white_king).not_to receive(:short_castling)
-          expect(white_rook).not_to receive(:short_castling)
+          expect(white_king).to receive(:disallow_short_castling)
+          expect(white_rook).to receive(:disallow_short_castling)
+          expect(white_king).to receive(:disallow_long_castling)
+          expect(white_rook).to receive(:disallow_long_castling)
           referee.castling(white_king, white_rook)
         end
       end
@@ -466,8 +476,10 @@ module Chess
 
         it 'sends #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(black_king).to receive(:short_castling)
-          expect(black_rook).to receive(:short_castling)
+          expect(black_king).to receive(:allow_short_castling)
+          expect(black_rook).to receive(:allow_short_castling)
+          expect(black_king).to receive(:disallow_long_castling)
+          expect(black_rook).to receive(:disallow_long_castling)
           referee.castling(black_king, black_rook)
         end
       end
@@ -500,8 +512,10 @@ module Chess
 
         it 'does not send #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(black_king).not_to receive(:short_castling)
-          expect(black_rook).not_to receive(:short_castling)
+          expect(black_king).to receive(:disallow_short_castling)
+          expect(black_rook).to receive(:disallow_short_castling)
+          expect(black_king).to receive(:disallow_long_castling)
+          expect(black_rook).to receive(:disallow_long_castling)
           referee.castling(black_king, black_rook)
         end
       end
@@ -533,8 +547,10 @@ module Chess
         end
         it 'does not send #short_castling to king and rook' do
           referee.instance_variable_set(:@board, board)
-          expect(black_king).not_to receive(:short_castling)
-          expect(black_rook).not_to receive(:short_castling)
+          expect(black_king).to receive(:disallow_short_castling)
+          expect(black_rook).to receive(:disallow_short_castling)
+          expect(black_king).to receive(:disallow_long_castling)
+          expect(black_rook).to receive(:disallow_long_castling)
           referee.castling(black_king, black_rook)
         end
       end
@@ -568,8 +584,10 @@ module Chess
 
       it 'sends #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(white_king).to receive(:long_castling)
-        expect(white_rook).to receive(:long_castling)
+        expect(white_king).to receive(:allow_long_castling)
+        expect(white_rook).to receive(:allow_long_castling)
+        expect(white_rook).to receive(:disallow_short_castling)
+        expect(white_king).to receive(:disallow_short_castling)
         referee.castling(white_king, white_rook)
       end
     end
@@ -602,8 +620,10 @@ module Chess
 
       it 'does not send #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(white_king).not_to receive(:long_castling)
-        expect(white_rook).not_to receive(:long_castling)
+        expect(white_king).to receive(:disallow_long_castling)
+        expect(white_rook).to receive(:disallow_long_castling)
+        expect(white_king).to receive(:disallow_short_castling)
+        expect(white_rook).to receive(:disallow_short_castling)
         referee.castling(white_king, white_rook)
       end
     end
@@ -636,8 +656,10 @@ module Chess
 
       it 'does not send #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(white_king).not_to receive(:long_castling)
-        expect(white_rook).not_to receive(:long_castling)
+        expect(white_king).to receive(:disallow_long_castling)
+        expect(white_rook).to receive(:disallow_long_castling)
+        expect(white_king).to receive(:disallow_short_castling)
+        expect(white_rook).to receive(:disallow_short_castling)
         referee.castling(white_king, white_rook)
       end
     end
@@ -670,8 +692,10 @@ module Chess
 
       it 'sends #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(black_king).to receive(:long_castling)
-        expect(black_rook).to receive(:long_castling)
+        expect(black_king).to receive(:allow_long_castling)
+        expect(black_rook).to receive(:allow_long_castling)
+        expect(black_king).to receive(:disallow_short_castling)
+        expect(black_rook).to receive(:disallow_short_castling)
         referee.castling(black_king, black_rook)
       end
     end
@@ -704,8 +728,10 @@ module Chess
 
       it 'does not send #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(black_king).not_to receive(:long_castling)
-        expect(black_rook).not_to receive(:long_castling)
+        expect(black_king).to receive(:disallow_long_castling)
+        expect(black_rook).to receive(:disallow_long_castling)
+        expect(black_king).to receive(:disallow_short_castling)
+        expect(black_rook).to receive(:disallow_short_castling)
         referee.castling(black_king, black_rook)
       end
     end
@@ -737,8 +763,10 @@ module Chess
       end
       it 'does not send #long_castling to king and rook' do
         referee.instance_variable_set(:@board, board)
-        expect(black_king).not_to receive(:long_castling)
-        expect(black_rook).not_to receive(:long_castling)
+        expect(black_king).to receive(:disallow_long_castling)
+        expect(black_rook).to receive(:disallow_long_castling)
+        expect(black_king).to receive(:disallow_short_castling)
+        expect(black_rook).to receive(:disallow_short_castling)
         referee.castling(black_king, black_rook)
       end
     end

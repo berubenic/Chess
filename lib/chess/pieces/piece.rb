@@ -4,7 +4,7 @@ module Chess
   # Piece Superclass
   class Piece
     attr_reader :coordinate, :board, :color, :content
-    attr_reader :movements, :captures, :selected
+    attr_reader :movements, :captures, :selected, :moved
     def initialize(**args)
       @content = args[:content]
       @coordinate = [args[:x_coordinate], args[:y_coordinate]]
@@ -13,6 +13,7 @@ module Chess
       @movements = []
       @captures = []
       @selected = false
+      @moved = false
     end
 
     def possible_movements

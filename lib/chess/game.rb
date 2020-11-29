@@ -33,10 +33,19 @@ module Chess
 
     def two_player_mode
       setup_two_player_game
+      referee.find_kings
       loop do
+        verify_king_status
+        return game_over if referee.checkmate?(current_player)
+
+        player_is_in_check_warning if referee.check?(current_player)
         player_selection_loop
         switch_player
       end
+    end
+
+    def verify_king_status
+      referee.king_status
     end
 
     def player_selection_loop
@@ -67,8 +76,22 @@ module Chess
       return invalid_movement_or_capture unless valid_action?
 
       board.execute_move(action, selection)
+      return revert_execution if king_is_in_check?
+
       remove_moves_and_captures
       revert_moves_and_captures
+    end
+
+    def king_is_in_check?
+      referee.current_player_in_check?(current_player)
+    end
+
+    def revert_execution
+      king_is_in_check_message
+      remove_moves_and_captures
+      board.revert_move(action, selection)
+      revert_moves_and_captures
+      player_selection_loop
     end
 
     def revert_moves_and_captures

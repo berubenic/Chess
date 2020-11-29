@@ -79,6 +79,25 @@ module Chess
       clear
     end
 
+    def king_is_in_check_message
+      puts 'You put your king in check! Please try again!'
+      sleep 1
+      clear
+    end
+
+    def player_is_in_check_warning
+      puts 'Warning! Your king is in check!'
+      sleep 1
+      clear
+    end
+
+    def game_over
+      puts 'Game over!'
+      sleep 2
+      clear
+      intro
+    end
+
     def display_board(board)
       clear
       puts COLUMN_HEADER.bg_default

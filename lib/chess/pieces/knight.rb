@@ -17,10 +17,12 @@ module Chess
     ].freeze
 
     def possible_movements
+      reset_movements
       @movements = find_movements(MOVES)
     end
 
     def possible_captures
+      reset_captures
       @captures = find_captures(MOVES)
     end
   end

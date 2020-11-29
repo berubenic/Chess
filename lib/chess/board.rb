@@ -80,6 +80,14 @@ module Chess
       end
     end
 
+    def revert_move(action, selection)
+      piece = board[action[1]][action[0]]
+      board[selection[1]][selection[0]] = piece
+      board[action[1]][action[0]] = ''
+      piece.update_coordinate(selection)
+      piece.has_not_moved_from_starting_square if piece.starting_coordinate == selection
+    end
+
     def remove_moves(moves, action)
       moves.each do |move|
         next if move == action

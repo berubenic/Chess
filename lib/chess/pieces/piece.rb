@@ -3,13 +3,14 @@
 module Chess
   # Piece Superclass
   class Piece
-    attr_reader :coordinate, :board, :color, :content
+    attr_reader :coordinate, :board, :color, :content, :starting_coordinate
     attr_reader :movements, :captures, :selected, :moved, :capturable
     def initialize(**args)
       @content = args[:content]
       @coordinate = [args[:x_coordinate], args[:y_coordinate]]
       @board = args[:board]
       @color = args[:color]
+      @starting_coordinate = [args[:x_coordinate], args[:y_coordinate]]
       @movements = []
       @captures = []
       @selected = false
@@ -23,6 +24,14 @@ module Chess
 
     def possible_captures
       raise 'Called abstract method: possible_captures'
+    end
+
+    def reset_movements
+      @movements = []
+    end
+
+    def reset_captures
+      @captures = []
     end
 
     def highlight_selected
@@ -49,6 +58,10 @@ module Chess
       @moved = true
     end
 
+    def has_not_moved_from_starting_square
+      @moved = false
+    end
+
     def to_s
       if selected == false
         content
@@ -71,7 +84,7 @@ module Chess
       return false unless within_board?(coordinate)
 
       board_tile = board.board[move[1]][move[0]]
-      board_tile == ''
+      board_tile.is_a?(String)
     end
 
     def valid_capture?(coordinate)
@@ -82,7 +95,7 @@ module Chess
       return false unless within_board?(coordinate)
 
       piece = board.board[coordinate[1]][coordinate[0]]
-      return false if piece == ''
+      return false if piece.is_a?(String)
 
       piece.color == color
     end

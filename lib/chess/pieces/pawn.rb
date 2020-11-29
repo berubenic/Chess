@@ -45,10 +45,6 @@ module Chess
       end
     end
 
-    def reset_movements
-      @movements = []
-    end
-
     def moved_two_squares
       @two_squared = true
     end
@@ -58,6 +54,7 @@ module Chess
     end
 
     def possible_captures
+      reset_captures
       if color == 'white'
         @captures = find_captures(WHITE_CAPTURES)
       elsif color == 'black'

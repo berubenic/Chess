@@ -8,7 +8,7 @@ require 'tty-prompt'
 module Chess
   # Prints Board and messages
   module Display
-    COLUMN_HEADER = '   A  B  C  D  E  F  G  H'
+    COLUMN_HEADER = '   A  B  C  D  E  F  G  H    '
 
     def title_message
       clear
@@ -26,7 +26,7 @@ module Chess
     def ask_game_mode
       prompt = TTY::Prompt.new
       choices = { single_player: 1, local_multiplayer: 2 }
-      prompt.select('Select a game mode.', choices)
+      prompt.select('Select a game mode.'.bg_default, choices)
     end
 
     def clear
@@ -37,59 +37,59 @@ module Chess
       clear
       title_message
       prompt = TTY::Prompt.new
-      prompt.ask("What is your name? (#{player})")
+      prompt.ask("What is your name? (#{player})").bg_default
     end
 
     def welcome_player_message(name, color)
-      puts "Welcome, #{name}. You are assigned the #{color} pieces."
+      puts "Welcome, #{name}. You are assigned the #{color} pieces.".bg_default
       sleep 1.5
     end
 
     def ask_to_select_piece(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a piece to move. (ex. A1)")
+      prompt.ask("#{player.name}, select a piece to move. (ex. A1)".bg_default)
     end
 
     def ask_to_select_movement_or_capture(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)")
+      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)".bg_default)
     end
 
     def invalid_movement_or_capture_message
-      puts 'Invalid movement or capture, please try again.'
+      puts 'Invalid movement or capture, please try again.'.bg_default
       sleep 1
       clear
     end
 
     def invalid_input_message
-      puts 'Invalid input, please try again.'
+      puts 'Invalid input, please try again.'.bg_default
       sleep 1
       clear
     end
 
     def invalid_selection_message
-      puts 'Invalid selection, please select a valid piece.'
+      puts 'Invalid selection, please select a valid piece.'.bg_default
       sleep 1
       clear
     end
 
     def no_movements_or_captures_message
-      puts 'No possible moves or captures, please select a valid piece.'
+      puts 'No possible moves or captures, please select a valid piece.'.bg_default
       sleep 1
       clear
     end
 
     def display_board(board)
       clear
-      puts COLUMN_HEADER
+      puts COLUMN_HEADER.bg_default
       board.each_with_index do |row, y|
-        print "#{y + 1} "
+        print "#{y + 1} ".bg_default
         odd_row(row) if y.odd?
         even_row(row) if y.even?
-        print " #{y + 1} "
-        print "\n"
+        print " #{y + 1} ".bg_default
+        print "\n".bg_default
       end
-      puts COLUMN_HEADER
+      puts COLUMN_HEADER.bg_default
     end
 
     def odd_row(row)

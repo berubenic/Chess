@@ -89,16 +89,24 @@ module Chess
     def find_movements_and_captures
       piece = board.find_tile(selection)
       piece_possibilities(piece)
-      return no_movements_and_captures if movements.empty? && captures.empty?
+      return no_movements_and_captures if no_movements? && no_captures?
 
       add_move_and_captures
       display_board(board.board)
       execute_movement_or_capture
     end
 
+    def no_movements?
+      movements.nil? || movements.empty?
+    end
+
+    def no_captures?
+      captures.nil? || captures.empty?
+    end
+
     def add_move_and_captures
-      board.add_moves(movements) unless movements.nil? || movements.empty?
-      board.add_captures(captures) unless captures.nil? || captures.empty?
+      board.add_moves(movements) unless no_movements?
+      board.add_captures(captures) unless no_captures?
     end
 
     def piece_possibilities(piece)
@@ -111,11 +119,27 @@ module Chess
       display_board(board.board)
       select_movement_or_capture
       translate_action
-      return invalid_movement_or_capture unless movements.include?(action) || captures.include?(action)
+      return invalid_movement_or_capture unless valid_action?
 
       board.execute_move(action, selection)
-      board.remove_moves(movements, action) unless movements.nil? || movements.empty?
-      board.remove_captures(captures, action) unless captures.nil? || captures.empty?
+      board.remove_moves(movements, action) unless no_movements?
+      board.remove_captures(captures, action) unless no_captures?
+    end
+
+    def valid_action?
+      action_is_a_movement? || action_is_a_capture?
+    end
+
+    def action_is_a_movement?
+      return false if no_movements?
+
+      movements.include?(action)
+    end
+
+    def action_is_a_capture?
+      return false if no_captures?
+
+      captures.include?(action)
     end
 
     def invalid_movement_or_capture

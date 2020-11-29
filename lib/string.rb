@@ -26,7 +26,19 @@ class String
     "\e[30m#{self}"
   end
 
+  def red
+    "\e[31m#{self}"
+  end
+
   def bg_red
     "\e[101m#{self}"
+  end
+
+  def bg_gray
+    "\e[100m#{self}"
+  end
+
+  def bg_default
+    "\e[49m#{self}"
   end
 end

@@ -27,7 +27,7 @@ module Chess
           next if tile == ''
           next if tile == king
 
-          return king.check if tile.captures.include?(king.coordinate)
+          return king.in_check if tile.captures.include?(king.coordinate)
         end
       end
       king.not_check
@@ -35,14 +35,14 @@ module Chess
 
     def mate(king)
       king.possible_movements
-      return if king.movements.any? { |move| no_possible_check?(move, king) }
+      return king.not_mate if king.movements.any? { |move| no_possible_check?(move, king) }
 
       king.mate
     end
 
     def stalemate(king)
       king.possible_movements
-      return if king.movements.any? { |move| no_possible_check?(move, king) }
+      return king.not_stalemate if king.movements.any? { |move| no_possible_check?(move, king) }
 
       king.stalemate
     end

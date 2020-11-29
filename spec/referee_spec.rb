@@ -22,13 +22,13 @@ module Chess
         let(:board) { instance_double(Board, board: array) }
 
         before do
-          allow(king).to receive(:check)
+          allow(king).to receive(:in_check)
           allow(rook).to receive(:captures).and_return([[0, 7]])
         end
 
         it 'sends #check to white king' do
           referee.instance_variable_set(:@board, board)
-          expect(king).to receive(:check)
+          expect(king).to receive(:in_check)
           referee.check(king)
         end
       end
@@ -186,7 +186,7 @@ module Chess
         it 'does not send #mate to black king' do
           referee.instance_variable_set(:@board, board)
           black_king.instance_variable_set(:@check, true)
-          expect(black_king).not_to receive(:mate)
+          expect(black_king).to receive(:not_mate)
           referee.mate(black_king)
         end
       end
@@ -254,7 +254,7 @@ module Chess
 
         it 'does not send #stalemate to black king' do
           referee.instance_variable_set(:@board, board)
-          expect(black_king).not_to receive(:stalemate)
+          expect(black_king).to receive(:not_stalemate)
           referee.stalemate(black_king)
         end
       end

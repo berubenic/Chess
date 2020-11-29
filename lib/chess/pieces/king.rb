@@ -35,7 +35,7 @@ module Chess
       @captures = find_captures(MOVES)
     end
 
-    def check
+    def in_check
       @check = true
     end
 
@@ -43,12 +43,20 @@ module Chess
       @check = false
     end
 
-    def mate
+    def in_mate
       @mate = true
     end
 
-    def stalemate
+    def not_mate
+      @mate = false
+    end
+
+    def in_stalemate
       @stalemate = true
+    end
+
+    def not_stalemate
+      @stalemate = false
     end
 
     def allow_short_castling

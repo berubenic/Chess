@@ -97,6 +97,14 @@ module Chess
       end
     end
 
+    def remove_en_passant_capture(action, selection)
+      if selection[1] == 4
+        board[action[1] - 1][action[0]] = ''
+      elsif selection[1] == 3
+        board[action[1] + 1][action[0]] = ''
+      end
+    end
+
     def find_tile(coordinate)
       board[coordinate[1]][coordinate[0]]
     end

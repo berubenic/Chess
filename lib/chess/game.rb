@@ -68,6 +68,15 @@ module Chess
 
       board.execute_move(action, selection)
       remove_moves_and_captures
+      revert_moves_and_captures
+    end
+
+    def revert_moves_and_captures
+      revert_action
+      revert_selection
+      revert_captures
+      revert_movements
+      revert_en_passant
     end
 
     private
@@ -135,10 +144,11 @@ module Chess
     def remove_moves_and_captures
       board.remove_moves(movements, action) unless no_movements?
       board.remove_captures(captures, action) unless no_captures?
+      board.remove_en_passant_capture(action, selection) unless no_en_passant?
     end
 
     def valid_action?
-      action_is_a_movement? || action_is_a_capture?
+      action_is_a_movement? || action_is_a_capture? || action_is_a_en_passant?
     end
 
     def action_is_a_movement?
@@ -151,6 +161,12 @@ module Chess
       return false if no_captures?
 
       captures.include?(action)
+    end
+
+    def action_is_a_en_passant?
+      return false if no_en_passant?
+
+      en_passant_captures.include?(action)
     end
 
     def invalid_movement_or_capture
@@ -188,6 +204,18 @@ module Chess
 
     def revert_action
       @action = nil
+    end
+
+    def revert_movements
+      @movements = []
+    end
+
+    def revert_captures
+      @captures = []
+    end
+
+    def revert_en_passant
+      @en_passant_captures = []
     end
 
     def create_player_one

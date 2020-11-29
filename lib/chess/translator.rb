@@ -24,6 +24,8 @@ module Chess
     end
 
     def verify_move(move)
+      return false if move.nil?
+
       if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
         move.downcase
       else

@@ -55,11 +55,27 @@ module Chess
       end
     end
 
+    def add_captures(captures)
+      captures.each do |capture|
+        piece = board[capture[1]][capture[0]]
+        piece.can_be_captured
+      end
+    end
+
     def remove_moves(moves, action)
       moves.each do |move|
         next if move == action
 
         board[move[1]][move[0]] = ''
+      end
+    end
+
+    def remove_captures(captures, action)
+      captures.each do |capture|
+        next if capture == action
+
+        piece = board[capture[1]][capture[0]]
+        piece.remove_can_be_captured
       end
     end
 

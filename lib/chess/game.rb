@@ -20,6 +20,7 @@ module Chess
       @action = nil
       @movements = []
       @captures = []
+      @en_passant_captures = []
     end
 
     Player = Struct.new(:name, :color)
@@ -87,13 +88,23 @@ module Chess
 
     def find_movements_and_captures
       piece = board.find_tile(selection)
-      @movements = piece.possible_movements
-      @captures = piece.possible_captures
+      piece_possibilities(piece)
       return no_movements_and_captures if movements.empty? && captures.empty?
 
-      board.add_moves(movements)
+      add_move_and_captures
       display_board(board.board)
       execute_movement_or_capture
+    end
+
+    def add_move_and_captures
+      board.add_moves(movements) unless movements.nil? || movements.empty?
+      board.add_captures(captures) unless captures.nil? || captures.empty?
+    end
+
+    def piece_possibilities(piece)
+      @movements = piece.possible_movements
+      @captures = piece.possible_captures
+      @en_passant_captures = piece.possible_en_passant if piece.is_a?(Pawn)
     end
 
     def execute_movement_or_capture
@@ -103,7 +114,8 @@ module Chess
       return invalid_movement_or_capture unless movements.include?(action) || captures.include?(action)
 
       board.execute_move(action, selection)
-      board.remove_moves(movements, action)
+      board.remove_moves(movements, action) unless movements.nil? || movements.empty?
+      board.remove_captures(captures, action) unless captures.nil? || captures.empty?
     end
 
     def invalid_movement_or_capture

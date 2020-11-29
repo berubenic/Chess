@@ -37,6 +37,7 @@ module Chess
     end
 
     def possible_movements
+      reset_movements
       if color == 'white'
         first_possible_move(WHITE_MOVES)
       elsif color == 'black'
@@ -44,14 +45,28 @@ module Chess
       end
     end
 
+    def reset_movements
+      @movements = []
+    end
+
     def possible_captures
       if color == 'white'
         @captures = find_captures(WHITE_CAPTURES)
-        @en_passant_captures = find_en_passant unless find_en_passant.nil?
+        # @en_passant_captures = find_en_passant unless find_en_passant.nil?
       elsif color == 'black'
         @captures = find_captures(BLACK_CAPTURES)
+        # @en_passant_captures = find_en_passant unless find_en_passant.nil?
+      end
+      @captures
+    end
+
+    def possible_en_passant
+      if color == 'white'
+        @en_passant_captures = find_en_passant unless find_en_passant.nil?
+      elsif color == 'black'
         @en_passant_captures = find_en_passant unless find_en_passant.nil?
       end
+      @en_passant_captures
     end
 
     private

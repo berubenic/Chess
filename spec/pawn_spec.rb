@@ -445,6 +445,31 @@ module Chess
         end
       end
 
+      context 'A enemy piece is in range of the black pawn' do
+        subject(:pawn) { described_class.new(color: 'black') }
+        let(:enemy) { instance_double(Pawn, color: 'white') }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', pawn, '', '', '', '', '', ''],
+            ['', '', enemy, '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+
+        it "assigns @captures an array with it's possible captures" do
+          pawn.instance_variable_set(:@board, board)
+          pawn.instance_variable_set(:@coordinate, [1, 3])
+          pawn.possible_captures
+          expect(pawn.captures).to contain_exactly([2, 4])
+        end
+      end
+
       context 'A enemy piece and a friendly piece is in range of the white pawn' do
         subject(:pawn) { described_class.new(color: 'white') }
         let(:friendly) { instance_double(Pawn, color: 'white') }
@@ -521,7 +546,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([0, 2])
         end
       end
@@ -549,7 +574,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [2, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([1, 2])
         end
       end
@@ -577,7 +602,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [7, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([6, 2])
         end
       end
@@ -606,7 +631,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([2, 2])
         end
       end
@@ -634,7 +659,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([1, 2])
         end
       end
@@ -663,7 +688,7 @@ module Chess
         it 'assigns @en_passant_captures a left and right en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([0, 2], [2, 2])
         end
       end
@@ -692,7 +717,7 @@ module Chess
         it 'does not assign @en_passant_captures when the enemy has not moved in previous turn' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures.empty?).to be true
         end
       end
@@ -721,7 +746,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 3])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures.empty?).to be true
         end
       end
@@ -749,7 +774,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([0, 5])
         end
       end
@@ -777,7 +802,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [2, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([1, 5])
         end
       end
@@ -805,7 +830,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [7, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([6, 5])
         end
       end
@@ -833,7 +858,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([2, 5])
         end
       end
@@ -862,7 +887,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [0, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([1, 5])
         end
       end
@@ -890,7 +915,7 @@ module Chess
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
           pawn.instance_variable_set(:@board, board)
           pawn.instance_variable_set(:@coordinate, [1, 4])
-          pawn.possible_captures
+          pawn.possible_en_passant
           expect(pawn.en_passant_captures).to contain_exactly([0, 5], [2, 5])
         end
       end

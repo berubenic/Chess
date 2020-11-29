@@ -26,7 +26,7 @@ class String
     "\e[30m#{self}"
   end
 
-  def bg_green
-    "\e[102m#{self}"
+  def bg_red
+    "\e[101m#{self}"
   end
 end

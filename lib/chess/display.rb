@@ -107,18 +107,18 @@ module Chess
     end
 
     def primary_color_tile(tile)
-      if tile.is_a?(String) || tile.selected == false
+      if tile.is_a?(String) || tile.capturable == false
         print " #{print_tile(tile)} ".bg_primary
-      elsif tile.selected
-        print " #{print_tile(tile)} ".bg_green
+      elsif tile.capturable
+        print " #{print_tile(tile)} ".bg_red
       end
     end
 
     def secondary_color_tile(tile)
-      if tile.is_a?(String) || tile.selected == false
+      if tile.is_a?(String) || tile.capturable == false
         print " #{print_tile(tile)} ".bg_secondary
-      elsif tile.selected
-        print " #{print_tile(tile)} ".bg_green
+      elsif tile.capturable
+        print " #{print_tile(tile)} ".bg_red
       end
     end
 

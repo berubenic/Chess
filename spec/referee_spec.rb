@@ -88,6 +88,131 @@ module Chess
         expect(referee.current_player_stalemate?(player)).to be false
       end
     end
+    describe '#stalemate?' do
+      context 'black king is stalemated' do
+        let(:black_king) { instance_double(King, color: 'black', coordinate: [0, 0]) }
+        let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 1]) }
+        let(:white_king) { instance_double(King, color: 'white', coordinate: [0, 2]) }
+        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [5, 4]) }
+        let(:array) do
+          [
+            [black_king, '', '', '', '', '', '', ''],
+            [white_pawn, '', '', '', '', '', '', ''],
+            [white_king, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', white_bishop, '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        let(:referee) { described_class.new(board: board) }
+
+        it 'returns true' do
+          allow(black_king).to receive(:possible_movements)
+          allow(black_king).to receive(:movements).and_return([[1, 0], [1, 1]])
+          allow(white_pawn).to receive(:possible_movements)
+          allow(white_pawn).to receive(:movements).and_return([])
+          allow(white_king).to receive(:possible_movements)
+          allow(white_king).to receive(:movements).and_return([[1, 1], [1, 2], [1, 3], [0, 3]])
+          allow(white_bishop).to receive(:possible_movements)
+          allow(white_bishop).to receive(:movements).and_return([[7, 6], [6, 5], [4, 3], [3, 2], [2, 1], [1, 0],
+                                                                 [7, 2], [6, 3], [4, 5], [3, 6], [2, 7]])
+          expect(referee.stalemate?(black_king)).to be true
+        end
+      end
+      context 'black king is not stalemated' do
+        let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 0]) }
+        let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 1]) }
+        let(:white_king) { instance_double(King, color: 'white', coordinate: [0, 2]) }
+        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [5, 4]) }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', black_king],
+            [white_pawn, '', '', '', '', '', '', ''],
+            [white_king, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', white_bishop, '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        let(:referee) { described_class.new(board: board) }
+
+        it 'returns false' do
+          allow(black_king).to receive(:possible_movements)
+          allow(black_king).to receive(:movements).and_return([[6, 0], [6, 1], [7, 1]])
+          allow(white_pawn).to receive(:possible_movements)
+          allow(white_pawn).to receive(:movements).and_return([])
+          allow(white_king).to receive(:possible_movements)
+          allow(white_king).to receive(:movements).and_return([[1, 1], [1, 2], [1, 3], [0, 3]])
+          allow(white_bishop).to receive(:possible_movements)
+          allow(white_bishop).to receive(:movements).and_return([[7, 6], [6, 5], [4, 3], [3, 2], [2, 1], [1, 0],
+                                                                 [7, 2], [6, 3], [4, 5], [3, 6], [2, 7]])
+          expect(referee.stalemate?(black_king)).to be false
+        end
+      end
+    end
+    describe '#enemy_player_mated?' do
+      subject(:referee) { described_class.new }
+      let(:player) { double('Player', color: 'white') }
+      let(:white_king) { double('King') }
+
+      it 'returns true' do
+        allow(referee).to receive(:mate?).and_return(true)
+        expect(referee.enemy_player_mated?(player)).to be true
+      end
+
+      it 'returns false' do
+        allow(referee).to receive(:mate?).and_return(false)
+        expect(referee.enemy_player_mated?(player)).to be false
+      end
+    end
+    describe '#mate?' do
+      context 'black is mated' do
+        let(:black_king) { instance_double(King, color: 'black', coordinate: [4, 0]) }
+        let(:black_rook_1) { instance_double(Rook, color: 'black', coordinate: [3, 0]) }
+        let(:black_rook_2) { instance_double(Rook, color: 'black', coordinate: [5, 0]) }
+        let(:white_king) { instance_double(King, color: 'white', coordinate: [6, 7]) }
+        let(:white_queen) { instance_double(Bishop, color: 'white', coordinate: [4, 2]) }
+        let(:array) do
+          [
+            ['', '', '', black_rook_1, black_king, black_rook_2, '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', white_queen, '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', white_king, '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        let(:referee) { described_class.new(board: board) }
+
+        it 'returns true' do
+          allow(black_king).to receive(:possible_movements)
+          allow(black_king).to receive(:movements).and_return([[3, 1], [4, 1], [5, 1]])
+          allow(black_rook_1).to receive(:possible_movements)
+          allow(black_rook_1).to receive(:movements).and_return([[0, 0], [1, 0], [2, 0], [3, 1], [3, 2], [3, 3], [3, 4],
+                                                                 [3, 5], [3, 6], [3, 7]])
+          allow(black_rook_2).to receive(:possible_movements)
+          allow(black_rook_2).to receive(:movements).and_return([[6, 0], [7, 0], [5, 1], [5, 2], [5, 3], [5, 4],
+                                                                 [5, 5], [5, 6], [5, 7]])
+          allow(white_queen).to receive(:possible_movements)
+          allow(white_queen).to receive(:movements).and_return([[0, 2], [1, 2], [2, 2], [3, 2], [5, 2], [6, 2], [7, 2],
+                                                                [2, 0], [3, 1], [5, 3], [6, 4], [7, 5], [6, 0], [5, 1],
+                                                                [3, 3], [2, 4], [1, 5], [0, 6], [4, 7], [4, 6], [4, 5],
+                                                                [4, 4], [4, 3], [4, 1]])
+          allow(white_king).to receive(:possible_movements)
+          allow(white_king).to receive(:movements).and_return([[5, 7], [5, 6], [6, 6], [7, 6], [7, 7]])
+          expect(referee.mate?(black_king)).to be true
+        end
+      end
+    end
     describe '#find_kings' do
       context 'white king' do
         subject(:referee) { described_class.new }

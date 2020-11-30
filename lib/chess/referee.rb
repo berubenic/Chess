@@ -31,11 +31,27 @@ module Chess
       end
     end
 
+    def enemy_player_in_check?(player)
+      if player.color == 'white'
+        check?(black_king)
+      elsif player.color == 'black'
+        check?(white_king)
+      end
+    end
+
     def current_player_stalemate?(player)
       if player.color == 'white'
         stalemate?(white_king)
       elsif player.color == 'black'
         stalemate?(black_king)
+      end
+    end
+
+    def enemy_player_mated?(player)
+      if player.color == 'white'
+        mate?(black_king)
+      elsif player.color == 'black'
+        mate?(white_king)
       end
     end
 
@@ -54,20 +70,43 @@ module Chess
       false
     end
 
-    def stalemate?(king); end
+    def stalemate?(king)
+      king.possible_movements
+      return false if king.movements.any? { |move| can_not_be_attacked?(move, king) }
+      return false if king.movements.empty?
+
+      true
+    end
+
+    def mate?(king)
+      king.possible_movements
+      return false if king.movements.any? { |move| can_not_be_attacked?(move, king) }
+      return false if king.movements.empty?
+
+      true
+    end
+
+    def can_not_be_attacked?(coordinate, king)
+      board.board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String)
+          next if tile == king
+          next if tile.color == king.color
+
+          tile.possible_movements
+          next if tile.movements.nil?
+
+          return false if tile.movements.include?(coordinate)
+        end
+      end
+      true
+    end
 
     def mate(king)
       king.possible_movements
       return king.not_mate if king.possible_movements.any? { |move| no_possible_check?(move, king) }
 
       king.mate
-    end
-
-    def stalemate(king)
-      king.possible_movements
-      return king.not_stalemate if king.possible_movements.any? { |move| no_possible_check?(move, king) }
-
-      king.stalemate
     end
 
     def castling(king, rook)
@@ -88,20 +127,6 @@ module Chess
     end
 
     private
-
-    def no_possible_check?(move, king)
-      board.board.each do |row|
-        row.each do |tile|
-          next if tile.is_a?(String)
-          next if tile == king
-
-          tile.possible_movements
-          next if tile.movements.nil?
-
-          return false if tile.movements.include?(move)
-        end
-      end
-    end
 
     def assign_kings(tile)
       @white_king = tile if tile.color == 'white'

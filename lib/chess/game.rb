@@ -33,17 +33,22 @@ module Chess
 
     def two_player_mode
       setup_two_player_game
+      referee.find_kings
       loop do
         return draw if referee.current_player_stalemate?(current_player)
 
         player_is_in_check_warning if referee.current_player_in_check?(current_player)
         player_selection_loop
+        if referee.enemy_player_in_check?(current_player) && referee.enemy_player_mated?(current_player)
+          return game_over
+        end
+
         switch_player
       end
     end
 
-    def verify_king_status
-      referee.king_status
+    def draw
+      puts 'DRAW!!!!'
     end
 
     def player_selection_loop

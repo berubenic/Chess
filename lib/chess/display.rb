@@ -92,6 +92,7 @@ module Chess
     end
 
     def game_over
+      display_board(board.board)
       puts 'Game over!'
       sleep 2
       clear

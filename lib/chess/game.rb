@@ -47,10 +47,6 @@ module Chess
       end
     end
 
-    def draw
-      puts 'DRAW!!!!'
-    end
-
     def player_selection_loop
       display_board(board.board)
       select_piece

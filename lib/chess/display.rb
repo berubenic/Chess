@@ -91,12 +91,22 @@ module Chess
       clear
     end
 
-    def game_over
+    def draw
+      clear
       display_board(board.board)
-      puts 'Game over!'
+      puts "It's a draw... #{current_player} is stalemated..."
       sleep 2
       clear
-      intro
+      load './example/example.rb'
+    end
+
+    def game_over
+      clear
+      display_board(board.board)
+      puts "Game over! #{current_player} has won!"
+      sleep 2
+      clear
+      load './example/example.rb'
     end
 
     def display_board(board)

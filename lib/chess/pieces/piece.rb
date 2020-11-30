@@ -13,7 +13,6 @@ module Chess
       @starting_coordinate = [args[:x_coordinate], args[:y_coordinate]]
       @movements = []
       @captures = []
-      @selected = false
       @moved = false
       @capturable = false
     end
@@ -32,14 +31,6 @@ module Chess
 
     def reset_captures
       @captures = []
-    end
-
-    def highlight_selected
-      @selected = true
-    end
-
-    def unhighlight_selected
-      @selected = false
     end
 
     def update_coordinate(coordinate)

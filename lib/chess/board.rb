@@ -28,16 +28,6 @@ module Chess
       setup_black_pieces
     end
 
-    def highlight_selection(selection)
-      piece = find_tile(selection)
-      piece.highlight_selected
-    end
-
-    def revert_highlight(selection)
-      piece = find_tile(selection)
-      piece.unhighlight_selected
-    end
-
     def execute_move(action, selection)
       piece = find_tile(selection)
       piece.update_coordinate(action)

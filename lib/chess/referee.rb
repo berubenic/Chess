@@ -23,65 +23,38 @@ module Chess
       true
     end
 
-    def king_status
-      white_king_status
-      black_king_status
-    end
-
-    def checkmate?(player)
-      king_status
-      if player.color == 'white'
-        white_king.check && white_king.mate
-      elsif player.color == 'black'
-        black_king.check && black_king.mate
-      end
-    end
-
-    def check?(player)
-      king_status
-      if player.color == 'white'
-        white_king.check
-      elsif player.color == 'black'
-        black_king.check
-      end
-    end
-
     def current_player_in_check?(player)
-      king_status
       if player.color == 'white'
-        return true if white_king.check
-
-        false
+        check?(white_king)
       elsif player.color == 'black'
-        return true if black_king.check
-
-        false
+        check?(black_king)
       end
     end
 
-    def white_king_status
-      check(white_king)
-      mate(white_king)
-      stalemate(white_king)
+    def current_player_stalemate?(player)
+      if player.color == 'white'
+        stalemate?(white_king)
+      elsif player.color == 'black'
+        stalemate?(black_king)
+      end
     end
 
-    def black_king_status
-      check(black_king)
-      mate(black_king)
-      stalemate(black_king)
-    end
-
-    def check(king)
+    def check?(king)
       board.board.each do |row|
         row.each do |tile|
           next if tile.is_a?(String)
           next if tile == king
 
-          return king.in_check if tile.possible_captures.include?(king.coordinate)
+          tile.possible_captures
+          next if tile.captures.nil?
+
+          return true if tile.captures.include?(king.coordinate)
         end
       end
-      king.not_check
+      false
     end
+
+    def stalemate?(king); end
 
     def mate(king)
       king.possible_movements

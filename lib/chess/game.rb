@@ -21,7 +21,6 @@ module Chess
       @movements = []
       @captures = []
       @en_passant_captures = []
-      @executed_piece = nil
     end
 
     Player = Struct.new(:name, :color)
@@ -35,14 +34,16 @@ module Chess
     def two_player_mode
       setup_two_player_game
       referee.find_kings
+      game_loop
+    end
+
+    def game_loop
       loop do
         return draw if referee.current_player_stalemate?(current_player)
 
         player_is_in_check_warning if referee.current_player_in_check?(current_player)
-        player_selection_loop
-        if referee.enemy_player_in_check?(current_player) && referee.enemy_player_mated?(current_player)
-          return game_over
-        end
+        player_selection
+        return game_over if referee.enemy_player_checkmate?(current_player)
 
         switch_player
       end
@@ -50,16 +51,16 @@ module Chess
 
     # piece selection logic
 
-    def player_selection_loop
+    def player_selection
       display_board(board.board)
       select_piece
-      return invalid_input unless valid_input?(selection)
+      return invalid_selection_input unless valid_input?(selection)
 
       translate_selection
 
       return find_movements_and_captures if referee.valid_selection?(selection, current_player)
 
-      invalid_selection
+      invalid_selection_piece
     end
 
     def select_piece
@@ -70,7 +71,23 @@ module Chess
       @selection = translate(selection)
     end
 
-    # before choosing an action
+    def invalid_selection_input
+      invalid_input_message
+      reset_player_selection
+    end
+
+    def invalid_selection_piece
+      invalid_selection_message
+      reset_player_selection
+    end
+
+    def reset_player_selection
+      revert_selection
+      display_board(board.board)
+      player_selection
+    end
+
+    # display possible moves and/or captures
 
     def find_movements_and_captures
       piece = board.find_tile(selection)
@@ -78,8 +95,7 @@ module Chess
       return no_movements_and_captures if no_movements? && no_captures? && no_en_passant?
 
       add_move_and_captures
-      display_board(board.board)
-      execute_movement_or_capture
+      player_action
     end
 
     def add_move_and_captures
@@ -113,20 +129,22 @@ module Chess
       en_passant_captures.nil? || en_passant_captures.empty?
     end
 
-    # choosing an action
+    def no_movements_and_captures
+      no_movements_or_captures_message
+      revert_selection
+      player_selection
+    end
 
-    def execute_movement_or_capture
+    # select move or capture
+    def player_action
       display_board(board.board)
       select_movement_or_capture
+      return invalid_action_input unless valid_input?(action)
+
       translate_action
       return invalid_movement_or_capture unless valid_action?
 
-      assign_executed_piece(action)
-      board.execute_move(action, selection)
-      return revert_execution if king_is_in_check?
-
-      remove_moves_and_captures
-      revert_moves_and_captures
+      execute_movement_or_capture
     end
 
     def select_movement_or_capture
@@ -137,10 +155,19 @@ module Chess
       @action = translate(action)
     end
 
-    def assign_executed_piece(action)
-      return if board.board[action[1]][action[0]] == ''
+    def invalid_action_input
+      invalid_movement_or_capture_message
+      reset_player_action
+    end
 
-      @executed_piece = board.board[action[1]][action[0]]
+    def invalid_movement_or_capture
+      invalid_movement_or_capture_message
+      reset_player_action
+    end
+
+    def reset_player_action
+      revert_action
+      player_action
     end
 
     def valid_action?
@@ -164,32 +191,28 @@ module Chess
 
       en_passant_captures.include?(action)
     end
-    # error messages
+    # execute move or capture
 
-    def invalid_input
-      invalid_input_message
-      reset_player_selection
+    def execute_movement_or_capture
+      board.execute_move(action, selection)
+      return revert_execution if referee.current_player_in_check?(current_player)
+
+      remove_moves_and_captures
     end
-
-    def invalid_selection
-      invalid_selection_message
-      reset_player_selection
-    end
-
-    def reset_player_selection
-      revert_selection
-      display_board(board.board)
-      player_selection_loop
-    end
-
-    # revert
 
     def revert_execution
       king_is_in_check_message
       board.revert_move(action, selection)
       remove_moves_and_captures
       revert_moves_and_captures
-      player_selection_loop
+      player_selection
+    end
+
+    def remove_moves_and_captures
+      board.remove_moves(movements, action) unless no_movements?
+      board.remove_captures(captures, action) unless no_captures?
+      board.remove_en_passant_capture(action, selection) unless no_en_passant?
+      revert_moves_and_captures
     end
 
     def revert_moves_and_captures
@@ -200,23 +223,7 @@ module Chess
       revert_en_passant
     end
 
-    def invalid_movement_or_capture
-      invalid_movement_or_capture_message
-      revert_action
-      execute_movement_or_capture
-    end
-
-    def no_movements_and_captures
-      no_movements_or_captures_message
-      revert_selection
-      player_selection_loop
-    end
-
-    def remove_moves_and_captures
-      board.remove_moves(movements, action) unless no_movements?
-      board.remove_captures(captures, action) unless no_captures?
-      board.remove_en_passant_capture(action, selection) unless no_en_passant?
-    end
+    # revert variables
 
     def revert_selection
       @selection = nil
@@ -236,10 +243,6 @@ module Chess
 
     def revert_en_passant
       @en_passant_captures = []
-    end
-
-    def king_is_in_check?
-      referee.current_player_in_check?(current_player)
     end
 
     private

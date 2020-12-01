@@ -25,6 +25,10 @@ module Chess
       true
     end
 
+    def enemy_player_checkmate?(player)
+      enemy_player_checkmate?(player) && enemy_player_mated?(player)
+    end
+
     def current_player_in_check?(player)
       if player.color == 'white'
         check?(white_king)
@@ -102,13 +106,6 @@ module Chess
         end
       end
       true
-    end
-
-    def mate(king)
-      king.possible_movements
-      return king.not_mate if king.possible_movements.any? { |move| no_possible_check?(move, king) }
-
-      king.mate
     end
 
     def castling(king, rook)

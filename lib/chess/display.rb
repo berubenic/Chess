@@ -97,7 +97,7 @@ module Chess
       clear
       display_board(board.board)
       puts "It's a draw... #{current_player} is stalemated..."
-      sleep 2
+      sleep 5
       clear
       load './example/example.rb'
     end

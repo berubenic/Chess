@@ -14,23 +14,17 @@ module Chess
       'h' => 7
     }.freeze
 
-    def translate(move, result = [])
-      move = verify_move(move)
-      return move if move == false
-
-      result << LETTERS.values_at(move[0])[0]
-      result << move[1].to_i - 1
+    def translate(input, result = [])
+      input = input.downcase
+      result << LETTERS.values_at(input[0])[0]
+      result << input[1].to_i - 1
       result
     end
 
-    def verify_move(move)
-      return false if move.nil?
+    def valid_input?(input)
+      return false if input.nil?
 
-      if move.length == 2 && move[0].match?(/[a-hA-H]/) && move[1].match?(/[1-8]/)
-        move.downcase
-      else
-        false
-      end
+      input.length == 2 && input[0].match?(/[a-hA-H]/) && input[1].match?(/[1-8]/)
     end
   end
 end

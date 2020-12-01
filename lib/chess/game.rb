@@ -53,8 +53,9 @@ module Chess
     def player_selection_loop
       display_board(board.board)
       select_piece
+      return invalid_input unless valid_input?(selection)
+
       translate_selection
-      return invalid_input if selection == false
 
       return find_movements_and_captures if referee.valid_selection?(selection, current_player)
 
@@ -72,7 +73,6 @@ module Chess
     # before choosing an action
 
     def find_movements_and_captures
-      # binding.pry
       piece = board.find_tile(selection)
       piece_possibilities(piece)
       return no_movements_and_captures if no_movements? && no_captures? && no_en_passant?
@@ -168,13 +168,15 @@ module Chess
 
     def invalid_input
       invalid_input_message
-      revert_selection
-      display_board(board.board)
-      player_selection_loop
+      reset_player_selection
     end
 
     def invalid_selection
       invalid_selection_message
+      reset_player_selection
+    end
+
+    def reset_player_selection
       revert_selection
       display_board(board.board)
       player_selection_loop

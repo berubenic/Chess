@@ -51,7 +51,7 @@ module Chess
       display_board(board.board)
       select_piece
       translate_selection
-      invalid_input if selection == false
+      return invalid_input if selection == false
 
       return find_movements_and_captures if referee.valid_selection?(selection, current_player)
 
@@ -59,6 +59,7 @@ module Chess
     end
 
     def find_movements_and_captures
+      # binding.pry
       piece = board.find_tile(selection)
       piece_possibilities(piece)
       return no_movements_and_captures if no_movements? && no_captures? && no_en_passant?
@@ -87,8 +88,8 @@ module Chess
 
     def revert_execution
       king_is_in_check_message
-      remove_moves_and_captures
       board.revert_move(action, selection)
+      remove_moves_and_captures
       revert_moves_and_captures
       player_selection_loop
     end
@@ -158,9 +159,16 @@ module Chess
     end
 
     def piece_possibilities(piece)
-      @movements = piece.possible_movements
-      @captures = piece.possible_captures
-      @en_passant_captures = piece.possible_en_passant if piece.is_a?(Pawn)
+      piece.possible_movements
+      piece.possible_captures
+      piece.possible_en_passant if piece.is_a?(Pawn)
+      assign_piece_possibilities(piece)
+    end
+
+    def assign_piece_possibilities(piece)
+      @movements = piece.movements
+      @captures = piece.captures
+      @en_passant_captures = piece.en_passant_captures if piece.is_a?(Pawn)
     end
 
     def remove_moves_and_captures
@@ -199,7 +207,6 @@ module Chess
 
     def no_movements_and_captures
       no_movements_or_captures_message
-      board.revert_highlight(selection)
       revert_selection
       player_selection_loop
     end

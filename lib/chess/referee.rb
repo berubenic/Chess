@@ -16,6 +16,8 @@ module Chess
     end
 
     def valid_selection?(selection, player)
+      return false if selection.nil?
+
       color = player.color
       tile = board.board[selection[1]][selection[0]]
       return false if tile == '' || tile.color != color

@@ -57,37 +57,39 @@ module Chess
 
     def invalid_movement_or_capture_message
       puts 'Invalid movement or capture, please try again.'.bg_default
-      sleep 1
+      sleep 2
       clear
     end
 
     def invalid_input_message
       puts 'Invalid input, please try again.'.bg_default
-      sleep 1
+      sleep 2
       clear
     end
 
     def invalid_selection_message
       puts 'Invalid selection, please select a valid piece.'.bg_default
-      sleep 1
+      sleep 2
       clear
     end
 
     def no_movements_or_captures_message
       puts 'No possible moves or captures, please select a valid piece.'.bg_default
-      sleep 1
+      sleep 2
       clear
     end
 
     def king_is_in_check_message
       puts 'You put your king in check! Please try again!'
-      sleep 1
+      sleep 2
       clear
     end
 
     def player_is_in_check_warning
+      clear
+      display_board(board.board)
       puts 'Warning! Your king is in check!'
-      sleep 1
+      sleep 2
       clear
     end
 
@@ -104,7 +106,7 @@ module Chess
       clear
       display_board(board.board)
       puts "Game over! #{current_player} has won!"
-      sleep 2
+      sleep 5
       clear
       load './example/example.rb'
     end

@@ -64,6 +64,7 @@ module Chess
     end
 
     def possible_en_passant
+      reset_en_passant_captures
       if color == 'white'
         @en_passant_captures = find_en_passant unless find_en_passant.nil?
       elsif color == 'black'
@@ -86,6 +87,10 @@ module Chess
     def second_possible_move(moves)
       additional_move = [coordinate[0], coordinate[1] + moves[1]]
       @movements << additional_move if valid_move?(additional_move)
+    end
+
+    def reset_en_passant_captures
+      @en_passant_captures = []
     end
   end
 end

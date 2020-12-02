@@ -39,11 +39,11 @@ module Chess
 
     def game_loop
       loop do
-        return draw if referee.current_player_stalemate?(current_player)
+        return draw if referee.current_player_stalemated?(current_player)
 
-        player_is_in_check_warning if referee.current_player_in_check?(current_player)
+        player_is_in_check_warning if referee.current_player_checked?(current_player)
         player_selection
-        return game_over if referee.enemy_player_checkmate?(current_player)
+        return game_over if referee.enemy_player_checkmated?(current_player)
 
         switch_player
       end
@@ -195,7 +195,7 @@ module Chess
 
     def execute_movement_or_capture
       board.execute_move(action, selection)
-      return revert_execution if referee.current_player_in_check?(current_player)
+      return revert_execution if referee.current_player_checked?(current_player)
 
       remove_moves_and_captures
     end

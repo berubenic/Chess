@@ -7,12 +7,13 @@ module Chess
   class Referee
     include Castling
 
-    attr_reader :board, :white_king, :black_king
+    attr_reader :board, :white_king, :black_king, :checking_piece
 
     def initialize(board: nil)
       @board = board
       @white_king = nil
       @black_king = nil
+      @checking_piece = nil
     end
 
     def valid_selection?(selection, player)
@@ -25,11 +26,11 @@ module Chess
       true
     end
 
-    def enemy_player_checkmate?(player)
-      enemy_player_checkmate?(player) && enemy_player_mated?(player)
+    def enemy_player_checkmated?(player)
+      enemy_player_checked?(player) && enemy_player_mated?(player)
     end
 
-    def current_player_in_check?(player)
+    def current_player_checked?(player)
       if player.color == 'white'
         check?(white_king)
       elsif player.color == 'black'
@@ -37,7 +38,7 @@ module Chess
       end
     end
 
-    def enemy_player_in_check?(player)
+    def enemy_player_checked?(player)
       if player.color == 'white'
         check?(black_king)
       elsif player.color == 'black'
@@ -45,7 +46,7 @@ module Chess
       end
     end
 
-    def current_player_stalemate?(player)
+    def current_player_stalemated?(player)
       if player.color == 'white'
         stalemate?(white_king)
       elsif player.color == 'black'
@@ -70,42 +71,95 @@ module Chess
           tile.possible_captures
           next if tile.captures.nil?
 
-          return true if tile.captures.include?(king.coordinate)
+          return king_is_in_check(tile) if tile.captures.include?(king.coordinate)
         end
       end
+      @checking_piece = nil
       false
+    end
+
+    def king_is_in_check(tile)
+      @checking_piece = tile
+      true
     end
 
     def stalemate?(king)
       king.possible_movements
-      return false if king.movements.any? { |move| can_not_be_attacked?(move, king) }
-      return false if king.movements.empty?
+      return false if king.movements.any? { |move| can_avoid_attack?(move, king) }
 
       true
     end
 
     def mate?(king)
       king.possible_movements
-      return false if king.movements.any? { |move| can_not_be_attacked?(move, king) }
-      return false if king.movements.empty?
+      king.possible_captures
+      # king can kill @checking_piece
+      return false if king_can_kill_checking_piece?(king) || king_can_avoid_attack?(king) || friendly_can_block?(king)
+
+      # king can move to unattackable tile
+      # if @checking piece is a queen, rook or bishop
+      #   a friendly can move to @checking piece movement
+
+      # return false if king.movements.any? { |move| can_avoid_attack?(move, king) }
 
       true
     end
 
-    def can_not_be_attacked?(coordinate, king)
+    def king_can_kill_checking_piece?(king)
+      return false if king.captures.nil?
+
+      king.captures.include?(checking_piece.coordinate)
+    end
+
+    def king_can_avoid_attack?(king)
+      return false if king.movements.nil? || king.movements.empty?
+
+      return true if king.movements.any? { |move| can_not_be_attacked?(move, king) }
+
+      false
+    end
+
+    def can_not_be_attacked?(move, king)
       board.board.each do |row|
         row.each do |tile|
-          next if tile.is_a?(String)
-          next if tile == king
-          next if tile.color == king.color
+          next if tile.is_a?(String) || tile == king || tile.color == king.color
 
-          tile.possible_movements
-          next if tile.movements.nil?
+          if tile.is_a?(Pawn)
+            return false if pawn_can_attack?(move, tile)
 
-          return false if tile.movements.include?(coordinate)
+            next
+          else
+            tile.possible_movements
+            next if tile.movements.nil?
+            return false if tile.movements.include?(move)
+          end
         end
       end
       true
+    end
+
+    def pawn_can_attack?(move, pawn)
+      if tile.color == 'black'
+        black_pawn_can_attack?(move, pawn)
+      elsif tile.color == 'white'
+        white_pawn_can_attack?(move, pawn)
+      end
+    end
+
+    def black_pawn_can_attack?(move, pawn)
+      left_attack = [pawn.coordinate[0] - 1, pawn.coordinate[1] + 1]
+      right_attack = [pawn.coordinate[0] + 1, pawn.coordinate[1] + 1]
+      return true if left_attack == move || right_attack == move
+
+      false
+    end
+
+    def white_pawn_can_attack?(move, pawn)
+      left_attack = [pawn.coordinate[0] - 1, pawn.coordinate[1] - 1]
+      right_attack = [pawn.coordinate[0] + 1, pawn.coordinate[1] - 1]
+      return true if left_attack == move || right_attack == move
+
+      false
     end
 
     def castling(king, rook)

@@ -2,19 +2,19 @@
 
 module Chess
   describe Referee do
-    describe '#current_player_in_check?' do
+    describe '#current_player_checked?' do
       subject(:referee) { described_class.new }
       let(:player) { double('Player', color: 'white') }
       let(:white_king) { double('King') }
 
       it 'returns true' do
         allow(referee).to receive(:check?).and_return(true)
-        expect(referee.current_player_in_check?(player)).to be true
+        expect(referee.current_player_checked?(player)).to be true
       end
 
       it 'returns false' do
         allow(referee).to receive(:check?).and_return(false)
-        expect(referee.current_player_in_check?(player)).to be false
+        expect(referee.current_player_checked?(player)).to be false
       end
     end
     describe '#check?' do
@@ -73,19 +73,19 @@ module Chess
         end
       end
     end
-    describe '#current_player_stalemate?' do
+    describe '#current_player_stalemated?' do
       subject(:referee) { described_class.new }
       let(:player) { double('Player', color: 'white') }
       let(:white_king) { double('King') }
 
       it 'returns true' do
         allow(referee).to receive(:stalemate?).and_return(true)
-        expect(referee.current_player_stalemate?(player)).to be true
+        expect(referee.current_player_stalemated?(player)).to be true
       end
 
       it 'returns false' do
         allow(referee).to receive(:stalemate?).and_return(false)
-        expect(referee.current_player_stalemate?(player)).to be false
+        expect(referee.current_player_stalemated?(player)).to be false
       end
     end
     describe '#stalemate?' do

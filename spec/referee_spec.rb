@@ -112,6 +112,8 @@ module Chess
         it 'returns true' do
           allow(black_king).to receive(:possible_movements)
           allow(black_king).to receive(:movements).and_return([[1, 0], [1, 1]])
+          allow(black_king).to receive(:possible_captures)
+          allow(black_king).to receive(:captures).and_return([[0, 1]])
           allow(white_pawn).to receive(:possible_movements)
           allow(white_pawn).to receive(:movements).and_return([])
           allow(white_king).to receive(:possible_movements)

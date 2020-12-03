@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # en passant for Pawn
   module EnPassant
@@ -28,8 +30,9 @@ module Chess
     end
 
     def tile_valid?(coordinate)
+      binding.pry
       tile = board.board[coordinate[1]][coordinate[0]] if within_board?(coordinate)
-      tile.class == Pawn && tile.two_squared
+      tile.class == Pawn && tile.two_squared && tile.turns_since_last_move == 0
     end
 
     def en_passant_correct_row?

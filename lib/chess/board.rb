@@ -33,7 +33,22 @@ module Chess
       piece.update_coordinate(action)
       piece.moved_from_starting_square
       verify_pawn_moved_two_squares(piece, action, selection)
+      update_piece_turn_count(piece)
       update_board(action, selection, piece)
+    end
+
+    def update_piece_turn_count(piece)
+      board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String)
+
+          if tile == piece
+            piece.reset_turn_count
+          else
+            tile.add_turn_count
+          end
+        end
+      end
     end
 
     def verify_pawn_moved_two_squares(piece, action, selection)

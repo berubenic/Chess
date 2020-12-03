@@ -28,6 +28,14 @@ module Chess
       true
     end
 
+    def reset_en_passant_timer
+      @en_passant_timer = 2
+    end
+
+    def lower_en_passant_timer
+      @en_passant_timer -= 1
+    end
+
     def enemy_player_checkmated?(player)
       enemy_player_checked?(player) && enemy_player_mated?(player)
     end

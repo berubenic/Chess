@@ -1,3 +1,5 @@
+require 'pry'
+
 module Chess
   module WinConditions
     def can_kill_future_checking_piece?(king)
@@ -78,9 +80,9 @@ module Chess
     end
 
     def pawn_can_attack?(move, pawn)
-      if tile.color == 'black'
+      if pawn.color == 'black'
         black_pawn_can_attack?(move, pawn)
-      elsif tile.color == 'white'
+      elsif pawn.color == 'white'
         white_pawn_can_attack?(move, pawn)
       end
     end
@@ -106,10 +108,10 @@ module Chess
 
       blocking_coordinates = coordinates_between_king_and_checking_piece(king, piece)
 
-      blocking_coordinates.any? { |coordinate| friendly_can_move_to_blocking_coordinate?(coordinate) }
+      blocking_coordinates.any? { |coordinate| friendly_can_move_to_blocking_coordinate?(king, coordinate) }
     end
 
-    def friendly_can_move_to_blocking_coordinate?(coordinate)
+    def friendly_can_move_to_blocking_coordinate?(king, coordinate)
       board.board.each do |row|
         row.each do |tile|
           next if tile.is_a?(String) || tile == king || tile.color != king.color
@@ -123,26 +125,26 @@ module Chess
     end
 
     def coordinates_between_king_and_checking_piece(king, piece)
+      binding.pry
       king_x = king.coordinate[0]
       king_y = king.coordinate[1]
       enemy_x = piece.coordinate[0]
       enemy_y = piece.coordinate[1]
-      enemy_positions(king_x, king_y, enemy_x, enemy_y)
+      enemy_position(king_x, king_y, enemy_x, enemy_y)
     end
 
     def enemy_position(king_x, king_y, enemy_x, enemy_y)
-      case enemy_position
-      when bottom_right?(king_x, king_y, enemy_x, enemy_y)
+      if bottom_right?(king_x, king_y, enemy_x, enemy_y)
         bottom_right
-      when bottom_left?(king_x, king_y, enemy_x, enemy_y)
+      elsif bottom_left?(king_x, king_y, enemy_x, enemy_y)
         bottom_left
-      when top_right?(king_x, king_y, enemy_x, enemy_y)
+      elsif top_right?(king_x, king_y, enemy_x, enemy_y)
         top_right
-      when top_left?(king_x, king_y, enemy_x, enemy_y)
+      elsif top_left?(king_x, king_y, enemy_x, enemy_y)
         top_left
-      when horizontal?(king_x, king_y, enemy_x, enemy_y)
+      elsif horizontal?(king_x, king_y, enemy_x, enemy_y)
         horizontal(king_x, king_y, enemy_x, enemy_y)
-      when vertical?(king_x, king_y, enemy_x, enemy_y)
+      elsif vertical?(king_x, king_y, enemy_x, enemy_y)
         vertical(king_x, king_y, enemy_x, enemy_y)
       end
     end

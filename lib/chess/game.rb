@@ -34,6 +34,7 @@ module Chess
     def two_player_mode
       setup_two_player_game
       referee.find_kings
+      referee.find_rooks
       game_loop
     end
 
@@ -54,6 +55,7 @@ module Chess
     def player_selection
       display_board(board.board)
       select_piece
+      return execute_castling if referee.valid_castling?(selection, current_player)
       return invalid_selection_input unless valid_input?(selection)
 
       translate_selection
@@ -198,6 +200,10 @@ module Chess
       return revert_execution if referee.current_player_checked?(current_player)
 
       remove_moves_and_captures
+    end
+
+    def execute_castling
+      board.execute_castling(selection, current_player)
     end
 
     def revert_execution

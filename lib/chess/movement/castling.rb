@@ -50,10 +50,14 @@ module Chess
       king_coordinate = castled_king_coordinate(rook)
       board.board.each do |row|
         row.each do |tile|
-          next if tile == ''
+          next if tile.is_a?(String)
           next if tile.color == king.color
 
-          return pawn_possibilities(tile) if tile.class == Pawn
+          if tile.class == Pawn
+            return true if pawn_can_attack_castling?(tile)
+
+            next
+          end
 
           return true if tile.movements.include?(king_coordinate)
         end
@@ -61,11 +65,11 @@ module Chess
       false
     end
 
-    def pawn_possibilities(tile)
+    def pawn_can_attack_castling?(tile)
       if tile.color == 'black'
-        tile.coordinate == [7, 6] || [1, 6]
+        tile.coordinate == [7, 6] || tile.coordinate == [1, 6]
       elsif tile.color == 'white'
-        tile.coordinate == [7, 1] || [1, 1]
+        tile.coordinate == [7, 1] || tile.coordinate == [1, 1]
       end
     end
 

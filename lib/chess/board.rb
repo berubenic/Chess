@@ -27,6 +27,87 @@ module Chess
       setup_black_pieces
     end
 
+    def execute_castling(selection, player)
+      execute_long_castling(player) if selection == 'long castle'
+      execute_short_castling(player) if selection == 'short castle'
+    end
+
+    def execute_short_castling(player)
+      if player.color == 'white'
+        remove_white_pieces_for_short_castling
+      elsif player.color == 'black'
+        remove_black_pieces_for_short_castling
+      end
+    end
+
+    def execute_long_castling(player)
+      if player.color == 'white'
+        remove_white_pieces_for_long_castling
+      elsif player.color == 'black'
+        remove_black_pieces_for_long_castling
+      end
+    end
+
+    def remove_white_pieces_for_short_castling
+      king = board[7][4]
+      rook = board[7][7]
+      board[7][4] = ''
+      board[7][7] = ''
+      place_white_pieces_for_short_castling(king, rook)
+    end
+
+    def place_white_pieces_for_short_castling(king, rook)
+      board[7][6] = king
+      board[7][5] = rook
+      king.update_coordinate([6, 7])
+      rook.update_coordinate([5, 7])
+    end
+
+    def remove_white_pieces_for_long_castling
+      king = board[7][4]
+      rook = board[7][0]
+      board[7][4] = ''
+      board[7][0] = ''
+      place_white_pieces_for_long_castling(king, rook)
+    end
+
+    def place_white_pieces_for_long_castling(king, rook)
+      board[7][2] = king
+      board[7][3] = rook
+      king.update_coordinate([2, 7])
+      rook.update_coordinate([3, 7])
+    end
+
+    def remove_black_pieces_for_short_castling
+      king = board[0][4]
+      rook = board[0][7]
+      board[0][4] = ''
+      board[0][7] = ''
+      place_black_pieces_for_short_castling(king, rook)
+    end
+
+    def place_black_pieces_for_short_castling(king, rook)
+      board[0][6] = king
+      board[0][5] = rook
+      king.update_coordinate([6, 0])
+      rook.update_coordinate([5, 0])
+    end
+
+    def remove_black_pieces_for_long_castling
+      king = board[0][4]
+      rook = board[0][0]
+      board[0][4] = ''
+      board[0][0] = ''
+      place_black_pieces_for_long_castling(king, rook)
+    end
+
+    def place_black_pieces_for_long_castling(king, rook)
+      board[0][2] = king
+      board[0][3] = rook
+      king.update_coordinate([2, 0])
+      rook.update_coordinate([3, 0])
+    end
+
     def execute_move(action, selection)
       piece = find_tile(selection)
       piece.update_coordinate(action)
@@ -38,7 +119,7 @@ module Chess
     end
 
     def update_captured_piece(action)
-      @captured_piece = if board[action[1]][action[0]] == ''
+      @captured_piece = if board[action[1]][action[0]].is_a?(String)
                           nil
                         else
                           board[action[1]][action[0]]

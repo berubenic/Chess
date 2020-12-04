@@ -72,6 +72,17 @@ module Chess
     def update_board(action, selection, piece)
       board[selection[1]][selection[0]] = ''
       board[action[1]][action[0]] = piece
+      return unless piece.is_a?(Pawn) && piece.en_passant_captures.include?(action)
+
+      update_en_passant_execution(action, selection, piece)
+    end
+
+    def update_en_passant_execution(action, selection, piece)
+      return if piece.en_passant_captures.nil?
+
+      board[action[1] - 1][action[0]] = '' if selection[1] == 4
+
+      board[action[1] + 1][action[0]] = '' if selection[1] == 3
     end
 
     def add_moves(moves)

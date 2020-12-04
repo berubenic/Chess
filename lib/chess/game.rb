@@ -211,7 +211,7 @@ module Chess
     def remove_moves_and_captures
       board.remove_moves(movements, action) unless no_movements?
       board.remove_captures(captures, action) unless no_captures?
-      board.remove_en_passant_capture(action, selection) unless no_en_passant?
+      board.remove_en_passant_capture(en_passant_captures, action) unless no_en_passant?
       revert_moves_and_captures
     end
 
@@ -221,6 +221,7 @@ module Chess
       revert_captures
       revert_movements
       revert_en_passant
+      revert_captured_piece
     end
 
     # revert variables
@@ -243,6 +244,10 @@ module Chess
 
     def revert_en_passant
       @en_passant_captures = []
+    end
+
+    def revert_captured_piece
+      board.reset_captured_piece
     end
 
     private

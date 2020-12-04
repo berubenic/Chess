@@ -22,12 +22,20 @@ class String
     "\e[97m#{self}"
   end
 
+  def default
+    "\e[39m#{self}"
+  end
+
   def black
     "\e[30m#{self}"
   end
 
   def red
     "\e[31m#{self}"
+  end
+
+  def green
+    "\e[92m#{self}"
   end
 
   def bg_red

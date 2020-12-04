@@ -26,7 +26,7 @@ module Chess
     def ask_game_mode
       prompt = TTY::Prompt.new
       choices = { single_player: 1, local_multiplayer: 2 }
-      prompt.select('Select a game mode.'.bg_default, choices)
+      prompt.select('Select a game mode.', choices)
     end
 
     def clear
@@ -37,50 +37,50 @@ module Chess
       clear
       title_message
       prompt = TTY::Prompt.new
-      prompt.ask("What is your name? (#{player})").bg_default
+      prompt.ask("What is your name? (#{player})")
     end
 
     def welcome_player_message(name, color)
-      puts "Welcome, #{name}. You are assigned the #{color} pieces.".bg_default
+      puts "Welcome, #{name}. You are assigned the #{color} pieces."
       sleep 1.5
     end
 
     def ask_to_select_piece(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a piece to move. (ex. A1)".bg_default)
+      prompt.ask("#{player.name}, select a piece to move. (ex. A1)".default.bg_default)
     end
 
     def ask_to_select_movement_or_capture(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)".bg_default)
+      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)".default.bg_default)
     end
 
     def invalid_movement_or_capture_message
-      puts 'Invalid movement or capture, please try again.'.bg_default
+      puts 'Invalid movement or capture, please try again.'.red.bg_default
       sleep 2
       clear
     end
 
     def invalid_input_message
-      puts 'Invalid input, please try again.'.bg_default
+      puts 'Invalid input, please try again.'.red.bg_default
       sleep 2
       clear
     end
 
     def invalid_selection_message
-      puts 'Invalid selection, please select a valid piece.'.bg_default
+      puts 'Invalid selection, please select a valid piece.'.red.bg_default
       sleep 2
       clear
     end
 
     def no_movements_or_captures_message
-      puts 'No possible moves or captures, please select a valid piece.'.bg_default
+      puts 'No possible moves or captures, please select a valid piece.'.red.bg_default
       sleep 2
       clear
     end
 
     def king_is_in_check_message
-      puts 'You put your king in check! Please try again!'
+      puts 'You put your king in check! Please try again!'.red.bg_default
       sleep 2
       clear
     end
@@ -88,7 +88,7 @@ module Chess
     def player_is_in_check_warning
       clear
       display_board(board.board)
-      puts 'Warning! Your king is in check!'
+      puts 'Warning! Your king is in check!'.red.bg_default
       sleep 2
       clear
     end
@@ -96,7 +96,7 @@ module Chess
     def draw
       clear
       display_board(board.board)
-      puts "It's a draw... #{current_player.name} is stalemated..."
+      puts "It's a draw... #{current_player.name} is stalemated...".default.bg_default
       sleep 5
       clear
       load './example/example.rb'
@@ -105,7 +105,7 @@ module Chess
     def game_over
       clear
       display_board(board.board)
-      puts "Game over! #{current_player.name} has won!"
+      puts "Game over! #{current_player.name} has won!".default.bg_default
       sleep 5
       clear
       load './example/example.rb'
@@ -113,15 +113,15 @@ module Chess
 
     def display_board(board)
       clear
-      puts COLUMN_HEADER.bg_default
+      puts COLUMN_HEADER.default.bg_default
       board.each_with_index do |row, y|
-        print "#{y + 1} ".bg_default
+        print "#{y + 1} ".default.bg_default
         odd_row(row) if y.odd?
         even_row(row) if y.even?
-        print " #{y + 1} ".bg_default
+        print " #{y + 1} ".default.bg_default
         print "\n".bg_default
       end
-      puts COLUMN_HEADER.bg_default
+      puts COLUMN_HEADER.default.bg_default
     end
 
     def odd_row(row)
@@ -157,7 +157,7 @@ module Chess
     def print_tile(tile)
       if tile == ''
         ' '
-      elsif tile == 'o'.white
+      elsif tile == 'o'.green
         tile
       elsif tile == 'x'.red
         tile

@@ -541,6 +541,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -569,6 +570,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -597,6 +599,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -626,6 +629,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -654,6 +658,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -683,6 +688,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left and right en_passant move when enemy has moved two squares' do
@@ -769,6 +775,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -797,6 +804,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -825,6 +833,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -853,6 +862,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -882,6 +892,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do
@@ -910,6 +921,7 @@ module Chess
 
         before do
           allow(enemy).to receive(:class).and_return(Pawn)
+          allow(enemy).to receive(:turns_since_last_move).and_return(0)
         end
 
         it 'assigns @en_passant_captures a left en_passant move when enemy has moved two squares' do

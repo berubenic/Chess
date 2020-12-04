@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 module Chess
   # Board
   class Board
@@ -18,9 +16,10 @@ module Chess
     BLACK_QUEEN = "\u265B".black
     BLACK_KING = "\u265A".black
 
-    attr_accessor :board
+    attr_accessor :board, :captured_piece
     def initialize
       @board = Array.new(8) { Array.new(8, '') }
+      @captured_piece = nil
     end
 
     def setup_board
@@ -34,7 +33,16 @@ module Chess
       piece.moved_from_starting_square
       verify_pawn_moved_two_squares(piece, action, selection)
       update_piece_turn_count(piece)
+      update_captured_piece(action)
       update_board(action, selection, piece)
+    end
+
+    def update_captured_piece(action)
+      @captured_piece = if board[action[1]][action[0]] == ''
+                          nil
+                        else
+                          board[action[1]][action[0]]
+                        end
     end
 
     def update_piece_turn_count(piece)
@@ -68,7 +76,7 @@ module Chess
 
     def add_moves(moves)
       moves.each do |move|
-        board[move[1]][move[0]] = 'o'.white
+        board[move[1]][move[0]] = 'o'.green
       end
     end
 
@@ -88,9 +96,24 @@ module Chess
     def revert_move(action, selection)
       piece = board[action[1]][action[0]]
       board[selection[1]][selection[0]] = piece
-      board[action[1]][action[0]] = ''
+      revert_captured_piece(action)
       piece.update_coordinate(selection)
       piece.has_not_moved_from_starting_square if piece.starting_coordinate == selection
+    end
+
+    def revert_captured_piece(action)
+      captured_piece&.remove_can_be_captured
+
+      board[action[1]][action[0]] = if captured_piece.nil?
+                                      ''
+                                    else
+                                      captured_piece
+                                    end
+      @captured_piece = nil
+    end
+
+    def reset_captured_piece
+      @captured_piece = nil
     end
 
     def remove_moves(moves, action)
@@ -110,11 +133,11 @@ module Chess
       end
     end
 
-    def remove_en_passant_capture(action, selection)
-      if selection[1] == 4
-        board[action[1] - 1][action[0]] = ''
-      elsif selection[1] == 3
-        board[action[1] + 1][action[0]] = ''
+    def remove_en_passant_capture(en_passant_captures, action)
+      en_passant_captures.each do |capture|
+        next if capture == action
+
+        board[capture[1]][capture[0]] = ''
       end
     end
 

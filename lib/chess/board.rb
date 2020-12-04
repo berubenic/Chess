@@ -3,6 +3,8 @@
 module Chess
   # Board
   class Board
+    include PawnPromotion
+
     WHITE_PAWN = "\u2659".white
     WHITE_ROOK = "\u2656".white
     WHITE_KNIGHT = "\u2658".white
@@ -25,6 +27,14 @@ module Chess
     def setup_board
       setup_white_pieces
       setup_black_pieces
+    end
+
+    def verify_pawn_promotion(player)
+      if player.color == 'white'
+        white_pawn_promotion
+      elsif player.color == 'black'
+        black_pawn_promotion
+      end
     end
 
     def execute_castling(selection, player)

@@ -44,6 +44,7 @@ module Chess
 
         player_is_in_check_warning if referee.current_player_checked?(current_player)
         player_selection
+        board.verify_pawn_promotion(current_player)
         return game_over if referee.enemy_player_checkmated?(current_player)
 
         switch_player

@@ -157,7 +157,6 @@ module Chess
     end
 
     def castling(king, rook)
-      binding.pry
       return unvalid_castling(king, rook) if king.check
 
       short_castling(king, rook)

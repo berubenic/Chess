@@ -46,8 +46,9 @@ module Chess
     end
 
     def ask_to_select_piece(player)
+      puts "#{player.name}, enter the coordinate of the piece you wish to move. (ex. A1) \n If castling, enter 'short castle' or 'long castle'".default.bg_default
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, enter the coordinate of the piece you wish to move. (ex. A1) \n If castling, enter 'short castle' or 'long castle'".default.bg_default)
+      prompt.ask
     end
 
     def ask_to_select_movement_or_capture(player)

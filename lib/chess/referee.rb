@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Chess
   # looks for check, checkmate, stalemate and castling
   class Referee

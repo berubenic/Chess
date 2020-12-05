@@ -45,7 +45,9 @@ module Chess
           tile.possible_captures
           next if tile.captures.nil?
 
-          return true if tile.captures.include?(piece.coordinate)
+          if tile.captures.include?(piece.coordinate) && king.captures.all? { |move| can_not_be_attacked?(move, king) }
+            return true
+          end
         end
       end
       false
@@ -63,6 +65,9 @@ module Chess
     # mate
 
     def can_not_be_attacked?(move, king)
+      # remove piece from board temporarily
+      holding_piece = board.board[move[1]][move[0]]
+      board.board[move[1]][move[0]] = ''
       board.board.each do |row|
         row.each do |tile|
           next if tile.is_a?(String) || tile == king || tile.color == king.color
@@ -73,10 +78,15 @@ module Chess
             next
           end
           tile.possible_movements
-          next if tile.movements.nil?
-          return false if tile.movements.include?(move)
+          tile.possible_captures
+
+          if tile.movements.include?(move) || tile.captures.include?(move)
+            board.board[move[1]][move[0]] = holding_piece
+            return false
+          end
         end
       end
+      board.board[move[1]][move[0]] = holding_piece
       true
     end
 

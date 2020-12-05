@@ -50,8 +50,7 @@ module Chess
       king_coordinate = castled_king_coordinate(rook)
       board.board.each do |row|
         row.each do |tile|
-          next if tile.is_a?(String)
-          next if tile.color == king.color
+          next if tile.is_a?(String) || tile.color == king.color
 
           if tile.class == Pawn
             return true if pawn_can_attack_castling?(tile)

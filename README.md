@@ -43,6 +43,7 @@ $ bundle install
 - These tests helped me move forward with confidence.
 - Not putting enough thought in how my Game class was going to interact with my other classes left me in tough spot as most of my code was already written and tested.
 - Refactoring is still needed to keep my code as DRY as possible. Further tests would be needed. 
+- Commit history should tell a better story. I failed to keep a consistent format.
 
 
 

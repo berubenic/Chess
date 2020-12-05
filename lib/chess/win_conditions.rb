@@ -1,6 +1,7 @@
-require 'pry'
+# frozen_string_literal: true
 
 module Chess
+  # checkmate and stalemate
   module WinConditions
     def can_kill_future_checking_piece?(king)
       king.movements.each do |move|

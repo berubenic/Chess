@@ -1,0 +1,596 @@
+---
+board: &1 !ruby/object:Chess::Board
+  board:
+  - - &7 !ruby/object:Chess::Rook
+      short_castling: false
+      long_castling: false
+      content: "\e[30m♜"
+      coordinate:
+      - 0
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 0
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Knight
+      content: "\e[30m♞"
+      coordinate:
+      - 1
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 1
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Bishop
+      content: "\e[30m♝"
+      coordinate:
+      - 2
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 2
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Queen
+      content: "\e[30m♛"
+      coordinate:
+      - 3
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 3
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - &3 !ruby/object:Chess::King
+      check: false
+      mate: false
+      stalemate: false
+      short_castling: false
+      long_castling: false
+      content: "\e[30m♚"
+      coordinate:
+      - 4
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 4
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Bishop
+      content: "\e[30m♝"
+      coordinate:
+      - 5
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 5
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Knight
+      content: "\e[30m♞"
+      coordinate:
+      - 6
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 6
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - &5 !ruby/object:Chess::Rook
+      short_castling: false
+      long_castling: false
+      content: "\e[30m♜"
+      coordinate:
+      - 7
+      - 0
+      board: *1
+      color: black
+      starting_coordinate:
+      - 7
+      - 0
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+  - - ''
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 1
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 1
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 2
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 2
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 3
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 3
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 4
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 4
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 5
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 5
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 6
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 6
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 7
+      - 1
+      board: *1
+      color: black
+      starting_coordinate:
+      - 7
+      - 1
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - !ruby/object:Chess::Pawn
+      two_squared: true
+      en_passant_captures: []
+      content: "\e[30m♟"
+      coordinate:
+      - 0
+      - 3
+      board: *1
+      color: black
+      starting_coordinate:
+      - 0
+      - 1
+      movements:
+      - - 0
+        - 2
+      - - 0
+        - 3
+      captures: []
+      moved: true
+      capturable: false
+      turns_since_last_move: 0
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - !ruby/object:Chess::Pawn
+      two_squared: true
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 0
+      - 4
+      board: *1
+      color: white
+      starting_coordinate:
+      - 0
+      - 6
+      movements:
+      - - 0
+        - 5
+      - - 0
+        - 4
+      captures: []
+      moved: true
+      capturable: false
+      turns_since_last_move: 1
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+  - - ''
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 1
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 1
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 2
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 2
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 3
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 3
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 4
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 4
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 5
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 5
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 6
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 6
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Pawn
+      two_squared: false
+      en_passant_captures: []
+      content: "\e[97m♙"
+      coordinate:
+      - 7
+      - 6
+      board: *1
+      color: white
+      starting_coordinate:
+      - 7
+      - 6
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+  - - &6 !ruby/object:Chess::Rook
+      short_castling: false
+      long_castling: false
+      content: "\e[97m♖"
+      coordinate:
+      - 0
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 0
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Knight
+      content: "\e[97m♘"
+      coordinate:
+      - 1
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 1
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Bishop
+      content: "\e[97m♗"
+      coordinate:
+      - 2
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 2
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Queen
+      content: "\e[97m♕"
+      coordinate:
+      - 3
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 3
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - &2 !ruby/object:Chess::King
+      check: false
+      mate: false
+      stalemate: false
+      short_castling: false
+      long_castling: false
+      content: "\e[97m♔"
+      coordinate:
+      - 4
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 4
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Bishop
+      content: "\e[97m♗"
+      coordinate:
+      - 5
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 5
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - !ruby/object:Chess::Knight
+      content: "\e[97m♘"
+      coordinate:
+      - 6
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 6
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+    - &4 !ruby/object:Chess::Rook
+      short_castling: false
+      long_castling: false
+      content: "\e[97m♖"
+      coordinate:
+      - 7
+      - 7
+      board: *1
+      color: white
+      starting_coordinate:
+      - 7
+      - 7
+      movements: []
+      captures: []
+      moved: false
+      capturable: false
+      turns_since_last_move: 2
+  captured_piece: 
+referee: !ruby/object:Chess::Referee
+  board: *1
+  white_king: *2
+  black_king: *3
+  short_white_rook: *4
+  short_black_rook: *5
+  long_white_rook: *6
+  long_black_rook: *7
+  checking_piece: 
+  futur_checking_pieces: []
+player_one: &8 !ruby/struct:Chess::Game::Player
+  name: '1'
+  color: white
+player_two: !ruby/struct:Chess::Game::Player
+  name: '2'
+  color: black
+current_player: *8
+selection: s
+action: 
+movements: []
+captures: []
+en_passant_captures: []

@@ -7,6 +7,7 @@ module Chess
   class Game
     include Display
     include Translator
+    include SaveLoad
 
     attr_reader :board, :player_one, :player_two, :current_player, :referee, :selection, :action, :movements, :captures, :en_passant_captures
 
@@ -28,7 +29,12 @@ module Chess
     def intro
       title_message
       welcome_message
-      two_player_mode if ask_game_mode == 2
+      case ask_game_mode
+      when 1
+        two_player_mode
+      when 2
+        load_game
+      end
     end
 
     def two_player_mode
@@ -56,6 +62,7 @@ module Chess
     def player_selection
       display_board(board.board)
       select_piece
+      return define_game_state if selection == 's'
       return execute_castling if referee.valid_castling?(selection, current_player)
       return invalid_selection_input unless valid_input?(selection)
 

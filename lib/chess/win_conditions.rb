@@ -125,27 +125,26 @@ module Chess
     end
 
     def coordinates_between_king_and_checking_piece(king, piece)
-      binding.pry
       king_x = king.coordinate[0]
       king_y = king.coordinate[1]
       enemy_x = piece.coordinate[0]
       enemy_y = piece.coordinate[1]
-      enemy_position(king_x, king_y, enemy_x, enemy_y)
+      enemy_position(king_x, king_y, enemy_x, enemy_y, piece)
     end
 
-    def enemy_position(king_x, king_y, enemy_x, enemy_y)
+    def enemy_position(king_x, king_y, enemy_x, enemy_y, piece)
       if bottom_right?(king_x, king_y, enemy_x, enemy_y)
-        bottom_right
+        bottom_right(piece.coordinate)
       elsif bottom_left?(king_x, king_y, enemy_x, enemy_y)
-        bottom_left
+        bottom_left(piece.coordinate)
       elsif top_right?(king_x, king_y, enemy_x, enemy_y)
-        top_right
+        top_right(piece.coordinate)
       elsif top_left?(king_x, king_y, enemy_x, enemy_y)
-        top_left
+        top_left(piece.coordinate)
       elsif horizontal?(king_x, king_y, enemy_x, enemy_y)
-        horizontal(king_x, king_y, enemy_x, enemy_y)
+        horizontal(king_x, king_y, enemy_x, enemy_y, piece.coordinate)
       elsif vertical?(king_x, king_y, enemy_x, enemy_y)
-        vertical(king_x, king_y, enemy_x, enemy_y)
+        vertical(king_x, king_y, enemy_x, enemy_y, piece.coordinate)
       end
     end
 
@@ -165,77 +164,102 @@ module Chess
       king_x < enemy_x && king_y < enemy_y
     end
 
-    def horizontal?(king_x, _king_y, enemy_x, _enemy_y)
-      king_x == enemy_x
-    end
-
-    def vertical?(_king_x, king_y, _enemy_x, enemy_y)
+    def horizontal?(_king_x, king_y, _enemy_x, enemy_y)
       king_y == enemy_y
     end
 
-    def bottom_right(result = [], current_coordinate = checking_piece.coordinate)
+    def vertical?(king_x, _king_y, enemy_x, _enemy_y)
+      king_x == enemy_x
+    end
+
+    def bottom_right(current_coordinate, result = [])
       shift = [1, 1]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      bottom_right(result, current_coordinate)
+      bottom_right(current_coordinate, result)
     end
 
-    def bottom_left(result = [], current_coordinate = checking_piece.coordinate)
+    def bottom_left(current_coordinate, result = [])
       shift = [-1, 1]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      bottom_left(result, current_coordinate)
+      bottom_left(current_coordinate, result)
     end
 
-    def top_right(result = [], current_coordinate = checking_piece.coordinate)
+    def top_right(current_coordinate, result = [])
       shift = [1, -1]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      top_right(result, current_coordinate)
+      top_right(current_coordinate, result)
     end
 
-    def top_left(result = [], current_coordinate = checking_piece.coordinate)
+    def top_left(current_coordinate, result = [])
       shift = [-1, -1]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      top_left(result, current_coordinate)
+      top_left(current_coordinate, result)
     end
 
-    def horizontal(king_x, _king_y, enemy_x, _enemy_y)
-      return left_horizontal if king_x < enemy_x
-      return right_horizontal if king x > enemy_x
+    def horizontal(king_x, _king_y, enemy_x, _enemy_y, coordinate)
+      return left_horizontal(coordinate) if king_x < enemy_x
+      return right_horizontal(coordinate) if king x > enemy_x
     end
 
-    def left_horizontal(result = [], current_coordinate = checking_piece.coordinate)
+    def left_horizontal(current_coordinate, result = [])
       shift = [-1, 0]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      left_horizontal(result, current_coordinate)
+      left_horizontal(current_coordinate, result)
     end
 
-    def right_horizontal(result = [], current_coordinate = checking_piece.coordinate)
-      shift = [-1, 0]
+    def right_horizontal(current_coordinate, result = [])
+      shift = [1, 0]
       coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
       return result unless board.board[coordinate[1]][coordinate[0]] == ''
 
       result << coordinate
       current_coordinate = coordinate
-      right_horizontal(result, current_coordinate)
+      right_horizontal(current_coordinate, result)
+    end
+
+    def vertical(_king_x, _king_y, _enemy_x, _enemy_y, coordinate)
+      return top_vertical(coordinate) if king_y < enemy_y
+      return bottom_vertical(coordinate) if king y > enemy_y
+    end
+
+    def top_vertical(current_coordinate, result = [])
+      shift = [0, -1]
+      coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
+      return result unless board.board[coordinate[1]][coordinate[0]] == ''
+
+      result << coordinate
+      current_coordinate = coordinate
+      top_vertical(current_coordinate, result)
+    end
+
+    def bottom_vertical(current_coordinate, result = [])
+      shift = [0, 1]
+      coordinate = [current_coordinate[0] + shift[0], current_coordinate[1] + shift[1]]
+      return result unless board.board[coordinate[1]][coordinate[0]] == ''
+
+      result << coordinate
+      current_coordinate = coordinate
+      bottom_vertical(current_coordinate, result)
     end
   end
 end

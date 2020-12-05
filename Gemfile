@@ -6,5 +6,5 @@ gemspec
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem 'pry-byebug'
-gem 'figlet'
+gem 'ruby_figlet'
 gem "tty-prompt"

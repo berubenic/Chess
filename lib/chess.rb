@@ -6,7 +6,7 @@ require_relative 'chess/version'
 module Chess
 end
 
-require 'observer'
+require_relative './chess/save_load'
 require_relative './string'
 require_relative './chess/display'
 require_relative './chess/translator'

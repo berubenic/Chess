@@ -25,7 +25,7 @@ module Chess
 
     def ask_game_mode
       prompt = TTY::Prompt.new
-      choices = { single_player: 1, local_multiplayer: 2 }
+      choices = { Play: 1, Load: 2 }
       prompt.select('Select a game mode.', choices)
     end
 
@@ -46,7 +46,7 @@ module Chess
     end
 
     def ask_to_select_piece(player)
-      puts "#{player.name}, enter the coordinate of the piece you wish to move. (ex. A1) \n If castling, enter 'short castle' or 'long castle'".default.bg_default
+      puts "#{player.name}, enter the coordinate of the piece you wish to move. (ex. A1) \nIf castling, enter 'short castle' or 'long castle' \nEnter 's' to save.".default.bg_default
       prompt = TTY::Prompt.new
       prompt.ask
     end
@@ -98,7 +98,8 @@ module Chess
       clear
       display_board(board.board)
       puts "It's a draw... #{current_player.name} is stalemated...".default.bg_default
-      sleep 5
+      prompt = TTY::Prompt.new
+      prompt.keypress('Press space or enter to continue', keys: %i[space return])
       clear
       load './example/example.rb'
     end
@@ -107,7 +108,8 @@ module Chess
       clear
       display_board(board.board)
       puts "Game over! #{current_player.name} has won!".default.bg_default
-      sleep 5
+      prompt = TTY::Prompt.new
+      prompt.keypress('Press space or enter to continue', keys: %i[space return])
       clear
       load './example/example.rb'
     end
@@ -123,6 +125,7 @@ module Chess
         print "\n".bg_default
       end
       puts COLUMN_HEADER.default.bg_default
+      puts
     end
 
     def odd_row(row)

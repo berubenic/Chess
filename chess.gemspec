@@ -6,10 +6,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Nicholas']
   spec.email         = ['berubenic@gmail.com']
 
-  spec.summary       = 'fix'
-  spec.description   = 'fix'
+  spec.summary       = 'CLI Chess game'
+  spec.description   = 'CLI Chess game'
   spec.homepage      = 'https://github.com/berubenic/Chess'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.6.5')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/berubenic/Chess'

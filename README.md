@@ -1,36 +1,52 @@
 # Chess
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/Chess`. To experiment with that code, run `bin/console` for an interactive prompt.
+CLI Chess game made with Ruby.
+This is the final project of the Ruby Track from [The Odin Project](https://www.theodinproject.com/courses/ruby-programming/lessons/ruby-final-project?ref=lnav)
 
-TODO: Delete this and the text above, and describe your gem
+## Requirements
+- [Ruby](https://www.ruby-lang.org/en/) >= 2.6.5
+- [Bundler](https://bundler.io/) >= 2.1.2
 
 ## Installation
 
-Add this line to your application's Gemfile:
+- Clone the repo locally.
+
+- `cd` into the directory.
+
+- And then execute:
 
 ```ruby
-gem 'Chess'
+$ bundle install
 ```
 
-And then execute:
+## Demo
 
-    $ bundle install
+## How to Play
 
-Or install it yourself as:
+- Run `ruby game/game.rb`
+- Select Play or Load (to play a previously saved game)
 
-    $ gem install Chess
+## Play Online
 
-## Usage
+- Play in your browser with [repl.it](##)
 
-TODO: Write usage instructions here
+## Gems Used
 
-## Development
+- [tty-prompt](https://github.com/piotrmurach/tty-prompt)
+  - For player input and menus
+- [figlet](https://github.com/tim/figlet)
+  - For creating the title
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Project Review
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- Tests were written for all piece movements, captures and win conditions.
+- These tests helped me move forward with confidence.
+- Not putting enough thought in how my Game class was going to interact with my other classes left me in tough spot as most of my code was already written and tested.
+- Refactoring is still needed to keep my code as DRY as possible. Further tests would be needed. 
 
-## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/Chess.
+
+
+
+
 

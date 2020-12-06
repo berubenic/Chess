@@ -6,15 +6,80 @@ module Chess
     include PawnPromotion
     include InitialSetup
 
+    attr_reader :board
+
     attr_accessor :board, :captured_piece
-    def initialize
-      @board = Array.new(8) { Array.new(8, '') }
+
+    def initialize(board: Array.new(8) { Array.new(8, '') })
+      @board = board
       @captured_piece = nil
     end
 
     def setup_board
       setup_white_pieces
       setup_black_pieces
+    end
+
+    def find_king(player)
+      board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String)
+          return tile if tile.is_a?(King) && tile.color == player.color
+        end
+      end
+    end
+
+    def find_rook(player, selection)
+      x_coordinate = short_or_long_rook_x_coordinate(selection)
+      board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String)
+          return tile if tile.is_a?(Rook) && tile.color == player.color && tile.coordinate[0] == x_coordinate
+        end
+      end
+    end
+
+    def short_or_long_rook_x_coordinate(selection)
+      return 7 if selection == 'short castle'
+      return 0 if selection == 'long castle'
+    end
+
+    def tiles_between_two_pieces(coordinate_one, coordinate_two, direction, result = [])
+      current_coordinate = coordinate_one
+      next_coordinate = [current_coordinate[0] + direction[0], current_coordinate[1] + direction[1]]
+      return result if next_coordinate == coordinate_two
+
+      result << find_tile(next_coordinate)
+
+      current_coordinate = next_coordinate
+
+      tiles_between_two_pieces(current_coordinate, coordinate_two, direction, result)
+    end
+
+    def empty_tiles_between_king_and_rook?(king, rook, direction = nil)
+      if king.coordinate[0] > rook.coordinate[0]
+        direction = [-1, 0]
+      elsif king.coordinate[0] < rook.coordinate[0]
+        direction = [1, 0]
+      end
+      tiles_between_two_pieces(king.coordinate, rook.coordinate, direction).all? { |tile| tile.is_a?(String) }
+    end
+
+    def tile_can_be_attacked?(coordinate, friendly_color)
+      board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String) || tile.color == friendly_color
+
+          if tile.class == Pawn
+            return true if tile.can_attack_tile?(coordinate)
+
+            next
+          end
+          tile.possible_movements
+          return true if tile.movements.include?(coordinate)
+        end
+      end
+      false
     end
 
     # placing pieces
@@ -83,16 +148,16 @@ module Chess
       end
     end
 
+    def add_en_passant(captures)
+      captures.each do |capture|
+        board[capture[1]][capture[0]] = 'x'.red
+      end
+    end
+
     def add_captures(captures)
       captures.each do |capture|
         piece = board[capture[1]][capture[0]]
         piece.can_be_captured
-      end
-    end
-
-    def add_en_passant(captures)
-      captures.each do |capture|
-        board[capture[1]][capture[0]] = 'x'.red
       end
     end
 
@@ -129,20 +194,20 @@ module Chess
       end
     end
 
+    def remove_en_passant_capture(en_passant_captures, action)
+      en_passant_captures.each do |capture|
+        next if capture == action
+
+        board[capture[1]][capture[0]] = ''
+      end
+    end
+
     def remove_captures(captures, action)
       captures.each do |capture|
         next if capture == action
 
         piece = board[capture[1]][capture[0]]
         piece.remove_can_be_captured
-      end
-    end
-
-    def remove_en_passant_capture(en_passant_captures, action)
-      en_passant_captures.each do |capture|
-        next if capture == action
-
-        board[capture[1]][capture[0]] = ''
       end
     end
 
@@ -169,34 +234,20 @@ module Chess
       end
     end
 
+    def verify_pawn_promotion(player)
+      if player.color == 'white'
+        white_pawn_promotion
+      elsif player.color == 'black'
+        black_pawn_promotion
+      end
+    end
+
     def remove_white_pieces_for_short_castling
       king = board[7][4]
       rook = board[7][7]
       board[7][4] = ''
       board[7][7] = ''
       place_white_pieces_for_short_castling(king, rook)
-    end
-
-    def place_white_pieces_for_short_castling(king, rook)
-      board[7][6] = king
-      board[7][5] = rook
-      king.update_coordinate([6, 7])
-      rook.update_coordinate([5, 7])
-    end
-
-    def remove_white_pieces_for_long_castling
-      king = board[7][4]
-      rook = board[7][0]
-      board[7][4] = ''
-      board[7][0] = ''
-      place_white_pieces_for_long_castling(king, rook)
-    end
-
-    def place_white_pieces_for_long_castling(king, rook)
-      board[7][2] = king
-      board[7][3] = rook
-      king.update_coordinate([2, 7])
-      rook.update_coordinate([3, 7])
     end
 
     def remove_black_pieces_for_short_castling
@@ -207,11 +258,26 @@ module Chess
       place_black_pieces_for_short_castling(king, rook)
     end
 
+    def place_white_pieces_for_short_castling(king, rook)
+      board[7][6] = king
+      board[7][5] = rook
+      king.update_coordinate([6, 7])
+      rook.update_coordinate([5, 7])
+    end
+
     def place_black_pieces_for_short_castling(king, rook)
       board[0][6] = king
       board[0][5] = rook
       king.update_coordinate([6, 0])
       rook.update_coordinate([5, 0])
+    end
+
+    def remove_white_pieces_for_long_castling
+      king = board[7][4]
+      rook = board[7][0]
+      board[7][4] = ''
+      board[7][0] = ''
+      place_white_pieces_for_long_castling(king, rook)
     end
 
     def remove_black_pieces_for_long_castling
@@ -222,19 +288,18 @@ module Chess
       place_black_pieces_for_long_castling(king, rook)
     end
 
+    def place_white_pieces_for_long_castling(king, rook)
+      board[7][2] = king
+      board[7][3] = rook
+      king.update_coordinate([2, 7])
+      rook.update_coordinate([3, 7])
+    end
+
     def place_black_pieces_for_long_castling(king, rook)
       board[0][2] = king
       board[0][3] = rook
       king.update_coordinate([2, 0])
       rook.update_coordinate([3, 0])
-    end
-
-    def verify_pawn_promotion(player)
-      if player.color == 'white'
-        white_pawn_promotion
-      elsif player.color == 'black'
-        black_pawn_promotion
-      end
     end
 
     def find_tile(coordinate)

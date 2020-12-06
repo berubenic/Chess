@@ -932,5 +932,18 @@ module Chess
         end
       end
     end
+    describe '#can_attack_tile?' do
+      let(:pawn) { described_class.new(color: 'black', coordinate: [7, 6]) }
+      it 'returns true' do
+        allow(pawn).to receive(:coordinate).and_return([7, 6])
+        attack_coordinate = [6, 7]
+        expect(pawn.can_attack_tile?(attack_coordinate)).to be true
+      end
+      it 'returns false' do
+        allow(pawn).to receive(:coordinate).and_return([7, 6])
+        attack_coordinate = [7, 7]
+        expect(pawn.can_attack_tile?(attack_coordinate)).to be false
+      end
+    end
   end
 end

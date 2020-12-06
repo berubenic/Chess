@@ -101,7 +101,7 @@ module Chess
       prompt = TTY::Prompt.new
       prompt.keypress('Press space or enter to continue', keys: %i[space return])
       clear
-      load './example/example.rb'
+      load './game/game.rb'
     end
 
     def game_over
@@ -111,7 +111,7 @@ module Chess
       prompt = TTY::Prompt.new
       prompt.keypress('Press space or enter to continue', keys: %i[space return])
       clear
-      load './example/example.rb'
+      load './game/game.rb'
     end
 
     def display_board(board)

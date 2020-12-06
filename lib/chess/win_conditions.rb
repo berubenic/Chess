@@ -46,11 +46,35 @@ module Chess
           next if tile.captures.nil?
 
           if tile.captures.include?(piece.coordinate) && king.captures.all? { |move| can_not_be_attacked?(move, king) }
-            return true
+            return true if does_not_cause_check?(tile, king)
           end
         end
       end
       false
+    end
+
+    def does_not_cause_check?(piece)
+      board.board[piece.coordinate[1]][piece.coordinate[0]] = ''
+      board.board.each do |row|
+        row.each do |tile|
+          next if tile.is_a?(String) || tile == king || tile.color == king.color
+
+          if tile.is_a?(Pawn)
+            return false if pawn_can_attack?(move, tile)
+
+            next
+          end
+          tile.possible_movements
+          tile.possible_captures
+
+          if tile.movements.include?(piece.coordinate) || tile.captures.include?(piece.coordinate)
+            board.board[piece.coordinate[1]][piece.coordinate[0]] = piece
+            return false
+          end
+        end
+      end
+      board.board[piece.coordinate[1]][piece.coordinate[0]] = piece
+      true
     end
 
     def king_can_avoid_attack?(king)
@@ -89,6 +113,26 @@ module Chess
       board.board[move[1]][move[0]] = holding_piece
       true
     end
+
+    # def can_not_be_attacked?(move, king)
+    #  board.board[move[1]][move[0]] = ''
+    #  board.board.each do |row|
+    #    row.each do |tile|
+    #      next if tile.is_a?(String) || tile == king || tile.color == king.color
+    #
+    #      if tile.is_a?(Pawn)
+    #        return false if pawn_can_attack?(move, tile)
+    #
+    #        next
+    #      end
+    #      tile.possible_movements
+    #      tile.possible_captures
+    #
+    #      return false if tile.movements.include?(move) || tile.captures.include?(move)
+    #    end
+    #  end
+    #  true
+    # end
 
     def pawn_can_attack?(move, pawn)
       if pawn.color == 'black'

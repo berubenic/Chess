@@ -130,6 +130,59 @@ module Chess
           expect(referee.stalemate?(black_king)).to be true
         end
       end
+      context 'white king is stalemated' do
+        let(:black_king) { instance_double(King, color: 'black', coordinate: [0, 0]) }
+        let(:black_queen) { instance_double(Queen, color: 'black', coordinate: [0, 3]) }
+        let(:black_rook_1) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
+        let(:black_knight_1) { instance_double(Knight, color: 'black', coordinate: [0, 1]) }
+        let(:black_knight_2) { instance_double(Knight, color: 'black', coordinate: [0, 6]) }
+        let(:black_rook_2) { instance_double(Rook, color: 'black', coordinate: [0, 7]) }
+        let(:black_pawn_1) { instance_double(Pawn, color: 'black', coordinate: [1, 0]) }
+        let(:black_pawn_2) { instance_double(Pawn, color: 'black', coordinate: [1, 1]) }
+        let(:black_pawn_3) { instance_double(Pawn, color: 'black', coordinate: [6, 1]) }
+        let(:black_pawn_4) { instance_double(Pawn, color: 'black', coordinate: [7, 1]) }
+        let(:black_pawn_5) { instance_double(Pawn, color: 'black', coordinate: [3, 2]) }
+        let(:black_pawn_6) { instance_double(Pawn, color: 'black', coordinate: [2, 3]) }
+        let(:black_pawn_7) { instance_double(Pawn, color: 'black', coordinate: [5, 4]) }
+        let(:black_pawn_8) { instance_double(Pawn, color: 'black', coordinate: [4, 5]) }
+        let(:black_bishop_1) { instance_double(Bishop, color: 'black', coordinate: [7, 4]) }
+        let(:black_bishop_2) { instance_double(Bishop, color: 'black', coordinate: [1, 5]) }
+
+        let(:white_king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
+        let(:white_queen) { instance_double(Queen, color: 'white', coordinate: [7, 6]) }
+        let(:white_rook_1) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
+        let(:white_knight_1) { instance_double(Knight, color: 'white', coordinate: [6, 7]) }
+        let(:white_knight_2) { instance_double(Knight, color: 'white', coordinate: [3, 6]) }
+        let(:white_rook_2) { instance_double(Rook, color: 'white', coordinate: [6, 5]) }
+        let(:white_pawn_1) { instance_double(Pawn, color: 'white', coordinate: [1, 6]) }
+        let(:white_pawn_2) { instance_double(Pawn, color: 'white', coordinate: [4, 6]) }
+        let(:white_pawn_3) { instance_double(Pawn, color: 'white', coordinate: [6, 6]) }
+        let(:white_pawn_4) { instance_double(Pawn, color: 'white', coordinate: [5, 5]) }
+        let(:white_pawn_5) { instance_double(Pawn, color: 'white', coordinate: [7, 5]) }
+        let(:white_pawn_6) { instance_double(Pawn, color: 'white', coordinate: [0, 4]) }
+        let(:white_pawn_7) { instance_double(Pawn, color: 'white', coordinate: [2, 4]) }
+        let(:white_pawn_8) { instance_double(Pawn, color: 'white', coordinate: [3, 3]) }
+        let(:white_bishop_1) { instance_double(Bishop, color: 'white', coordinate: [2, 7]) }
+        let(:white_bishop_2) { instance_double(Bishop, color: 'white', coordinate: [5, 7]) }
+        let(:array) do
+          [
+            [black_rook_1, black_knight_1, '', '', black_king, '', black_knight_2, black_rook_2],
+            [black_pawn_1, black_pawn_2, '', '', '', '', black_pawn_3, black_pawn_4],
+            ['', '', '', black_pawn_5, '', '', '', ''],
+            [black_queen, '', black_pawn_6, white_pawn_8, '', '', '', ''],
+            [white_pawn_6, '', white_pawn_7, '', '', black_pawn_7, '', black_bishop_1],
+            ['', black_bishop_2, '', '', black_pawn_8, white_pawn_4, white_rook_2, white_pawn_5],
+            ['', white_pawn_1, '', white_knight_1, white_pawn_2, '', white_pawn_3, white_queen],
+            ['', '', white_bishop_1, '', white_king, white_bishop_2, white_knight_2, white_rook_1]
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        let(:referee) { described_class.new(board: board) }
+
+        xit 'returns true' do
+          expect(referee.stalemate?(white_king)).to be true
+        end
+      end
       context 'black king is not stalemated' do
         let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 0]) }
         let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 1]) }
@@ -364,517 +417,6 @@ module Chess
         end
       end
     end
-
-    describe '#castling' do
-      context 'white king is in check' do
-        subject(:referee) { described_class.new }
-        let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
-        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
-        let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 7]) }
-        let(:array) do
-          [
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            [black_rook, '', '', '', white_king, '', '', white_rook]
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(white_king).to receive(:check).and_return(true)
-        end
-
-        it 'does not send #short_castling and #long_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:disallow_short_castling)
-          expect(white_rook).to receive(:disallow_short_castling)
-          expect(white_king).to receive(:disallow_long_castling)
-          expect(white_rook).to receive(:disallow_long_castling)
-          referee.castling(white_king, white_rook)
-        end
-      end
-      context 'short castling for white king and rook' do
-        subject(:referee) { described_class.new }
-        let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
-        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
-        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
-        let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [7, 6]) }
-        let(:black_knight) { instance_double(Knight, color: 'black', coordinate: [7, 5]) }
-        let(:array) do
-          [
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', white_king, '', '', white_rook]
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(white_king).to receive(:check).and_return(false)
-          allow(white_king).to receive(:moved).and_return(false)
-          allow(white_rook).to receive(:moved).and_return(false)
-          allow(black_pawn).to receive(:class).and_return(Pawn)
-          allow(black_knight).to receive(:movements).and_return([[6, 7], [5, 6], [5, 4], [6, 3]])
-        end
-
-        it 'sends #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:allow_short_castling)
-          expect(white_rook).to receive(:allow_short_castling)
-          expect(white_rook).to receive(:disallow_long_castling)
-          expect(white_king).to receive(:disallow_long_castling)
-          referee.castling(white_king, white_rook)
-        end
-      end
-
-      context 'short castling for white king and rook' do
-        subject(:referee) { described_class.new }
-        let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
-        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
-        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
-        let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [7, 6]) }
-        let(:black_knight) { instance_double(Knight, color: 'black', coordinate: [7, 5]) }
-        let(:array) do
-          [
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', white_king, white_bishop, '', white_rook]
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(white_king).to receive(:check).and_return(false)
-          allow(white_king).to receive(:moved).and_return(false)
-          allow(white_rook).to receive(:moved).and_return(false)
-          allow(black_pawn).to receive(:class).and_return(Pawn)
-          allow(black_knight).to receive(:movements).and_return([[6, 7], [5, 6], [5, 4], [6, 3]])
-        end
-
-        it 'does not send #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:disallow_short_castling)
-          expect(white_rook).to receive(:disallow_short_castling)
-          expect(white_king).to receive(:disallow_long_castling)
-          expect(white_rook).to receive(:disallow_long_castling)
-          referee.castling(white_king, white_rook)
-        end
-      end
-      context 'short castling for white king and rook' do
-        subject(:referee) { described_class.new }
-        let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
-        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
-        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
-        let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [7, 6]) }
-        let(:black_knight) { instance_double(Knight, color: 'black', coordinate: [7, 5]) }
-        let(:array) do
-          [
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', black_pawn],
-            ['', '', '', '', white_king, '', '', white_rook]
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(white_king).to receive(:check).and_return(false)
-          allow(white_king).to receive(:moved).and_return(false)
-          allow(white_rook).to receive(:moved).and_return(false)
-          allow(black_pawn).to receive(:class).and_return(Pawn)
-          allow(black_knight).to receive(:movements).and_return([[6, 7], [5, 6], [5, 4], [6, 3]])
-        end
-
-        it 'does not send #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:disallow_short_castling)
-          expect(white_rook).to receive(:disallow_short_castling)
-          expect(white_king).to receive(:disallow_long_castling)
-          expect(white_rook).to receive(:disallow_long_castling)
-          referee.castling(white_king, white_rook)
-        end
-      end
-      context 'short castling for white king and rook' do
-        subject(:referee) { described_class.new }
-        let(:white_king) { instance_double(King, color: 'white', coordinate: [7, 4]) }
-        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [7, 7]) }
-        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 5]) }
-        let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [7, 6]) }
-        let(:black_knight) { instance_double(Knight, color: 'black', coordinate: [7, 5]) }
-        let(:array) do
-          [
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', black_knight],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', white_king, '', '', white_rook]
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(white_king).to receive(:check).and_return(false)
-          allow(white_king).to receive(:moved).and_return(false)
-          allow(white_rook).to receive(:moved).and_return(false)
-          allow(black_pawn).to receive(:class).and_return(Pawn)
-          allow(black_knight).to receive(:movements).and_return([[6, 7], [5, 6], [5, 4], [6, 3]])
-        end
-
-        it 'does not send #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(white_king).to receive(:disallow_short_castling)
-          expect(white_rook).to receive(:disallow_short_castling)
-          expect(white_king).to receive(:disallow_long_castling)
-          expect(white_rook).to receive(:disallow_long_castling)
-          referee.castling(white_king, white_rook)
-        end
-      end
-
-      context 'short castling for black king and rook' do
-        subject(:referee) { described_class.new }
-        let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 4]) }
-        let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [7, 0]) }
-        let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
-        let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [7, 1]) }
-        let(:array) do
-          [
-            ['', '', '', '', black_king, '', '', black_rook],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(black_king).to receive(:check).and_return(false)
-          allow(black_king).to receive(:moved).and_return(false)
-          allow(black_rook).to receive(:moved).and_return(false)
-          allow(white_pawn).to receive(:class).and_return(Pawn)
-        end
-
-        it 'sends #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(black_king).to receive(:allow_short_castling)
-          expect(black_rook).to receive(:allow_short_castling)
-          expect(black_king).to receive(:disallow_long_castling)
-          expect(black_rook).to receive(:disallow_long_castling)
-          referee.castling(black_king, black_rook)
-        end
-      end
-      context 'short castling for black king and rook' do
-        subject(:referee) { described_class.new }
-        let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 4]) }
-        let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [7, 0]) }
-        let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
-        let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [7, 1]) }
-        let(:array) do
-          [
-            ['', '', '', '', black_king, black_bishop, '', black_rook],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(black_king).to receive(:check).and_return(false)
-          allow(black_king).to receive(:moved).and_return(false)
-          allow(black_rook).to receive(:moved).and_return(false)
-          allow(white_pawn).to receive(:class).and_return(Pawn)
-        end
-
-        it 'does not send #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(black_king).to receive(:disallow_short_castling)
-          expect(black_rook).to receive(:disallow_short_castling)
-          expect(black_king).to receive(:disallow_long_castling)
-          expect(black_rook).to receive(:disallow_long_castling)
-          referee.castling(black_king, black_rook)
-        end
-      end
-      context 'short castling for black king and rook' do
-        subject(:referee) { described_class.new }
-        let(:black_king) { instance_double(King, color: 'black', coordinate: [7, 4]) }
-        let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [7, 0]) }
-        let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [7, 5]) }
-        let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [7, 1]) }
-        let(:array) do
-          [
-            ['', '', '', '', black_king, '', '', black_rook],
-            ['', '', '', '', '', '', '', white_pawn],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '']
-          ]
-        end
-        let(:board) { instance_double(Board, board: array) }
-
-        before do
-          allow(black_king).to receive(:check).and_return(false)
-          allow(black_king).to receive(:moved).and_return(false)
-          allow(black_rook).to receive(:moved).and_return(false)
-          allow(white_pawn).to receive(:class).and_return(Pawn)
-        end
-        it 'does not send #short_castling to king and rook' do
-          referee.instance_variable_set(:@board, board)
-          expect(black_king).to receive(:disallow_short_castling)
-          expect(black_rook).to receive(:disallow_short_castling)
-          expect(black_king).to receive(:disallow_long_castling)
-          expect(black_rook).to receive(:disallow_long_castling)
-          referee.castling(black_king, black_rook)
-        end
-      end
-    end
-    context 'long_castling for white king and rook' do
-      subject(:referee) { described_class.new }
-      let(:white_king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
-      let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [0, 7]) }
-      let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 2]) }
-      let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [1, 6]) }
-      let(:array) do
-        [
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          [white_rook, '', '', '', white_king, '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(white_king).to receive(:check).and_return(false)
-        allow(white_king).to receive(:moved).and_return(false)
-        allow(white_rook).to receive(:moved).and_return(false)
-        allow(black_pawn).to receive(:class).and_return(Pawn)
-      end
-
-      it 'sends #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(white_king).to receive(:allow_long_castling)
-        expect(white_rook).to receive(:allow_long_castling)
-        expect(white_rook).to receive(:disallow_short_castling)
-        expect(white_king).to receive(:disallow_short_castling)
-        referee.castling(white_king, white_rook)
-      end
-    end
-    context 'long_castling for white king and rook' do
-      subject(:referee) { described_class.new }
-      let(:white_king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
-      let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [0, 7]) }
-      let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 2]) }
-      let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [1, 6]) }
-      let(:array) do
-        [
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          [white_rook, '', white_bishop, '', white_king, '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(white_king).to receive(:check).and_return(false)
-        allow(white_king).to receive(:moved).and_return(false)
-        allow(white_rook).to receive(:moved).and_return(false)
-        allow(black_pawn).to receive(:class).and_return(Pawn)
-      end
-
-      it 'does not send #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(white_king).to receive(:disallow_long_castling)
-        expect(white_rook).to receive(:disallow_long_castling)
-        expect(white_king).to receive(:disallow_short_castling)
-        expect(white_rook).to receive(:disallow_short_castling)
-        referee.castling(white_king, white_rook)
-      end
-    end
-    context 'long_castling for white king and rook' do
-      subject(:referee) { described_class.new }
-      let(:white_king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
-      let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [0, 7]) }
-      let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 2]) }
-      let(:black_pawn) { instance_double(Pawn, color: 'black', coordinate: [1, 6]) }
-      let(:array) do
-        [
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', black_pawn, '', '', '', '', '', ''],
-          [white_rook, '', '', '', white_king, '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(white_king).to receive(:check).and_return(false)
-        allow(white_king).to receive(:moved).and_return(false)
-        allow(white_rook).to receive(:moved).and_return(false)
-        allow(black_pawn).to receive(:class).and_return(Pawn)
-      end
-
-      it 'does not send #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(white_king).to receive(:disallow_long_castling)
-        expect(white_rook).to receive(:disallow_long_castling)
-        expect(white_king).to receive(:disallow_short_castling)
-        expect(white_rook).to receive(:disallow_short_castling)
-        referee.castling(white_king, white_rook)
-      end
-    end
-    context 'long_castling for black king and rook' do
-      subject(:referee) { described_class.new }
-      let(:black_king) { instance_double(King, color: 'black', coordinate: [4, 0]) }
-      let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
-      let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [0, 2]) }
-      let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [1, 1]) }
-      let(:array) do
-        [
-          [black_rook, '', '', '', black_king, '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(black_king).to receive(:check).and_return(false)
-        allow(black_king).to receive(:moved).and_return(false)
-        allow(black_rook).to receive(:moved).and_return(false)
-        allow(white_pawn).to receive(:class).and_return(Pawn)
-      end
-
-      it 'sends #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(black_king).to receive(:allow_long_castling)
-        expect(black_rook).to receive(:allow_long_castling)
-        expect(black_king).to receive(:disallow_short_castling)
-        expect(black_rook).to receive(:disallow_short_castling)
-        referee.castling(black_king, black_rook)
-      end
-    end
-    context 'long_castling for black king and rook' do
-      subject(:referee) { described_class.new }
-      let(:black_king) { instance_double(King, color: 'black', coordinate: [4, 0]) }
-      let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
-      let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [0, 2]) }
-      let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [1, 1]) }
-      let(:array) do
-        [
-          [black_rook, '', black_bishop, '', black_king, '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(black_king).to receive(:check).and_return(false)
-        allow(black_king).to receive(:moved).and_return(false)
-        allow(black_rook).to receive(:moved).and_return(false)
-        allow(white_pawn).to receive(:class).and_return(Pawn)
-      end
-
-      it 'does not send #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(black_king).to receive(:disallow_long_castling)
-        expect(black_rook).to receive(:disallow_long_castling)
-        expect(black_king).to receive(:disallow_short_castling)
-        expect(black_rook).to receive(:disallow_short_castling)
-        referee.castling(black_king, black_rook)
-      end
-    end
-    context 'long_castling for black king and rook' do
-      subject(:referee) { described_class.new }
-      let(:black_king) { instance_double(King, color: 'black', coordinate: [4, 0]) }
-      let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
-      let(:black_bishop) { instance_double(Bishop, color: 'black', coordinate: [0, 2]) }
-      let(:white_pawn) { instance_double(Pawn, color: 'white', coordinate: [1, 1]) }
-      let(:array) do
-        [
-          [black_rook, '', '', '', black_king, '', '', ''],
-          ['', white_pawn, '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', ''],
-          ['', '', '', '', '', '', '', '']
-        ]
-      end
-      let(:board) { instance_double(Board, board: array) }
-
-      before do
-        allow(black_king).to receive(:check).and_return(false)
-        allow(black_king).to receive(:moved).and_return(false)
-        allow(black_rook).to receive(:moved).and_return(false)
-        allow(white_pawn).to receive(:class).and_return(Pawn)
-      end
-      it 'does not send #long_castling to king and rook' do
-        referee.instance_variable_set(:@board, board)
-        expect(black_king).to receive(:disallow_long_castling)
-        expect(black_rook).to receive(:disallow_long_castling)
-        expect(black_king).to receive(:disallow_short_castling)
-        expect(black_rook).to receive(:disallow_short_castling)
-        referee.castling(black_king, black_rook)
-      end
-    end
     describe '#valid_selection?' do
       subject(:referee) { described_class.new }
       let(:pawn) { instance_double(Pawn, color: 'white', coordinate: [0, 6]) }
@@ -910,6 +452,98 @@ module Chess
         referee.instance_variable_set(:@board, board)
         selection = [1, 6]
         expect(referee.valid_selection?(selection, white_player)).to be false
+      end
+    end
+
+    describe '#valid_castling?' do
+      context 'black king and rook long castle' do
+        let(:black_king) { instance_double(King, color: 'black', coordinate: [4, 0]) }
+        let(:black_rook) { instance_double(Rook, color: 'black', coordinate: [0, 0]) }
+        let(:array) do
+          [
+            [black_rook, '', '', '', black_king, '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        subject(:referee) { described_class.new(board: board) }
+        let(:player) { double('Player', name: 'Joe', color: 'black') }
+        let(:selection) { 'long castle' }
+
+        before do
+          allow(black_rook).to receive(:moved).and_return false
+          allow(black_king).to receive(:moved).and_return false
+          allow(board).to receive(:find_king).with(player).and_return(black_king)
+          allow(board).to receive(:find_rook).with(player, selection).and_return(black_rook)
+          allow(board).to receive(:empty_tiles_between_king_and_rook?).and_return true
+          allow(board).to receive(:tile_can_be_attacked?).and_return false
+          allow(referee).to receive(:check?).with(black_king).and_return false
+        end
+
+        it 'returns true' do
+          expect(referee.valid_castling?(selection, player)).to be true
+        end
+      end
+      context 'long_castling for white king and rook' do
+        let(:white_king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
+        let(:white_rook) { instance_double(Rook, color: 'white', coordinate: [0, 7]) }
+        let(:white_bishop) { instance_double(Bishop, color: 'white', coordinate: [7, 2]) }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            [white_rook, '', white_bishop, '', white_king, '', '', '']
+          ]
+        end
+        let(:board) { instance_double(Board, board: array) }
+        subject(:referee) { described_class.new(board: board) }
+        let(:player) { double('Player', name: 'Joe', color: 'white') }
+        let(:selection) { 'long castle' }
+
+        before do
+          allow(white_rook).to receive(:moved).and_return false
+          allow(white_king).to receive(:moved).and_return false
+          allow(board).to receive(:find_king).with(player).and_return(white_king)
+          allow(board).to receive(:find_rook).with(player, selection).and_return(white_rook)
+          allow(board).to receive(:empty_tiles_between_king_and_rook?).and_return false
+          allow(board).to receive(:tile_can_be_attacked?).and_return true
+          allow(referee).to receive(:check?).with(white_king).and_return false
+        end
+
+        it 'returns false' do
+          expect(referee.valid_castling?(selection, player)).to be false
+        end
+      end
+    end
+    describe '#king_castling_coordinate' do
+      context 'white_king is short castling' do
+        let(:referee) { described_class.new }
+        let(:king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
+
+        it 'returns a coordinate' do
+          selection = 'short castle'
+          expect(referee.king_castling_coordinate(king, selection)).to eq([6, 7])
+        end
+      end
+      context 'white_king is long castling' do
+        let(:referee) { described_class.new }
+        let(:king) { instance_double(King, color: 'white', coordinate: [4, 7]) }
+
+        it 'returns a coordinate' do
+          selection = 'long castle'
+          expect(referee.king_castling_coordinate(king, selection)).to eq([2, 7])
+        end
       end
     end
   end

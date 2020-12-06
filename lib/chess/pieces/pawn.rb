@@ -73,6 +73,15 @@ module Chess
       @en_passant_captures
     end
 
+    def can_attack_tile?(attack_coordinate, attacking_direction = nil)
+      attacking_direction = WHITE_CAPTURES if color == 'white'
+      attacking_direction = BLACK_CAPTURES if color == 'black'
+      attacking_direction.any? do |x, y|
+        move = [coordinate[0] + x, coordinate[1] + y]
+        move == attack_coordinate
+      end
+    end
+
     private
 
     def first_possible_move(moves)

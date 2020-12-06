@@ -5,7 +5,6 @@ require 'pry'
 module Chess
   # looks for check, checkmate, stalemate and castling
   class Referee
-    include Castling
     include WinConditions
 
     attr_reader :board, :white_king, :black_king, :short_white_rook, :long_white_rook, :short_black_rook,
@@ -116,31 +115,31 @@ module Chess
     # castling
 
     def valid_castling?(selection, player)
-      return unless valid_castle_input?(selection)
+      return false unless valid_castle_input?(selection)
 
+      king = board.find_king(player)
+      rook = board.find_rook(player, selection)
+      king_futur_coordinate = king_castling_coordinate(king, selection)
+
+      return false if check?(king) || pieces_have_moved?(king, rook)
+
+      return false unless board.empty_tiles_between_king_and_rook?(king, rook)
+
+      return false if board.tile_can_be_attacked?(king_futur_coordinate, king.color)
+
+      true
+    end
+
+    def king_castling_coordinate(king, selection)
       if selection == 'short castle'
-        verify_player_short_castling(player)
-        valid_short_castle?(player)
+        [king.coordinate[0] + 2, king.coordinate[1]]
       elsif selection == 'long castle'
-        verify_player_long_castling(player)
-        valid_long_castle?(player)
+        [king.coordinate[0] - 2, king.coordinate[1]]
       end
     end
 
-    def valid_short_castle?(player)
-      if player.color == 'white'
-        white_king.short_castling
-      elsif player.color == 'black'
-        black_king.short_castling
-      end
-    end
-
-    def valid_long_castle?(player)
-      if player.color == 'white'
-        white_king.long_castling
-      elsif player.color == 'black'
-        black_king.long_castling
-      end
+    def pieces_have_moved?(king, rook)
+      king.moved && rook.moved
     end
 
     def valid_castle_input?(selection)
@@ -149,28 +148,7 @@ module Chess
       selection.downcase == 'short castle' || selection.downcase == 'long castle'
     end
 
-    def verify_player_short_castling(player)
-      if player.color == 'white'
-        castling(white_king, short_white_rook)
-      elsif player.color == 'black'
-        castling(black_king, short_black_rook)
-      end
-    end
-
-    def verify_player_long_castling(player)
-      if player.color == 'white'
-        castling(white_king, long_white_rook)
-      elsif player.color == 'black'
-        castling(black_king, long_black_rook)
-      end
-    end
-
-    def castling(king, rook)
-      return unvalid_castling(king, rook) if king.check
-
-      short_castling(king, rook)
-      long_castling(king, rook)
-    end
+    # useless?
 
     def find_kings
       board.board.each do |row|

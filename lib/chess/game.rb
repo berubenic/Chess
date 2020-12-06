@@ -61,7 +61,7 @@ module Chess
       display_board(board.board)
       select_piece
       return define_game_state if selection == 's'
-      return execute_castling if referee.valid_castling?(selection, current_player)
+      return board.execute_castling(selection, current_player) if referee.valid_castling?(selection, current_player)
       return invalid_selection_input unless valid_input?(selection)
 
       translate_selection
@@ -206,10 +206,6 @@ module Chess
       return revert_execution if referee.current_player_checked?(current_player)
 
       remove_moves_and_captures
-    end
-
-    def execute_castling
-      board.execute_castling(selection, current_player)
     end
 
     def revert_execution

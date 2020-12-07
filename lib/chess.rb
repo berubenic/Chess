@@ -7,7 +7,7 @@ module Chess
 end
 
 require_relative './chess/save_load'
-require_relative './string'
+require_relative './chess/display'
 require_relative './chess/translator'
 require_relative './chess/pawn_promotion'
 require_relative './chess/pieces/pawn'

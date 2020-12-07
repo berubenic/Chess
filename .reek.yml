@@ -15,8 +15,6 @@ detectors:
     - Chess::PawnPromotion#white_pawn_promotion
   FeatureEnvy:
     exclude:
-    - Chess::InitialSetup#setup_black_pawns
-    - Chess::InitialSetup#setup_white_pawns
     - Chess::PawnPromotion#promote_to_bishop
     - Chess::PawnPromotion#promote_to_knight
     - Chess::PawnPromotion#promote_to_queen

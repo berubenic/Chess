@@ -5,7 +5,7 @@ module Chess
   describe Board do
     describe '#setup_white_pieces' do
       subject(:board) { described_class.new }
-      it 'adds white pieces to board' do
+      it 'adds white pieces to @array' do
         board.setup_white_pieces
         expect(board.array[6].all? { |element| element.is_a?(WhitePawn) }).to be true
         expect(board.array[7][0]).to be_a(WhiteRook)
@@ -20,7 +20,7 @@ module Chess
     end
     describe '#setup_black_pieces' do
       subject(:board) { described_class.new }
-      it 'adds black pieces to board' do
+      it 'adds black pieces to @array' do
         board.setup_black_pieces
         expect(board.array[1].all? { |element| element.is_a?(BlackPawn) }).to be true
         expect(board.array[0][0]).to be_a(BlackRook)

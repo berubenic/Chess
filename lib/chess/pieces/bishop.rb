@@ -1,25 +1,52 @@
 # frozen_string_literal: true
 
 module Chess
-  # Bishop
-  class Bishop < Piece
-    include DirectionalMovement
-
-    DIRECTIONS = [
-      [1, -1],
-      [1, 1],
-      [-1, 1],
-      [-1, -1]
-    ].freeze
-
-    def possible_movements
-      reset_movements
-      @movements = find_moves(DIRECTIONS)
+  # Bishop piece
+  class Bishop
+    def initialize(**opts)
+      @coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
+      @color = opts[:color] || default_color
+      @content = opts[:content] || default_content
     end
 
-    def possible_captures
-      reset_captures
-      @captures = find_captures(DIRECTIONS)
+    def default_color
+      raise NotImplementedError
+    end
+
+    def default_content
+      raise NotImplementedError
+    end
+
+    def default_y_coordinate
+      raise NotImplementedError
+    end
+  end
+  # WhiteBishop piece
+  class WhiteBishop < Bishop
+    def default_color
+      'white'
+    end
+
+    def default_content
+      "\u2656"
+    end
+
+    def default_y_coordinate
+      7
+    end
+  end
+  # BlackBishop piece
+  class BlackBishop < Bishop
+    def default_color
+      'black'
+    end
+
+    def default_content
+      "\u265D"
+    end
+
+    def default_y_coordinate
+      0
     end
   end
 end

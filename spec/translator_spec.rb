@@ -1,5 +1,6 @@
 # frozen_string_literal: false
 
+# Translator module
 module Chess
   describe Translator do
     describe '#translate' do

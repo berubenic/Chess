@@ -1,105 +1,52 @@
 # frozen_string_literal: true
 
 module Chess
-  # Pawn
-  class Pawn < Piece
-    include SingleMovement
-    include EnPassant
-
-    WHITE_MOVES = [
-      -1,
-      -2
-    ].freeze
-
-    WHITE_CAPTURES = [
-      [1, -1],
-      [-1, -1]
-    ].freeze
-
-    BLACK_MOVES = [
-      1,
-      2
-    ].freeze
-
-    BLACK_CAPTURES = [
-      [1, 1],
-      [-1, 1]
-    ].freeze
-
-    attr_reader :en_passant_captures
-
-    attr_accessor :two_squared
-
-    def initialize(**args)
-      @two_squared = false
-      @en_passant_captures = []
-      super
+  # Pawn piece
+  class Pawn
+    def initialize(**opts)
+      @coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
+      @color = opts[:color] || default_color
+      @content = opts[:content] || default_content
     end
 
-    def possible_movements
-      reset_movements
-      if color == 'white'
-        first_possible_move(WHITE_MOVES)
-      elsif color == 'black'
-        first_possible_move(BLACK_MOVES)
-      end
+    def default_color
+      raise NotImplementedError
     end
 
-    def moved_two_squares
-      @two_squared = true
+    def default_content
+      raise NotImplementedError
     end
 
-    def did_not_move_two_squares
-      @two_squared = false
+    def default_y_coordinate
+      raise NotImplementedError
+    end
+  end
+  # WhitePawn piece
+  class WhitePawn < Pawn
+    def default_color
+      'white'
     end
 
-    def possible_captures
-      reset_captures
-      if color == 'white'
-        @captures = find_captures(WHITE_CAPTURES)
-      elsif color == 'black'
-        @captures = find_captures(BLACK_CAPTURES)
-      end
-      @captures
+    def default_content
+      "\u2659"
     end
 
-    def possible_en_passant
-      reset_en_passant_captures
-      if color == 'white'
-        @en_passant_captures = find_en_passant unless find_en_passant.nil?
-      elsif color == 'black'
-        @en_passant_captures = find_en_passant unless find_en_passant.nil?
-      end
-      @en_passant_captures
+    def default_y_coordinate
+      6
+    end
+  end
+  # BlackPawn piece
+  class BlackPawn < Pawn
+    def default_color
+      'black'
     end
 
-    def can_attack_tile?(attack_coordinate, attacking_direction = nil)
-      attacking_direction = WHITE_CAPTURES if color == 'white'
-      attacking_direction = BLACK_CAPTURES if color == 'black'
-      attacking_direction.any? do |x, y|
-        move = [coordinate[0] + x, coordinate[1] + y]
-        move == attack_coordinate
-      end
+    def default_content
+      "\u265F"
     end
 
-    private
-
-    def first_possible_move(moves)
-      move = [coordinate[0], coordinate[1] + moves[0]]
-      @movements << move if valid_move?(move)
-      return unless valid_move?(move)
-      return movements if moved
-
-      second_possible_move(moves)
-    end
-
-    def second_possible_move(moves)
-      additional_move = [coordinate[0], coordinate[1] + moves[1]]
-      @movements << additional_move if valid_move?(additional_move)
-    end
-
-    def reset_en_passant_captures
-      @en_passant_captures = []
+    def default_y_coordinate
+      1
     end
   end
 end

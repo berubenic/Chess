@@ -1,80 +1,52 @@
 # frozen_string_literal: true
 
 module Chess
-  # King
-  class King < Piece
-    include SingleMovement
-
-    MOVES = [
-      [0, -1],
-      [1, -1],
-      [1, 0],
-      [1, 1],
-      [0, 1],
-      [-1, 1],
-      [-1, 0],
-      [-1, -1]
-    ].freeze
-
-    attr_reader :moved, :check, :mate, :stalemate, :short_castling, :long_castling
-
-    def initialize(**args)
-      @check = false
-      @mate = false
-      @stalemate = false
-      @short_castling = false
-      @long_castling = false
-      super
+  # King piece
+  class King
+    def initialize(**opts)
+      @coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
+      @color = opts[:color] || default_color
+      @content = opts[:content] || default_content
     end
 
-    def possible_movements
-      reset_movements
-      @movements = find_movements(MOVES)
+    def default_color
+      raise NotImplementedError
     end
 
-    def possible_captures
-      reset_captures
-      @captures = find_captures(MOVES)
+    def default_content
+      raise NotImplementedError
     end
 
-    def in_check
-      @check = true
+    def default_y_coordinate
+      raise NotImplementedError
+    end
+  end
+  # WhiteKing piece
+  class WhiteKing < King
+    def default_color
+      'white'
     end
 
-    def not_check
-      @check = false
+    def default_content
+      "\u2654"
     end
 
-    def in_mate
-      @mate = true
+    def default_y_coordinate
+      7
+    end
+  end
+  # BlackKing piece
+  class BlackKing < King
+    def default_color
+      'black'
     end
 
-    def not_mate
-      @mate = false
+    def default_content
+      "\u265A"
     end
 
-    def in_stalemate
-      @stalemate = true
-    end
-
-    def not_stalemate
-      @stalemate = false
-    end
-
-    def allow_short_castling
-      @short_castling = true
-    end
-
-    def disallow_short_castling
-      @short_castling = false
-    end
-
-    def allow_long_castling
-      @long_castling = true
-    end
-
-    def disallow_long_castling
-      @long_castling = false
+    def default_y_coordinate
+      0
     end
   end
 end

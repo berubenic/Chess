@@ -27,7 +27,6 @@ detectors:
     - Chess::PawnPromotion
   TooManyStatements:
     exclude:
-    - initialize
     - Chess::SaveLoad#load_game
   UtilityFunction:
     exclude:

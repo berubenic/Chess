@@ -3,10 +3,11 @@
 module Chess
   # Piece superclass
   class Piece
-    attr_reader :coordinate, :color, :content
+    attr_reader :current_coordinate, :starting_coordinate, :color, :content
 
     def initialize(**opts)
-      @coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
+      @current_coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
+      @starting_coordinate = current_coordinate
       @color = opts[:color] || default_color
       @content = opts[:content] || default_content
     end

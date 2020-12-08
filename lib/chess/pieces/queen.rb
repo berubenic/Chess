@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
+require_relative './piece'
+
 module Chess
   # Queen piece
-  class Queen
-    def initialize(**opts)
-      @coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
-      @color = opts[:color] || default_color
-      @content = opts[:content] || default_content
-    end
-
+  class Queen < Piece
     def default_color
       raise NotImplementedError
     end

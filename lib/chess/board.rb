@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './initial_setup'
+
 module Chess
   # Sets pieces for a normal game of chess
   class Board
@@ -9,6 +11,11 @@ module Chess
 
     def initialize(array: Array.new(8) { Array.new(8, '') })
       @array = array
+    end
+
+    def setup_board
+      setup_white_pieces
+      setup_black_pieces
     end
 
     def setup_white_pieces(row_eight = array[7], row_seven = array[6])

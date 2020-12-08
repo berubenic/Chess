@@ -5,15 +5,6 @@ require 'tty-prompt'
 module Chess
   # promotes pawn
   module PawnPromotion
-    WHITE_ROOK = "\u2656".white
-    WHITE_KNIGHT = "\u2658".white
-    WHITE_BISHOP = "\u2657".white
-    WHITE_QUEEN = "\u2655".white
-    BLACK_ROOK = "\u265C".black
-    BLACK_KNIGHT = "\u265E".black
-    BLACK_BISHOP = "\u265D".black
-    BLACK_QUEEN = "\u265B".black
-
     def white_pawn_promotion(pawn = nil)
       return unless board[0].any? { |tile| tile.is_a?(Pawn) }
 

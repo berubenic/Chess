@@ -1,7 +1,9 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
 AllCops:
   Exclude:
     - 'Gemfile'
-    - 'spec/spec_helper.rb'
   NewCops: enable
 Metrics/BlockLength:
   Exclude:
@@ -9,5 +11,4 @@ Metrics/BlockLength:
 Layout/LineLength:
   Exclude:
     - 'spec/**/*'
-
     

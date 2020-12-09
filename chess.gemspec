@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/chess/version'
 
 Gem::Specification.new do |spec|
@@ -9,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'CLI Chess game'
   spec.description   = 'CLI Chess game'
   spec.homepage      = 'https://github.com/berubenic/Chess'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.6.5')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.4')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/berubenic/Chess'

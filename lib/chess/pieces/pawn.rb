@@ -44,6 +44,7 @@ module Chess
       result
     end
   end
+
   # WhitePawn piece
   class WhitePawn < Pawn
     MOVE_DIRECTIONS = [
@@ -76,6 +77,7 @@ module Chess
       super
     end
   end
+
   # BlackPawn piece
   class BlackPawn < Pawn
     MOVE_DIRECTIONS = [

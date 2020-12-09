@@ -101,7 +101,7 @@ module Chess
     def print_tile(tile)
       if tile == ''
         ' '
-      elsif tile == 'o' || tile == 'x'
+      elsif %w[o x].include?(tile)
         tile
       else
         print_piece(tile)

@@ -44,6 +44,7 @@ module Chess
       result
     end
   end
+
   # WhiteKing piece
   class WhiteKing < King
     def default_color
@@ -58,6 +59,7 @@ module Chess
       7
     end
   end
+
   # BlackKing piece
   class BlackKing < King
     def default_color

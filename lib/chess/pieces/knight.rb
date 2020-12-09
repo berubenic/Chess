@@ -44,6 +44,7 @@ module Chess
       result
     end
   end
+
   # WhiteKnight piece
   class WhiteKnight < Knight
     def default_color
@@ -58,6 +59,7 @@ module Chess
       7
     end
   end
+
   # BlackKnight piece
   class BlackKnight < Knight
     def default_color

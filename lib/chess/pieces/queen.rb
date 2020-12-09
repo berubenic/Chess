@@ -17,6 +17,7 @@ module Chess
       raise NotImplementedError
     end
   end
+
   # WhiteQueen piece
   class WhiteQueen < Queen
     def default_color
@@ -31,6 +32,7 @@ module Chess
       7
     end
   end
+
   # BlackQueen piece
   class BlackQueen < Queen
     def default_color

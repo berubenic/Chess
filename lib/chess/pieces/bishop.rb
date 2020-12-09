@@ -17,6 +17,7 @@ module Chess
       raise NotImplementedError
     end
   end
+
   # WhiteBishop piece
   class WhiteBishop < Bishop
     def default_color
@@ -31,6 +32,7 @@ module Chess
       7
     end
   end
+
   # BlackBishop piece
   class BlackBishop < Bishop
     def default_color

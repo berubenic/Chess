@@ -3,7 +3,7 @@
 # Rook spec
 module Chess
   describe Rook do
-    subject(:rook) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'K') }
+    subject(:rook) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'R') }
 
     describe '#all_possible_movements' do
       it 'returns result' do

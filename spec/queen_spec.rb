@@ -3,7 +3,7 @@
 # Queen spec
 module Chess
   describe Queen do
-    subject(:queen) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'K') }
+    subject(:queen) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'Q') }
 
     describe '#all_possible_movements' do
       it 'returns result' do

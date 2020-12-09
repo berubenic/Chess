@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require_relative './piece'
-require_relative './piece_helper'
 
 module Chess
   # Rook piece
   class Rook < Piece
-    include PieceHelper
     DIRECTIONS = [
       [0, 1],
       [0, -1],

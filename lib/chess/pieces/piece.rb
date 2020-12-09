@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require_relative './piece_helper'
+
 module Chess
   # Piece superclass
   class Piece
+    include PieceHelper
     attr_reader :current_coordinate, :starting_coordinate, :color, :content
 
     def initialize(**opts)
@@ -21,6 +24,14 @@ module Chess
     end
 
     def default_y_coordinate
+      raise NotImplementedError
+    end
+
+    def all_possible_movements
+      raise NotImplementedError
+    end
+
+    def all_possible_captures
       raise NotImplementedError
     end
   end

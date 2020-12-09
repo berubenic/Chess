@@ -39,7 +39,7 @@ module Chess
     def all_possible_captures(directions, result = [])
       directions.each do |x_coordinate, y_coordinate|
         capture = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << capture
+        result << capture unless PieceHelper.coordinate_outside_of_board?(capture)
       end
       result
     end

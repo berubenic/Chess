@@ -31,7 +31,7 @@ module Chess
     def all_possible_movements(directions = DIRECTIONS, result = [])
       directions.each do |x_coordinate, y_coordinate|
         move = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << move
+        result << move unless PieceHelper.coordinate_outside_of_board?(move)
       end
       result
     end
@@ -39,7 +39,7 @@ module Chess
     def all_possible_captures(directions = DIRECTIONS, result = [])
       directions.each do |x_coordinate, y_coordinate|
         move = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << move
+        result << move unless PieceHelper.coordinate_outside_of_board?(move)
       end
       result
     end

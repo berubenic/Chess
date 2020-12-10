@@ -16,7 +16,7 @@ module Chess
     end
 
     # holds player_one and player_two
-    Player = Struct.new(:color, :name)
+    Player = Struct.new(:name, :color)
 
     def intro
       Display.title_message
@@ -38,7 +38,7 @@ module Chess
 
     def game_loop
       loop do
-        player_selects_piece
+        player_selection
         switch_player
       end
     end
@@ -57,7 +57,7 @@ module Chess
       when 's'
         return save_game
       when 'long castle' || 'short castle'
-        next
+        # do nothing
       else
         selection = Translator.translate(selection)
       end

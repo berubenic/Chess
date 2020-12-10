@@ -2,6 +2,7 @@
 
 require_relative './board'
 require_relative './display'
+require_relative './tile_helper'
 
 module Chess
   # Game has an overview of everything
@@ -61,9 +62,22 @@ module Chess
       else
         selection = Translator.translate(selection)
       end
-      return add_moves_and_captures if board.valid_selection?(selection, current_player)
+      return add_moves_and_captures if valid_selection?(selection)
 
       invalid_selection
+    end
+
+    def valid_selection?(selection, color = current_player.color)
+      return true if valid_castling?(selection)
+
+      tile = BoardHelper.find_tile(selection, board.array)
+      return false unless BoardHelper.tile_belongs_to_player?(color, tile)
+
+      true
+    end
+
+    def valid_castling?(selection)
+      ### working on it, make valid tests for #translate_selection and #valid_selection including other classes/modules
     end
 
     def invalid_selection

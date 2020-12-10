@@ -61,11 +61,11 @@ module Chess
 
         before do
           allow(display).to receive(:ask_to_select_piece).and_return(selection)
-          allow(game).to receive(:valid_input?).with(selection).and_return(true)
+          allow(translator).to receive(:valid_input?).with(selection).and_return(true)
         end
 
         it 'returns #translate_selection' do
-          expect(translator).to receive(:translate_selection).with(selection)
+          expect(game).to receive(:translate_selection).with(selection)
           game.player_selection
         end
       end

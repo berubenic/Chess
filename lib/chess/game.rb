@@ -6,8 +6,6 @@ require_relative './display'
 module Chess
   # Game has an overview of everything
   class Game
-    include Display
-
     attr_reader :board, :player_one, :player_two, :current_player
 
     def initialize(board: Board.new, player_one: nil, player_two: nil, current_player: nil)
@@ -21,9 +19,9 @@ module Chess
     Player = Struct.new(:color, :name)
 
     def intro
-      title_message
-      welcome_message
-      case ask_game_mode
+      Display.title_message
+      Display.welcome_message
+      case Display.ask_game_mode
       when 1
         setup_game
       when 2
@@ -34,8 +32,43 @@ module Chess
     def setup_game
       setup_players
       board.setup_board
-      display_board(board.array)
+      Display.display_board(board.array)
       game_loop
+    end
+
+    def game_loop
+      loop do
+        player_selects_piece
+        switch_player
+      end
+    end
+
+    def player_selection
+      loop do
+        selection = Display.ask_to_select_piece(current_player)
+        return translate_selection(selection) if Translator.valid_input?(selection)
+
+        Display.invalid_input_message
+      end
+    end
+
+    def translate_selection(selection)
+      case selection
+      when 's'
+        return save_game
+      when 'long castle' || 'short castle'
+        next
+      else
+        selection = Translator.translate(selection)
+      end
+      return add_moves_and_captures if board.valid_selection?(selection, current_player)
+
+      invalid_selection
+    end
+
+    def invalid_selection
+      Display.invalid_selection_message
+      player_selection
     end
 
     def setup_players
@@ -45,16 +78,16 @@ module Chess
 
     def create_player_one
       color = 'white'
-      name = ask_player_name('Player one')
-      welcome_player_message(name, color)
+      name = Display.ask_player_name('Player one')
+      Display.welcome_player_message(name, color)
       @player_one = Player.new(name, color)
       @current_player = player_one
     end
 
     def create_player_two
       color = 'black'
-      name = ask_player_name('Player two')
-      welcome_player_message(name, color)
+      name = Display.ask_player_name('Player two')
+      Display.welcome_player_message(name, color)
       @player_two = Player.new(name, color)
     end
   end

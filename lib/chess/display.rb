@@ -41,6 +41,18 @@ module Chess
       sleep 1.5
     end
 
+    def ask_to_select_piece(player)
+      puts "#{player.name}, enter the coordinate of the piece you wish to move. (ex. A1) \nIf castling, enter 'short castle' or 'long castle' \nEnter 's' to save.".default.bg_default
+      prompt = TTY::Prompt.new
+      prompt.ask
+    end
+
+    def invalid_input_message
+      puts 'Invalid input, please try again.'.red.bg_default
+      sleep 2
+      clear
+    end
+
     def clear
       system('clear') || system('cls')
     end

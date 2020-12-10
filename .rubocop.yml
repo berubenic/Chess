@@ -4,6 +4,8 @@ require:
 AllCops:
   Exclude:
     - 'Gemfile'
+    - './lib/chess/display.rb'
+    - './spec/game_spec.rb'
   NewCops: enable
 Metrics/BlockLength:
   Exclude:

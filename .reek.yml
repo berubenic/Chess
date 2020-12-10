@@ -19,9 +19,6 @@ detectors:
     - Chess::PawnPromotion#promote_to_knight
     - Chess::PawnPromotion#promote_to_queen
     - Chess::PawnPromotion#promote_to_rook
-  NilCheck:
-    exclude:
-    - Chess::Translator#valid_input?
   TooManyConstants:
     exclude:
     - Chess::PawnPromotion
@@ -35,5 +32,3 @@ detectors:
     - Chess::PawnPromotion#knight_content
     - Chess::PawnPromotion#queen_content
     - Chess::PawnPromotion#rook_content
-    - Chess::Translator#translate
-    - Chess::Translator#valid_input?

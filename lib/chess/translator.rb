@@ -3,6 +3,8 @@
 module Chess
   # translates player input to coordinate
   module Translator
+    module_function
+
     LETTERS = {
       'a' => 0,
       'b' => 1,
@@ -22,9 +24,12 @@ module Chess
     end
 
     def valid_input?(input)
-      return false if input.nil?
+      return false if input == ''
 
-      input.length == 2 && input[0].match?(/[a-hA-H]/) && input[1].match?(/[1-8]/)
+      return true if input.length == 2 && input[0].match?(/[a-hA-H]/) && input[1].match?(/[1-8]/)
+      return true if ['s', 'long castle', 'short castle'].include?(input)
+
+      false
     end
   end
 end

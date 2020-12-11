@@ -135,14 +135,14 @@ module Chess
     end
 
     describe '#valid_selection?' do
-      let(:board_helper) { BoardHelper }
+      let(:tile_helper) { TileHelper }
 
       context 'when selection is a valid coordinate' do
         it 'returns true' do
           selection = 'some_valid_coordinate'
           color = 'white'
-          allow(board_helper).to receive(:find_tile)
-          allow(board_helper).to receive(:tile_belongs_to_player?).and_return(true)
+          allow(tile_helper).to receive(:find_tile)
+          allow(tile_helper).to receive(:tile_belongs_to_player?).and_return(true)
           expect(game.valid_selection?(selection, color)).to be true
         end
       end
@@ -151,8 +151,8 @@ module Chess
         it 'returns false' do
           selection = 'some_unvalid_coordinate'
           color = 'white'
-          allow(board_helper).to receive(:find_tile)
-          allow(board_helper).to receive(:tile_belongs_to_player?).and_return(false)
+          allow(tile_helper).to receive(:find_tile)
+          allow(tile_helper).to receive(:tile_belongs_to_player?).and_return(false)
           expect(game.valid_selection?(selection, color)).to be false
         end
       end

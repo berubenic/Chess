@@ -70,14 +70,19 @@ module Chess
     def valid_selection?(selection, color = current_player.color)
       return valid_castling?(selection) if ['long castle', 'short castle'].include?(selection)
 
-      tile = BoardHelper.find_tile(selection, board.array)
-      return false unless BoardHelper.tile_belongs_to_player?(color, tile)
+      tile = TileHelper.find_tile(selection, board.array)
+      return false unless TileHelper.tile_belongs_to_player?(color, tile)
 
       true
     end
 
-    def valid_castling?(selection)
-      ### working on it, make valid tests for #translate_selection and #valid_selection including other classes/modules
+    def valid_castling?(_selection, array = board.array)
+      king = TileHelper.find_king(player, array)
+      rook = TileHelper.find_rook(player, selection, array)
+
+      return false unless board.valid_castling?(king, rook)
+
+      true
     end
 
     def invalid_selection

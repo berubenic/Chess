@@ -85,5 +85,95 @@ module Chess
         end
       end
     end
+
+    describe '#translate_selection' do
+      context "when selection is 's'" do
+        it 'returns #save_game' do
+          selection = 's'
+          expect(game).to receive(:save_game)
+          game.translate_selection(selection)
+        end
+      end
+
+      context 'when selection is long castle' do
+        it 'returns #add_moves_and_captures if valid' do
+          selection = 'long castle'
+          allow(game).to receive(:valid_selection?).and_return(true)
+          expect(game).to receive(:add_moves_and_captures)
+          game.translate_selection(selection)
+        end
+      end
+
+      context 'when selection is short castle' do
+        it 'returns #add_moves_and_captures if valid' do
+          selection = 'short castle'
+          allow(game).to receive(:valid_selection?).and_return(true)
+          expect(game).to receive(:add_moves_and_captures)
+          game.translate_selection(selection)
+        end
+      end
+
+      context 'when selection is a coordinate' do
+        it 'returns #add_moves_nad_captures if valid' do
+          selection = 'a1'
+          allow(translator).to receive(:translate)
+          allow(game).to receive(:valid_selection?).and_return(true)
+          expect(game).to receive(:add_moves_and_captures)
+          game.translate_selection(selection)
+        end
+      end
+
+      context 'when selection is invalid' do
+        it 'returns #invalid_selection' do
+          selection = 'some_invalid_coordinate'
+          allow(translator).to receive(:translate)
+          allow(game).to receive(:valid_selection?).and_return(false)
+          expect(game).to receive(:invalid_selection)
+          game.translate_selection(selection)
+        end
+      end
+    end
+
+    describe '#valid_selection?' do
+      let(:board_helper) { BoardHelper }
+
+      context 'when selection is a valid coordinate' do
+        it 'returns true' do
+          selection = 'some_valid_coordinate'
+          color = 'white'
+          allow(board_helper).to receive(:find_tile)
+          allow(board_helper).to receive(:tile_belongs_to_player?).and_return(true)
+          expect(game.valid_selection?(selection, color)).to be true
+        end
+      end
+
+      context 'when selection is a unvalid coordinate' do
+        it 'returns false' do
+          selection = 'some_unvalid_coordinate'
+          color = 'white'
+          allow(board_helper).to receive(:find_tile)
+          allow(board_helper).to receive(:tile_belongs_to_player?).and_return(false)
+          expect(game.valid_selection?(selection, color)).to be false
+        end
+      end
+
+      context 'when selection is a valid castling' do
+        it 'returns true' do
+          selection = 'short castle'
+          color = 'white'
+          allow(game).to receive(:valid_castling?).and_return(true)
+          expect(game.valid_selection?(selection, color)).to be true
+        end
+      end
+
+      context 'when selection is a unvalid castling' do
+        it 'returns true' do
+          selection = 'short castle'
+          color = 'white'
+          allow(game).to receive(:valid_castling?).and_return(false)
+          expect(game.valid_selection?(selection, color)).to be false
+        end
+      end
+    end
   end
 end

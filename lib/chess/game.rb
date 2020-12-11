@@ -68,7 +68,7 @@ module Chess
     end
 
     def valid_selection?(selection, color = current_player.color)
-      return true if valid_castling?(selection)
+      return valid_castling?(selection) if ['long castle', 'short castle'].include?(selection)
 
       tile = BoardHelper.find_tile(selection, board.array)
       return false unless BoardHelper.tile_belongs_to_player?(color, tile)

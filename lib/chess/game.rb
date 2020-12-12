@@ -3,6 +3,7 @@
 require_relative './board'
 require_relative './display'
 require_relative './tile_helper'
+require_relative './referee'
 
 module Chess
   # Game has an overview of everything
@@ -80,7 +81,10 @@ module Chess
       king = TileHelper.find_king(player, array)
       rook = TileHelper.find_rook(player, selection, array)
 
-      return false unless board.valid_castling?(king, rook)
+      return false if Referee.check?(array, king) ||
+                      Referee.king_and_rook_have_moved?(king, rook) ||
+                      TileHelper.tile_between_king_and_rook_are_not_empty?(rook, array) ||
+                      Referee.castling_tile_can_be_attacked?(king, rook)
 
       true
     end

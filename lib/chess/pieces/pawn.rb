@@ -5,6 +5,13 @@ require_relative './piece'
 module Chess
   # Pawn piece
   class Pawn < Piece
+    attr_reader :board
+
+    def initialize(**opts)
+      @board = opts[:board]
+      super(opts)
+    end
+
     def default_color
       raise NotImplementedError
     end
@@ -17,7 +24,7 @@ module Chess
       raise NotImplementedError
     end
 
-    def all_possible_movements(directions, result = [])
+    def possible_movements(directions, result = [])
       result = first_possible_move(directions[0], result)
       return result unless current_coordinate == starting_coordinate
 
@@ -26,20 +33,20 @@ module Chess
 
     def first_possible_move(direction, result = [])
       move = [current_coordinate[0], current_coordinate[1] + direction]
-      result << move
+      result << move if PieceHelper.valid_move?(move, board)
       result
     end
 
     def second_possible_move(direction, result = [])
       additional_move = [current_coordinate[0], current_coordinate[1] + direction]
-      result << additional_move
+      result << additional_move if PieceHelper.valid_move?(additional_move, board)
       result
     end
 
-    def all_possible_captures(directions, result = [])
+    def possible_captures(directions, result = [])
       directions.each do |x_coordinate, y_coordinate|
         capture = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << capture unless PieceHelper.coordinate_outside_of_board?(capture)
+        result << capture if PieceHelper.valid_capture?(capture, board, color)
       end
       result
     end
@@ -69,11 +76,11 @@ module Chess
       6
     end
 
-    def all_possible_movements(directions = MOVE_DIRECTIONS)
+    def possible_movements(directions = MOVE_DIRECTIONS)
       super
     end
 
-    def all_possible_captures(directions = CAPTURE_DIRECTIONS)
+    def possible_captures(directions = CAPTURE_DIRECTIONS)
       super
     end
   end
@@ -102,11 +109,11 @@ module Chess
       1
     end
 
-    def all_possible_movements(directions = MOVE_DIRECTIONS)
+    def possible_movements(directions = MOVE_DIRECTIONS)
       super
     end
 
-    def all_possible_captures(directions = CAPTURE_DIRECTIONS)
+    def possible_captures(directions = CAPTURE_DIRECTIONS)
       super
     end
   end

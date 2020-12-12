@@ -34,5 +34,13 @@ module Chess
     def all_possible_captures
       raise NotImplementedError
     end
+
+    def belongs_to_player?(player_color)
+      color == player_color
+    end
+
+    def not_moved_from_starting_coordinate?
+      starting_coordinate == current_coordinate
+    end
   end
 end

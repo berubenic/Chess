@@ -50,9 +50,11 @@ module Chess
           [king, '', '', '', '', '', '', '']
         ]
       end
+
       it 'returns king' do
         allow(king).to receive(:is_a?).with(String).and_return(false)
         allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:belongs_to_player?).with('white').and_return(true)
         expect(tile_helper.find_king(player, board)).to eq(king)
       end
     end
@@ -72,9 +74,12 @@ module Chess
           ['', '', '', '', '', '', '', rook]
         ]
       end
+
       it 'returns rook' do
         allow(rook).to receive(:is_a?).with(String).and_return(false)
         allow(rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(rook).to receive(:belongs_to_player?).with('white').and_return(true)
+        allow(rook).to receive(:correct_x_coordinate_for_short_castling?).and_return true
         expect(tile_helper.find_rook_for_short_castling(player, board)).to eq(rook)
       end
     end
@@ -94,10 +99,123 @@ module Chess
           [rook, '', '', '', '', '', '', '']
         ]
       end
+
       it 'returns rook' do
         allow(rook).to receive(:is_a?).with(String).and_return(false)
         allow(rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(rook).to receive(:belongs_to_player?).with('white').and_return(true)
+        allow(rook).to receive(:correct_x_coordinate_for_long_castling?).and_return true
         expect(tile_helper.find_rook_for_long_castling(player, board)).to eq(rook)
+      end
+    end
+
+    describe '#not_occupied?' do
+      context 'when tile is empty' do
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+
+        it 'returns true' do
+          coordinate = [0, 0]
+          expect(tile_helper.not_occupied?(coordinate, array)).to be true
+        end
+      end
+
+      context 'when tile is occupied' do
+        let(:piece) { instance_double(Piece) }
+        let(:array) do
+          [
+            [piece, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+
+        it 'returns false' do
+          coordinate = [0, 0]
+          expect(tile_helper.not_occupied?(coordinate, array)).to be false
+        end
+      end
+    end
+
+    describe '#enemy_occupied?' do
+      context 'when tile is an enemy piece' do
+        let(:enemy) { instance_double(Piece, color: 'white') }
+        let(:array) do
+          [
+            [enemy, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+
+        it 'returns true' do
+          coordinate = [0, 0]
+          color = 'black'
+          expect(tile_helper.enemy_occupied?(coordinate, array, color)).to be true
+        end
+      end
+
+      context 'when tile is a friendly piece' do
+        let(:friendly) { instance_double(Piece, color: 'black') }
+        let(:array) do
+          [
+            [friendly, '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+
+        it 'returns false' do
+          coordinate = [0, 0]
+          color = 'black'
+          expect(tile_helper.enemy_occupied?(coordinate, array, color)).to be false
+        end
+      end
+
+      context 'when tile is empty' do
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '']
+          ]
+        end
+
+        it 'returns false' do
+          coordinate = [0, 0]
+          color = 'black'
+          expect(tile_helper.enemy_occupied?(coordinate, array, color)).to be false
+        end
       end
     end
   end

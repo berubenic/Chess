@@ -5,6 +5,13 @@ require_relative './piece'
 module Chess
   # Queen piece
   class Queen < Piece
+    attr_reader :board
+
+    def initialize(**opts)
+      @board = opts[:board]
+      super(opts)
+    end
+
     DIRECTIONS = [
       [1, -1],
       [1, 1],
@@ -28,29 +35,12 @@ module Chess
       raise NotImplementedError
     end
 
-    def all_possible_movements(directions = DIRECTIONS, result = [])
-      directions.each do |direction|
-        moves = directional_movements(direction)
-        result = PieceHelper.add_moves_to_result(moves, result)
-      end
-      result
+    def possible_movements(directions = DIRECTIONS)
+      super
     end
 
-    def directional_movements(direction, result = [], coordinate = current_coordinate)
-      next_move = [coordinate[0] + direction[0], coordinate[1] + direction[1]]
-      return result if PieceHelper.coordinate_outside_of_board?(next_move)
-
-      result << next_move
-      current = next_move
-      directional_movements(direction, result, current)
-    end
-
-    def all_possible_captures(directions = DIRECTIONS, result = [])
-      directions.each do |direction|
-        moves = directional_movements(direction)
-        result = PieceHelper.add_moves_to_result(moves, result)
-      end
-      result
+    def possible_captures(directions = DIRECTIONS)
+      super
     end
   end
 

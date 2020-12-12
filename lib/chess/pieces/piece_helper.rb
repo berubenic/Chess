@@ -21,11 +21,16 @@ module Chess
     end
 
     def within_board?(coordinate)
-      coordinate.any? { |number| number.positive? && number <= 7 }
+      coordinate.all? { |number| number >= 0 && number <= 7 }
     end
 
     def valid_capture?(capture, board, color)
       within_board?(capture) && TileHelper.enemy_occupied?(capture, board, color)
+    end
+
+    def friendly_occupied?(coordinate, board, color)
+      tile = TileHelper.find_tile(coordinate, board)
+      TileHelper.tile_belongs_to_player?(color, tile)
     end
   end
 end

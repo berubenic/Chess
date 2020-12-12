@@ -76,7 +76,7 @@ module Chess
       true
     end
 
-    def valid_castling?(_selection, array = board.array)
+    def valid_castling?(selection, array = board.array)
       king = TileHelper.find_king(player, array)
       rook = TileHelper.find_rook(player, selection, array)
 

@@ -10,14 +10,16 @@ module Chess
     end
 
     def tile_belongs_to_player?(color, tile)
-      tile != '' || tile.color == color
+      return false if tile == ''
+
+      tile.color == color
     end
 
-    def find_king(player, board, king = King)
+    def find_king(player, board)
       color = player.color
       board.each do |row|
-        piece = find_piece_in_row(row, color, king)
-        return piece if piece.is_a?(king)
+        piece = find_piece_in_row(row, color, King)
+        return piece if piece.is_a?(King)
       end
     end
 
@@ -29,17 +31,16 @@ module Chess
     end
 
     def find_rook_for_short_castling(player, board)
-      rook = Rook
       color = player.color
       board.each do |row|
-        piece = find_piece_in_row_for_short_castling(row, color, rook)
-        return piece if piece.is_a?(rook)
+        piece = find_piece_in_row_for_short_castling(row, color, Rook)
+        return piece if piece.is_a?(Rook)
       end
     end
 
     def find_piece_in_row_for_short_castling(row, color, piece)
       row.each do |tile|
-        next if tile.is_a?(string)
+        next if tile.is_a?(String)
         if tile.is_a?(piece) && tile_belongs_to_player?(color, tile) && correct_x_coordinate_for_short_castling?(tile)
           return tile
         end
@@ -47,29 +48,28 @@ module Chess
     end
 
     def correct_x_coordinate_for_short_castling?(tile, x_coordinate = 7)
-      tile[0] == x_coordinate
+      tile.current_coordinate[0] == x_coordinate
     end
 
     def find_rook_for_long_castling(player, board)
-      rook = Rook
       color = player.color
       board.each do |row|
-        piece = find_piece_in_row_for_long_castling(row, color, rook)
-        return piece if piece.is_a?(rook)
+        piece = find_piece_in_row_for_long_castling(row, color, Rook)
+        return piece if piece.is_a?(Rook)
       end
     end
 
     def find_piece_in_row_for_long_castling(row, color, piece)
       row.each do |tile|
-        next if tile.is_a?(string)
-        if tile.is_a?(piece) && tile_belongs_to_player?(color, tile) && correct_x_coordinate_for_short_castling?(tile)
+        next if tile.is_a?(String)
+        if tile.is_a?(piece) && tile_belongs_to_player?(color, tile) && correct_x_coordinate_for_long_castling?(tile)
           return tile
         end
       end
     end
 
     def correct_x_coordinate_for_long_castling?(tile, x_coordinate = 0)
-      tile[0] == x_coordinate
+      tile.current_coordinate[0] == x_coordinate
     end
   end
 end

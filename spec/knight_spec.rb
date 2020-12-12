@@ -5,15 +5,44 @@ module Chess
   describe Knight do
     subject(:knight) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'Kn') }
 
-    describe '#all_possible_movements' do
+    describe '#possible_movements' do
+      let(:board) do
+        [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', knight, '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+      end
+
       it 'returns result' do
-        expect(knight.all_possible_movements).to contain_exactly([5, 2], [6, 3], [6, 5], [5, 6], [3, 6], [2, 5], [2, 3], [3, 2])
+        knight.instance_variable_set(:@board, board)
+        expect(knight.possible_movements).to contain_exactly([5, 2], [6, 3], [6, 5], [5, 6], [3, 6], [2, 5], [2, 3], [3, 2])
       end
     end
 
-    describe '#all_possible_captures' do
+    describe '#possible_captures' do
+      let(:enemy) { instance_double(Piece, color: 'black') }
+      let(:board) do
+        [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', knight, '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', enemy, '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ]
+      end
+
       it 'returns result' do
-        expect(knight.all_possible_captures).to contain_exactly([5, 2], [6, 3], [6, 5], [5, 6], [3, 6], [2, 5], [2, 3], [3, 2])
+        knight.instance_variable_set(:@board, board)
+        expect(knight.possible_captures).to contain_exactly([3, 6])
       end
     end
   end

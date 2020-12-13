@@ -27,9 +27,9 @@ module Chess
       tile.color == color
     end
 
-    def find_king(player, board)
+    def find_king(player, array)
       color = player.color
-      board.each do |row|
+      array.each do |row|
         piece = find_piece_in_row(row, color, King)
         return piece if piece.is_a?(King)
       end
@@ -42,9 +42,9 @@ module Chess
       end
     end
 
-    def find_rook_for_short_castling(player, board)
+    def find_rook_for_short_castling(player, array)
       color = player.color
-      board.each do |row|
+      array.each do |row|
         piece = find_piece_in_row_for_short_castling(row, color, Rook)
         return piece if piece.is_a?(Rook)
       end
@@ -59,9 +59,9 @@ module Chess
       end
     end
 
-    def find_rook_for_long_castling(player, board)
+    def find_rook_for_long_castling(player, array)
       color = player.color
-      board.each do |row|
+      array.each do |row|
         piece = find_piece_in_row_for_long_castling(row, color, Rook)
         return piece if piece.is_a?(Rook)
       end

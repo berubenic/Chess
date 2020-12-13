@@ -5,10 +5,40 @@ require_relative './initial_setup'
 module Chess
   # Sets pieces for a normal game of chess
   class Board
-    attr_reader :array
+    attr_reader :array, :current_movements, :current_captures
 
     def initialize(array: Array.new(8) { Array.new(8, '') })
       @array = array
+      @current_movements = nil
+      @current_captures = nil
+    end
+
+    def add_moves_and_captures(piece)
+      @current_movements = piece.possible_movements
+      @current_captures = piece.possible_captures
+      add_moves unless current_movements.empty?
+      add_captures unless current_captures.empty?
+    end
+
+    def add_moves(content = 'o')
+      current_movements.each do |move|
+        update_array(move, content)
+      end
+    end
+
+    def update_array(coordinate, content)
+      @array[coordinate[1]][coordinate[0]] = content
+    end
+
+    def add_captures
+      current_captures.each do |capture|
+        update_capturable_piece(capture)
+      end
+    end
+
+    def update_capturable_piece(coordinate)
+      piece = array[coordinate[1]][coordinate[0]]
+      piece.can_be_captured
     end
 
     def setup_board

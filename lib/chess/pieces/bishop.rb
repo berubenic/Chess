@@ -31,11 +31,11 @@ module Chess
       raise NotImplementedError
     end
 
-    def possible_movements(directions = DIRECTIONS)
+    def possible_movements(directions = DIRECTIONS, array = board.array)
       super
     end
 
-    def possible_captures(directions = DIRECTIONS)
+    def possible_captures(directions = DIRECTIONS, array = board.array)
       super
     end
   end
@@ -47,7 +47,7 @@ module Chess
     end
 
     def default_content
-      "\u2656"
+      "\u2657"
     end
 
     def default_y_coordinate

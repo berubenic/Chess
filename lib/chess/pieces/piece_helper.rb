@@ -16,20 +16,20 @@ module Chess
       result
     end
 
-    def valid_move?(move, board)
-      within_board?(move) && TileHelper.not_occupied?(move, board)
+    def valid_move?(move, array)
+      within_board?(move) && TileHelper.not_occupied?(move, array)
     end
 
     def within_board?(coordinate)
       coordinate.all? { |number| number >= 0 && number <= 7 }
     end
 
-    def valid_capture?(capture, board, color)
-      within_board?(capture) && TileHelper.enemy_occupied?(capture, board, color)
+    def valid_capture?(capture, array, color)
+      within_board?(capture) && TileHelper.enemy_occupied?(capture, array, color)
     end
 
-    def friendly_occupied?(coordinate, board, color)
-      tile = TileHelper.find_tile(coordinate, board)
+    def friendly_occupied?(coordinate, array, color)
+      tile = TileHelper.find_tile(coordinate, array)
       TileHelper.tile_belongs_to_player?(color, tile)
     end
   end

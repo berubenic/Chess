@@ -96,19 +96,19 @@ module Chess
       end
 
       context 'when selection is long castle' do
-        it 'returns #add_moves_and_captures if valid' do
+        it 'returns #execute_castling if valid' do
           selection = 'long castle'
-          allow(game).to receive(:valid_selection?).and_return(true)
-          expect(game).to receive(:add_moves_and_captures)
+          allow(game).to receive(:valid_castling?).and_return(true)
+          expect(game).to receive(:execute_castling)
           game.translate_selection(selection)
         end
       end
 
       context 'when selection is short castle' do
-        it 'returns #add_moves_and_captures if valid' do
+        it 'returns #execute_castling if valid' do
           selection = 'short castle'
-          allow(game).to receive(:valid_selection?).and_return(true)
-          expect(game).to receive(:add_moves_and_captures)
+          allow(game).to receive(:valid_castling?).and_return(true)
+          expect(game).to receive(:execute_castling)
           game.translate_selection(selection)
         end
       end
@@ -116,9 +116,9 @@ module Chess
       context 'when selection is a coordinate' do
         it 'returns #add_moves_nad_captures if valid' do
           selection = 'a1'
-          allow(translator).to receive(:translate)
+          allow(translator).to receive(:translate).and_return([0, 0])
           allow(game).to receive(:valid_selection?).and_return(true)
-          expect(game).to receive(:add_moves_and_captures)
+          expect(game).to receive(:find_movements_and_captures)
           game.translate_selection(selection)
         end
       end
@@ -153,24 +153,6 @@ module Chess
           color = 'white'
           allow(tile_helper).to receive(:find_tile)
           allow(tile_helper).to receive(:tile_belongs_to_player?).and_return(false)
-          expect(game.valid_selection?(selection, color)).to be false
-        end
-      end
-
-      context 'when selection is a valid castling' do
-        it 'returns true' do
-          selection = 'short castle'
-          color = 'white'
-          allow(game).to receive(:valid_castling?).and_return(true)
-          expect(game.valid_selection?(selection, color)).to be true
-        end
-      end
-
-      context 'when selection is a unvalid castling' do
-        it 'returns true' do
-          selection = 'short castle'
-          color = 'white'
-          allow(game).to receive(:valid_castling?).and_return(false)
           expect(game.valid_selection?(selection, color)).to be false
         end
       end

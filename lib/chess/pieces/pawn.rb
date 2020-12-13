@@ -33,20 +33,20 @@ module Chess
 
     def first_possible_move(direction, result = [])
       move = [current_coordinate[0], current_coordinate[1] + direction]
-      result << move if PieceHelper.valid_move?(move, board)
+      result << move if PieceHelper.valid_move?(move, board.array)
       result
     end
 
     def second_possible_move(direction, result = [])
       additional_move = [current_coordinate[0], current_coordinate[1] + direction]
-      result << additional_move if PieceHelper.valid_move?(additional_move, board)
+      result << additional_move if PieceHelper.valid_move?(additional_move, board.array)
       result
     end
 
     def possible_captures(directions, result = [])
       directions.each do |x_coordinate, y_coordinate|
         capture = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << capture if PieceHelper.valid_capture?(capture, board, color)
+        result << capture if PieceHelper.valid_capture?(capture, board.array, color)
       end
       result
     end

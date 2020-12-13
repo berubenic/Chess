@@ -6,7 +6,7 @@ module Chess
     subject(:bishop) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'B') }
 
     describe '#possible_movements' do
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -18,6 +18,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         bishop.instance_variable_set(:@board, board)
@@ -28,7 +29,7 @@ module Chess
 
     describe '#possible_captures' do
       let(:enemy) { instance_double(Piece, color: 'black') }
-      let(:board) do
+      let(:array) do
         [
           [enemy, '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -40,6 +41,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         bishop.instance_variable_set(:@board, board)

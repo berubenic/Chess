@@ -58,19 +58,22 @@ module Chess
       case selection
       when 's'
         return save_game
-      when 'long castle' || 'short castle'
-        # do nothing
+      when 'long castle', 'short castle'
+        return execute_castling if valid_castling?(selection)
       else
-        selection = Translator.translate(selection)
+        translated_selection = Translator.translate(selection)
+        return find_movements_and_captures(translated_selection) if valid_selection?(translated_selection)
       end
-      return add_moves_and_captures if valid_selection?(selection)
 
       invalid_selection
     end
 
-    def valid_selection?(selection, color = current_player.color)
-      return valid_castling?(selection) if ['long castle', 'short castle'].include?(selection)
+    def invalid_selection
+      Display.invalid_selection_message
+      player_selection
+    end
 
+    def valid_selection?(selection, color = current_player.color)
       tile = TileHelper.find_tile(selection, board.array)
       return false unless TileHelper.tile_belongs_to_player?(color, tile)
 
@@ -89,9 +92,12 @@ module Chess
       true
     end
 
-    def invalid_selection
-      Display.invalid_selection_message
-      player_selection
+    def find_movements_and_captures(selection, array = board.array)
+      piece = TileHelper.find_tile(selection, array)
+      return no_movements_and_captures if piece.can_not_move_or_capture?
+
+      board.add_moves_and_captures(piece)
+      Display.display_board(array)
     end
 
     def setup_players

@@ -6,7 +6,7 @@ module Chess
     subject(:rook) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'R') }
 
     describe '#possible_movements' do
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -18,6 +18,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         rook.instance_variable_set(:@board, board)
@@ -27,7 +28,7 @@ module Chess
     end
 
     describe '#directional_movements' do
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -39,6 +40,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns arrays up to y_coordinate 7' do
         rook.instance_variable_set(:@board, board)
@@ -50,7 +52,7 @@ module Chess
     describe '#directional_captures' do
       context 'when the enemy is capturable' do
         let(:enemy) { instance_double(Piece, color: 'black') }
-        let(:board) do
+        let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -62,6 +64,7 @@ module Chess
             ['', '', '', '', '', '', '', '']
           ]
         end
+        let(:board) { instance_double(Board, array: array) }
 
         it 'returns the enemy coordinate' do
           rook.instance_variable_set(:@board, board)
@@ -73,7 +76,7 @@ module Chess
       context 'when a friendly blocks the enemy' do
         let(:enemy) { instance_double(Piece, color: 'black') }
         let(:friendly) { instance_double(Piece, color: 'white') }
-        let(:board) do
+        let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -85,6 +88,7 @@ module Chess
             ['', '', '', '', '', '', '', '']
           ]
         end
+        let(:board) { instance_double(Board, array: array) }
 
         it 'returns an empty array' do
           rook.instance_variable_set(:@board, board)
@@ -96,7 +100,7 @@ module Chess
 
     describe '#possible_captures' do
       let(:enemy) { instance_double(Piece, color: 'black') }
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -108,6 +112,7 @@ module Chess
           ['', '', '', '', enemy, '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         rook.instance_variable_set(:@board, board)

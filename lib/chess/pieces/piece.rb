@@ -44,17 +44,17 @@ module Chess
       @capturable = true
     end
 
-    def possible_movements(directions, result = [])
+    def possible_movements(directions, array, result = [])
       directions.each do |direction|
-        moves = directional_movements(direction)
+        moves = directional_movements(direction, array)
         result = PieceHelper.add_moves_to_result(moves, result)
       end
       result
     end
 
-    def possible_captures(directions, result = [])
+    def possible_captures(directions, array, result = [])
       directions.each do |direction|
-        capture = directional_captures(direction)
+        capture = directional_captures(direction, array)
         result << capture unless capture.empty?
       end
       result
@@ -65,15 +65,15 @@ module Chess
       return result if PieceHelper.coordinate_outside_of_board?(next_move) ||
                        PieceHelper.friendly_occupied?(next_move, array, color)
 
-      continue_with_next_coordinate(direction, result, next_move) if PieceHelper.valid_move?(next_move, array)
+      continue_with_next_coordinate(direction, array, result, next_move) if PieceHelper.valid_move?(next_move, array)
 
       result
     end
 
-    def continue_with_next_coordinate(direction, result, next_move)
+    def continue_with_next_coordinate(direction, array, result, next_move)
       result << next_move
       current = next_move
-      directional_movements(direction, result, current)
+      directional_movements(direction, array, result, current)
     end
 
     def directional_captures(direction, array, coordinate = current_coordinate)
@@ -85,7 +85,7 @@ module Chess
         next_move
       else
         current = next_move
-        directional_captures(direction, current)
+        directional_captures(direction, array, current)
       end
     end
   end

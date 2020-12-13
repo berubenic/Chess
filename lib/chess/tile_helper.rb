@@ -76,12 +76,11 @@ module Chess
       end
     end
 
-    # not tested
     def tile_between_king_and_rook_are_not_empty?(rook, array)
       coordinates_for_castling = rook.empty_coordinates_needed_for_castling
-      coordinates_for_castling.none? do |coordinate|
+      coordinates_for_castling.any? do |coordinate|
         tile = find_tile(coordinate, array)
-        tile == ''
+        tile != ''
       end
     end
   end

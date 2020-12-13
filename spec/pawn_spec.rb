@@ -7,7 +7,7 @@ module Chess
 
     describe '#possible_movements' do
       context 'when pawn is at starting_coordinate' do
-        let(:board) do
+        let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -19,6 +19,7 @@ module Chess
             ['', '', '', '', '', '', '', '']
           ]
         end
+        let(:board) { instance_double(Board, array: array) }
 
         it 'returns result' do
           pawn.instance_variable_set(:@board, board)
@@ -31,7 +32,7 @@ module Chess
       context 'when pawn is not at starting_coordinate' do
         subject(:pawn) { described_class.new(x_coordinate: 1, y_coordinate: 5, color: 'white', content: 'P') }
 
-        let(:board) do
+        let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -43,6 +44,7 @@ module Chess
             ['', '', '', '', '', '', '', '']
           ]
         end
+        let(:board) { instance_double(Board, array: array) }
 
         it 'returns result' do
           pawn.instance_variable_set(:@starting_coordinate, [1, 6])
@@ -56,7 +58,7 @@ module Chess
 
     describe '#first_possible_move' do
       context 'when pawn is at starting_coordinate' do
-        let(:board) do
+        let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
@@ -68,6 +70,7 @@ module Chess
             ['', '', '', '', '', '', '', '']
           ]
         end
+        let(:board) { instance_double(Board, array: array) }
 
         it 'returns result' do
           pawn.instance_variable_set(:@board, board)
@@ -78,7 +81,7 @@ module Chess
     end
 
     describe '#second_possible_move' do
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -90,6 +93,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         pawn.instance_variable_set(:@board, board)
@@ -101,7 +105,7 @@ module Chess
 
     describe '#possible_captures' do
       let(:enemy) { instance_double(Piece, color: 'black') }
-      let(:board) do
+      let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -113,6 +117,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+      let(:board) { instance_double(Board, array: array) }
 
       it 'returns result' do
         pawn.instance_variable_set(:@board, board)

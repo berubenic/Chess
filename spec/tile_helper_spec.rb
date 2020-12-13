@@ -218,5 +218,58 @@ module Chess
         end
       end
     end
+
+    describe '#tile_between_king_and_rook_are_not_empty?' do
+      context 'when tiles are empty' do
+        let(:king) { instance_double(WhiteKing) }
+        let(:rook) { instance_double(WhiteRook) }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', king, '', '', rook]
+          ]
+        end
+
+        before do
+          allow(rook).to receive(:empty_coordinates_needed_for_castling).and_return([[6, 7], [5, 7]])
+        end
+
+        it 'returns false' do
+          expect(tile_helper.tile_between_king_and_rook_are_not_empty?(rook, array)).to be false
+        end
+      end
+
+      context 'when tiles are not empty' do
+        let(:king) { instance_double(WhiteKing) }
+        let(:rook) { instance_double(WhiteRook) }
+        let(:knight) { instance_double(WhiteKnight) }
+        let(:array) do
+          [
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', king, '', knight, rook]
+          ]
+        end
+
+        before do
+          allow(rook).to receive(:empty_coordinates_needed_for_castling).and_return([[6, 7], [5, 7]])
+        end
+
+        it 'returns true' do
+          expect(tile_helper.tile_between_king_and_rook_are_not_empty?(rook, array)).to be true
+        end
+      end
+    end
   end
 end

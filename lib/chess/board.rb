@@ -17,19 +17,19 @@ module Chess
     end
 
     def setup_white_pieces(row_eight = array[7], row_seven = array[6])
-      InitialSetup.setup_white_rooks(row_eight)
-      InitialSetup.setup_white_knights(row_eight)
-      InitialSetup.setup_white_bishops(row_eight)
-      InitialSetup.setup_white_king_and_queen(row_eight)
-      InitialSetup.setup_white_pawns(row_seven)
+      InitialSetup.setup_white_rooks(row_eight, self)
+      InitialSetup.setup_white_knights(row_eight, self)
+      InitialSetup.setup_white_bishops(row_eight, self)
+      InitialSetup.setup_white_king_and_queen(row_eight, self)
+      InitialSetup.setup_white_pawns(row_seven, self)
     end
 
     def setup_black_pieces(row_one = array[0], row_two = array[1])
-      InitialSetup.setup_black_rooks(row_one)
-      InitialSetup.setup_black_knights(row_one)
-      InitialSetup.setup_black_bishops(row_one)
-      InitialSetup.setup_black_king_and_queen(row_one)
-      InitialSetup.setup_black_pawns(row_two)
+      InitialSetup.setup_black_rooks(row_one, self)
+      InitialSetup.setup_black_knights(row_one, self)
+      InitialSetup.setup_black_bishops(row_one, self)
+      InitialSetup.setup_black_king_and_queen(row_one, self)
+      InitialSetup.setup_black_pawns(row_two, self)
     end
   end
 end

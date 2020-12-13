@@ -3,7 +3,7 @@
 # TileHelper specs
 module Chess
   describe TileHelper do
-    subject(:tile_helper) { TileHelper }
+    subject(:tile_helper) { described_class }
 
     describe '#tile_belongs_to_player?' do
       context 'when tile is empty' do

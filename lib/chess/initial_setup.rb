@@ -13,55 +13,55 @@ module Chess
   module InitialSetup
     module_function
 
-    def setup_white_rooks(row_eight)
-      row_eight[0] = PieceFactory.create_white_piece(:rook, x_coordinate: 0)
-      row_eight[7] = PieceFactory.create_white_piece(:rook, x_coordinate: 7)
+    def setup_white_rooks(row_eight, board)
+      row_eight[0] = PieceFactory.create_white_piece(:rook, 0, board)
+      row_eight[7] = PieceFactory.create_white_piece(:rook, 7, board)
     end
 
-    def setup_white_knights(row_eight)
-      row_eight[6] = PieceFactory.create_white_piece(:knight, x_coordinate: 6)
-      row_eight[1] = PieceFactory.create_white_piece(:knight, x_coordinate: 1)
+    def setup_white_knights(row_eight, board)
+      row_eight[6] = PieceFactory.create_white_piece(:knight, 6, board)
+      row_eight[1] = PieceFactory.create_white_piece(:knight, 1, board)
     end
 
-    def setup_white_bishops(row_eight)
-      row_eight[5] = PieceFactory.create_white_piece(:bishop, x_coordinate: 5)
-      row_eight[2] = PieceFactory.create_white_piece(:bishop, x_coordinate: 2)
+    def setup_white_bishops(row_eight, board)
+      row_eight[5] = PieceFactory.create_white_piece(:bishop, 5, board)
+      row_eight[2] = PieceFactory.create_white_piece(:bishop, 2, board)
     end
 
-    def setup_white_king_and_queen(row_eight)
-      row_eight[3] = PieceFactory.create_white_piece(:queen, x_coordinate: 3)
-      row_eight[4] = PieceFactory.create_white_piece(:king, x_coordinate: 4)
+    def setup_white_king_and_queen(row_eight, board)
+      row_eight[3] = PieceFactory.create_white_piece(:queen, 3, board)
+      row_eight[4] = PieceFactory.create_white_piece(:king, 4, board)
     end
 
-    def setup_white_pawns(row_seven)
+    def setup_white_pawns(row_seven, board)
       row_seven.each_with_index do |_tile, index|
-        row_seven[index] = PieceFactory.create_white_piece(:pawn, x_coordinate: index)
+        row_seven[index] = PieceFactory.create_white_piece(:pawn, index, board)
       end
     end
 
-    def setup_black_rooks(row_one)
-      row_one[0] = PieceFactory.create_black_piece(:rook, x_coordinate: 0)
-      row_one[7] = PieceFactory.create_black_piece(:rook, x_coordinate: 7)
+    def setup_black_rooks(row_one, board)
+      row_one[0] = PieceFactory.create_black_piece(:rook, 0, board)
+      row_one[7] = PieceFactory.create_black_piece(:rook, 7, board)
     end
 
-    def setup_black_knights(row_one)
-      row_one[1] = PieceFactory.create_black_piece(:knight, x_coordinate: 1)
-      row_one[6] = PieceFactory.create_black_piece(:knight, x_coordinate: 6)
+    def setup_black_knights(row_one, board)
+      row_one[1] = PieceFactory.create_black_piece(:knight,  1, board)
+      row_one[6] = PieceFactory.create_black_piece(:knight,  6, board)
     end
 
-    def setup_black_bishops(row_one)
-      row_one[2] = PieceFactory.create_black_piece(:bishop, x_coordinate: 2)
-      row_one[5] = PieceFactory.create_black_piece(:bishop, x_coordinate: 5)
+    def setup_black_bishops(row_one, board)
+      row_one[2] = PieceFactory.create_black_piece(:bishop, 2, board)
+      row_one[5] = PieceFactory.create_black_piece(:bishop, 5, board)
     end
 
-    def setup_black_king_and_queen(row_one)
-      row_one[3] = PieceFactory.create_black_piece(:queen, x_coordinate: 3)
-      row_one[4] = PieceFactory.create_black_piece(:king, x_coordinate: 4)
+    def setup_black_king_and_queen(row_one, board)
+      row_one[3] = PieceFactory.create_black_piece(:queen, 3, board)
+      row_one[4] = PieceFactory.create_black_piece(:king, 4, board)
     end
 
-    def setup_black_pawns(row_two)
+    def setup_black_pawns(row_two, board)
       row_two.each_with_index do |_tile, index|
-        row_two[index] = PieceFactory.create_black_piece(:pawn, x_coordinate: index)
+        row_two[index] = PieceFactory.create_black_piece(:pawn, index, board)
       end
     end
   end

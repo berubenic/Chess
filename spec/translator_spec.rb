@@ -3,7 +3,7 @@
 # Translator specs
 module Chess
   describe Translator do
-    subject(:translator) { Translator }
+    subject(:translator) { described_class }
 
     describe '#translate' do
       it 'returns a array' do

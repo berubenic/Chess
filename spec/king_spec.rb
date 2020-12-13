@@ -39,6 +39,7 @@ module Chess
           ['', '', '', '', '', '', '', '']
         ]
       end
+
       it 'returns result' do
         king.instance_variable_set(:@board, board)
         expect(king.possible_captures).to contain_exactly([4, 5])

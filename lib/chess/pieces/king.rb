@@ -9,7 +9,7 @@ module Chess
 
     def initialize(**opts)
       @board = opts[:board]
-      super(opts)
+      super
     end
 
     DIRECTIONS = [

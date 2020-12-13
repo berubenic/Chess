@@ -32,3 +32,6 @@ detectors:
     - Chess::PawnPromotion#knight_content
     - Chess::PawnPromotion#queen_content
     - Chess::PawnPromotion#rook_content
+  DataClump:
+    exclude:
+    - Chess::InitialSetup

@@ -31,8 +31,8 @@ module Chess
       color == player_color
     end
 
-    def not_moved_from_starting_coordinate?
-      starting_coordinate == current_coordinate
+    def moved_from_starting_coordinate?
+      starting_coordinate != current_coordinate
     end
 
     def possible_movements(directions, result = [])

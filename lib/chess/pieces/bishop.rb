@@ -5,13 +5,6 @@ require_relative './piece'
 module Chess
   # Bishop piece
   class Bishop < Piece
-    attr_reader :board
-
-    def initialize(**opts)
-      @board = opts[:board]
-      super
-    end
-
     DIRECTIONS = [
       [1, -1],
       [1, 1],
@@ -31,11 +24,11 @@ module Chess
       raise NotImplementedError
     end
 
-    def possible_movements(directions = DIRECTIONS, array = board.array)
+    def possible_movements(directions = DIRECTIONS)
       super
     end
 
-    def possible_captures(directions = DIRECTIONS, array = board.array)
+    def possible_captures(directions = DIRECTIONS)
       super
     end
   end

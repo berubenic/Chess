@@ -98,6 +98,33 @@ module Chess
 
       board.add_moves_and_captures(piece)
       Display.display_board(array)
+      player_action
+    end
+
+    def no_movements_and_captures
+      Display.no_movements_or_captures_message
+      player_selection
+    end
+
+    def player_action
+      loop do
+        action = Display.ask_to_select_action(current_player)
+        return translate_action(action) if Translator.valid_input?(action)
+
+        Display.invalid_input_message
+      end
+    end
+
+    def translate_action(action)
+      translated_action = Translator.translate(action)
+      return execute_movement_or_capture if board.valid_action?(translated_action)
+
+      invalid_action
+    end
+
+    def invalid_action
+      Display.invalid_action_message
+      player_action
     end
 
     def setup_players

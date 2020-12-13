@@ -6,13 +6,14 @@ module Chess
   # Piece superclass
   class Piece
     include PieceHelper
-    attr_reader :current_coordinate, :starting_coordinate, :color, :content, :capturable
+    attr_reader :current_coordinate, :starting_coordinate, :color, :content, :capturable, :board
 
     def initialize(**opts)
       @current_coordinate = [opts[:x_coordinate], opts[:y_coordinate] || default_y_coordinate]
       @starting_coordinate = current_coordinate
       @color = opts[:color] || default_color
       @content = opts[:content] || default_content
+      @board = opts[:board]
       @capturable = false
     end
 
@@ -44,39 +45,40 @@ module Chess
       @capturable = true
     end
 
-    def possible_movements(directions, array, result = [])
+    def possible_movements(directions, result = [])
       directions.each do |direction|
-        moves = directional_movements(direction, array)
+        moves = directional_movements(direction)
         result = PieceHelper.add_moves_to_result(moves, result)
       end
       result
     end
 
-    def possible_captures(directions, array, result = [])
+    def possible_captures(directions, result = [])
       directions.each do |direction|
-        capture = directional_captures(direction, array)
+        capture = directional_captures(direction)
         result << capture unless capture.empty?
       end
       result
     end
 
-    def directional_movements(direction, array, result = [], coordinate = current_coordinate)
+    def directional_movements(direction, result = [], coordinate = current_coordinate)
+      array = board.array
       next_move = [coordinate[0] + direction[0], coordinate[1] + direction[1]]
       return result if PieceHelper.coordinate_outside_of_board?(next_move) ||
                        PieceHelper.friendly_occupied?(next_move, array, color)
 
-      continue_with_next_coordinate(direction, array, result, next_move) if PieceHelper.valid_move?(next_move, array)
+      continue_with_next_coordinate(direction, result, next_move) if PieceHelper.valid_move?(next_move, array)
 
       result
     end
 
-    def continue_with_next_coordinate(direction, array, result, next_move)
+    def continue_with_next_coordinate(direction, result, next_move)
       result << next_move
       current = next_move
-      directional_movements(direction, array, result, current)
+      directional_movements(direction, result, current)
     end
 
-    def directional_captures(direction, array, coordinate = current_coordinate)
+    def directional_captures(direction, array = board.array, coordinate = current_coordinate)
       next_move = [coordinate[0] + direction[0], coordinate[1] + direction[1]]
       return [] if PieceHelper.coordinate_outside_of_board?(next_move) ||
                    PieceHelper.friendly_occupied?(next_move, array, color)
@@ -85,7 +87,7 @@ module Chess
         next_move
       else
         current = next_move
-        directional_captures(direction, array, current)
+        directional_captures(direction, current)
       end
     end
   end

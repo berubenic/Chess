@@ -45,7 +45,7 @@ module Chess
       it 'returns arrays up to y_coordinate 7' do
         rook.instance_variable_set(:@board, board)
         direction = [0, 1]
-        expect(rook.directional_movements(direction, array)).to contain_exactly([4, 5], [4, 6], [4, 7])
+        expect(rook.directional_movements(direction)).to contain_exactly([4, 5], [4, 6], [4, 7])
       end
     end
 
@@ -69,7 +69,7 @@ module Chess
         it 'returns the enemy coordinate' do
           rook.instance_variable_set(:@board, board)
           direction = [-1, 0]
-          expect(rook.directional_captures(direction, array)).to eq([0, 4])
+          expect(rook.directional_captures(direction)).to eq([0, 4])
         end
       end
 
@@ -93,7 +93,7 @@ module Chess
         it 'returns an empty array' do
           rook.instance_variable_set(:@board, board)
           direction = [-1, 0]
-          expect(rook.directional_captures(direction, array)).to eq([])
+          expect(rook.directional_captures(direction)).to eq([])
         end
       end
     end

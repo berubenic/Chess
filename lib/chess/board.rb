@@ -13,6 +13,10 @@ module Chess
       @current_captures = nil
     end
 
+    def valid_action?(coordinate)
+      current_movements.include?(coordinate) || current_captures.include?(coordinate)
+    end
+
     def add_moves_and_captures(piece)
       @current_movements = piece.possible_movements
       @current_captures = piece.possible_captures

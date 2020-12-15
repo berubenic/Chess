@@ -5,7 +5,7 @@ require_relative './single_movement'
 
 module Chess
   # Knight piece
-  #noinspection DuplicatedCode
+  # noinspection DuplicatedCode
   class Knight < Piece
     include SingleMovement
     attr_reader :board

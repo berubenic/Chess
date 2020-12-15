@@ -66,7 +66,7 @@ module Chess
 
     describe '#can_be_captured' do
       it 'assigns @capturable true' do
-        expect { piece.can_be_captured }.to change { piece.capturable }.from(false).to(true)
+        expect { piece.can_be_captured }.to change(piece, :capturable).from(false).to(true)
       end
     end
 
@@ -100,7 +100,7 @@ module Chess
     describe '#possible_captures' do
       subject(:piece) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'Q') }
 
-      let(:enemy) { instance_double(Piece, color: 'black') }
+      let(:enemy) { instance_double(described_class, color: 'black') }
       let(:array) do
         [
           ['', '', '', '', '', '', '', ''],
@@ -150,7 +150,7 @@ module Chess
       subject(:piece) { described_class.new(x_coordinate: 4, y_coordinate: 4, color: 'white', content: 'Q') }
 
       context 'when the enemy is capturable' do
-        let(:enemy) { instance_double(Piece, color: 'black') }
+        let(:enemy) { instance_double(described_class, color: 'black') }
         let(:array) do
           [
             ['', '', '', '', '', '', '', ''],
@@ -173,8 +173,8 @@ module Chess
       end
 
       context 'when a friendly blocks the enemy' do
-        let(:enemy) { instance_double(Piece, color: 'black') }
-        let(:friendly) { instance_double(Piece, color: 'white') }
+        let(:enemy) { instance_double(described_class, color: 'black') }
+        let(:friendly) { instance_double(described_class, color: 'white') }
         let(:array) do
           [
             ['', '', '', '', '', '', '', ''],

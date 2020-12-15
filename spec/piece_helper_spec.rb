@@ -67,5 +67,28 @@ module Chess
         end
       end
     end
+
+    describe '#valid_capture' do
+      let(:tile_helper) { TileHelper }
+      let(:coordinate) { [0, 0] }
+      let(:array) { [] }
+      let(:color) { 'white' }
+
+      context 'when both #within_board? and TileHelper#enemy_occupied? are true' do
+        it 'returns true' do
+          allow(piece_helper).to receive(:within_board?).with(coordinate).and_return true
+          allow(tile_helper).to receive(:enemy_occupied?).with(coordinate, array, color).and_return true
+          expect(piece_helper.valid_capture?(coordinate, array, color)).to be true
+        end
+      end
+
+      context 'when either #within_board? or TileHelper#enemy_occupied? are false' do
+        it 'returns false' do
+          allow(piece_helper).to receive(:within_board?).with(coordinate).and_return true
+          allow(tile_helper).to receive(:enemy_occupied?).with(coordinate, array, color).and_return false
+          expect(piece_helper.valid_capture?(coordinate, array, color)).to be false
+        end
+      end
+    end
   end
 end

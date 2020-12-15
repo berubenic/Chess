@@ -24,13 +24,8 @@ module Chess
       coordinate.all? { |number| number >= 0 && number <= 7 }
     end
 
-    def valid_capture?(capture, array, color)
-      within_board?(capture) && TileHelper.enemy_occupied?(capture, array, color)
-    end
-
-    def friendly_occupied?(coordinate, array, color)
-      tile = TileHelper.find_tile(coordinate, array)
-      TileHelper.tile_belongs_to_player?(color, tile)
+    def valid_capture?(coordinate, array, color)
+      within_board?(coordinate) && TileHelper.enemy_occupied?(coordinate, array, color)
     end
   end
 end

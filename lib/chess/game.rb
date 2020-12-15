@@ -84,7 +84,7 @@ module Chess
 
     def valid_castling?(selection, array = board.array)
       king = TileHelper.find_king(current_player, array)
-      rook = TileHelper.find_rook(current_player, selection, array)
+      rook = TileHelper.find_rook_for_castling(current_player, selection, array)
 
       return false if Referee.check?(array, king) ||
                       Referee.king_or_rook_have_moved?(king, rook) ||
@@ -140,7 +140,6 @@ module Chess
       king = TileHelper.find_king(current_player, array)
       Referee.check?(array, king)
     end
-
 
     def setup_players
       create_player_one

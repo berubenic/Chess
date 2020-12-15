@@ -16,8 +16,8 @@ module Chess
       result
     end
 
-    def valid_move?(move, array)
-      within_board?(move) && TileHelper.not_occupied?(move, array)
+    def valid_move?(coordinate, array)
+      within_board?(coordinate) && TileHelper.not_occupied?(coordinate, array)
     end
 
     def within_board?(coordinate)

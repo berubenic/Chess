@@ -5,7 +5,9 @@ require_relative './single_movement'
 
 module Chess
   # King piece
+  # noinspection DuplicatedCode
   class King < Piece
+    include SingleMovement
     attr_reader :board
 
     def initialize(**opts)
@@ -50,7 +52,7 @@ module Chess
     end
 
     def possible_movements(directions = DIRECTIONS, coordinate = current_coordinate, array = board.array)
-      SingleMovement.possible_movements(directions, coordinate, array)
+      super(directions, coordinate, array)
     end
 
     def possible_captures(directions = DIRECTIONS, result = [])

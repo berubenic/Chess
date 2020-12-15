@@ -69,7 +69,7 @@ module Chess
       array = board.array
       next_move = [coordinate[0] + direction[0], coordinate[1] + direction[1]]
       return result if PieceHelper.coordinate_outside_of_board?(next_move) ||
-                       PieceHelper.friendly_occupied?(next_move, array, color)
+        PieceHelper.friendly_occupied?(next_move, array, color)
 
       continue_with_next_coordinate(direction, result, next_move) if PieceHelper.valid_move?(next_move, array)
 
@@ -85,7 +85,7 @@ module Chess
     def directional_captures(direction, array = board.array, coordinate = current_coordinate)
       next_move = [coordinate[0] + direction[0], coordinate[1] + direction[1]]
       return [] if PieceHelper.coordinate_outside_of_board?(next_move) ||
-                   PieceHelper.friendly_occupied?(next_move, array, color)
+        PieceHelper.friendly_occupied?(next_move, array, color)
 
       if PieceHelper.valid_capture?(next_move, array, color)
         next_move

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './piece'
+require_relative './single_movement'
 
 module Chess
   # Knight piece
@@ -35,12 +36,8 @@ module Chess
       raise NotImplementedError
     end
 
-    def possible_movements(directions = DIRECTIONS, result = [])
-      directions.each do |x_coordinate, y_coordinate|
-        move = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
-        result << move if PieceHelper.valid_move?(move, board.array)
-      end
-      result
+    def possible_movements(directions = DIRECTIONS, coordinate = current_coordinate, array = board.array)
+      SingleMovement.possible_movements(directions, coordinate, array)
     end
 
     def possible_captures(directions = DIRECTIONS, result = [])

@@ -33,7 +33,7 @@ module Chess
       color == player_color
     end
 
-    def moved_from_starting_coordinate?
+    def moved_from_initial_coordinate?
       starting_coordinate != current_coordinate
     end
 
@@ -59,6 +59,10 @@ module Chess
         result << capture unless capture.empty?
       end
       result
+    end
+
+    def possible_discoveries(directions)
+      possible_movements(directions)
     end
 
     def directional_movements(direction, result = [], coordinate = current_coordinate)
@@ -87,7 +91,7 @@ module Chess
         next_move
       else
         current = next_move
-        directional_captures(direction, current)
+        directional_captures(direction, array, current)
       end
     end
   end

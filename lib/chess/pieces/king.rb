@@ -35,6 +35,19 @@ module Chess
       raise NotImplementedError
     end
 
+    def castling_coordinate(rook)
+      x_coordinate = rook.starting_coordinate[0]
+      y_coordinate = starting_coordinate[1]
+      case x_coordinate
+      when 0
+        [2, y_coordinate]
+      when 7
+        [6, y_coordinate]
+      else
+        NoMatchingPatternError
+      end
+    end
+
     def possible_movements(directions = DIRECTIONS, result = [])
       directions.each do |x_coordinate, y_coordinate|
         move = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
@@ -49,6 +62,10 @@ module Chess
         result << capture if PieceHelper.valid_capture?(capture, board.array, color)
       end
       result
+    end
+
+    def possible_discoveries(directions)
+      possible_movements(directions)
     end
   end
 

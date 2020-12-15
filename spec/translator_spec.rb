@@ -34,7 +34,7 @@ module Chess
         end
       end
 
-      context 'when input in a unvalid coordinate' do
+      context 'when input in a invalid coordinate' do
         it 'returns false' do
           input = 'a9'
           expect(translator.valid_input?(input)).to be false

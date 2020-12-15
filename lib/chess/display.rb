@@ -60,14 +60,20 @@ module Chess
       clear
     end
 
-    def no_movements_or_captures_message
+    def invalid_selection_message
+      puts 'Invalid selection, please select a valid piece.'
+      sleep 2
+      clear
+    end
+
+    def no_action_message
       puts 'No possible moves or captures, please select a valid piece.'
       sleep 2
       clear
     end
 
     def invalid_action_message
-      puts 'Invalid movement or capture, please try again.'.red.bg_default
+      puts 'Invalid movement or capture, please try again.'
       sleep 2
       clear
     end
@@ -119,6 +125,7 @@ module Chess
       end
     end
 
+    #noinspection RubyResolve
     def primary_color_tile(tile)
       pastel = Pastel.new
       print pastel.on_bright_white(" #{print_tile(tile)} ")
@@ -126,6 +133,7 @@ module Chess
 
     def secondary_color_tile(tile)
       pastel = Pastel.new
+      #noinspection RubyResolve
       print pastel.on_cyan(" #{print_tile(tile)} ")
     end
 

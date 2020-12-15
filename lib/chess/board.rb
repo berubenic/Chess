@@ -5,12 +5,46 @@ require_relative './initial_setup'
 module Chess
   # Sets pieces for a normal game of chess
   class Board
-    attr_reader :array, :current_movements, :current_captures
+    attr_reader :array, :current_movements, :current_captures, :last_captured_piece, :last_moved_piece
 
     def initialize(array: Array.new(8) { Array.new(8, '') })
       @array = array
       @current_movements = nil
       @current_captures = nil
+      @last_captured_piece = nil
+      @last_moved_piece = nil
+    end
+
+    def execute_action(action, piece)
+      verify_pawn_moved_two_squares(action, piece) if piece.is_a?(Pawn)
+      @last_moved_piece = piece
+      update_last_captured_piece(action)
+      update_board(action, piece)
+    end
+
+    def update_board(action, piece)
+      coordinate = piece.current_coordinate
+      array[coordinate[1]][coordinate[0]] = ''
+      array[action[1]][action[0]] = piece
+      # return unless piece.is_a?(Pawn) && piece.en_passant_captures.include?(action)
+      # update_en_passant_execution(action, selection, piece)
+    end
+
+    def update_last_captured_piece(action)
+      @last_captured_piece = if array[action[1]][action[0]].is_a?(String)
+                               nil
+                             else
+                               array[action[1]][action[0]]
+                             end
+    end
+
+    def verify_pawn_moved_two_squares(action, piece)
+      coordinate = piece.current_coordinate
+      if (coordinate[1] - action[1]) == 2 || (coordinate[1] - action[1]) == -2
+        piece.moved_two_squares
+      else
+        piece.did_not_move_two_squares
+      end
     end
 
     def valid_action?(coordinate)

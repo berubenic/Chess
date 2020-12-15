@@ -147,9 +147,9 @@ module Chess
         end
       end
 
-      context 'when selection is a unvalid coordinate' do
+      context 'when selection is a invalid coordinate' do
         it 'returns false' do
-          selection = 'some_unvalid_coordinate'
+          selection = 'some_invalid_coordinate'
           color = 'white'
           allow(tile_helper).to receive(:find_tile)
           allow(tile_helper).to receive(:tile_belongs_to_player?).and_return(false)

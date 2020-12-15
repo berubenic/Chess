@@ -5,13 +5,6 @@ require_relative './piece'
 module Chess
   # Pawn piece
   class Pawn < Piece
-    attr_reader :board
-
-    def initialize(**opts)
-      @board = opts[:board]
-      super
-    end
-
     def default_color
       raise NotImplementedError
     end
@@ -50,6 +43,14 @@ module Chess
       end
       result
     end
+
+    def possible_discoveries(directions, result = [])
+      directions.each do |x_coordinate, y_coordinate|
+        capture = [current_coordinate[0] + x_coordinate, current_coordinate[1] + y_coordinate]
+        result << capture if PieceHelper.valid_move?(capture, board.array)
+      end
+      result
+    end
   end
 
   # WhitePawn piece
@@ -83,6 +84,10 @@ module Chess
     def possible_captures(directions = CAPTURE_DIRECTIONS)
       super
     end
+
+    def possible_discoveries(directions = CAPTURE_DIRECTIONS)
+      super
+    end
   end
 
   # BlackPawn piece
@@ -114,6 +119,10 @@ module Chess
     end
 
     def possible_captures(directions = CAPTURE_DIRECTIONS)
+      super
+    end
+
+    def possible_discoveries(directions = CAPTURE_DIRECTIONS)
       super
     end
   end

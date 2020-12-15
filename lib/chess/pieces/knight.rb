@@ -50,6 +50,10 @@ module Chess
       end
       result
     end
+
+    def possible_discoveries(directions)
+      possible_movements(directions)
+    end
   end
 
   # WhiteKnight piece

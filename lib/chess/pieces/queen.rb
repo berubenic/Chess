@@ -35,6 +35,10 @@ module Chess
     def possible_captures(directions = DIRECTIONS)
       super
     end
+
+    def possible_discoveries(directions = DIRECTIONS)
+      super
+    end
   end
 
   # WhiteQueen piece

@@ -35,6 +35,17 @@ module Chess
       end
     end
 
+    def find_rook(player, selection, array)
+      case selection
+      when 'short castle'
+        find_rook_for_short_castling(player, array)
+      when 'long castle'
+        find_rook_for_long_castling(player, array)
+      else
+        NoMatchingPatternError
+      end
+    end
+
     def find_piece_in_row(row, color, piece)
       row.each do |tile|
         next if tile.is_a?(String)

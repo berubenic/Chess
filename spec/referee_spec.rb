@@ -121,8 +121,8 @@ module Chess
 
       context 'when both king and rook have moved' do
         before do
-          allow(king).to receive(:moved_from_starting_coordinate?).and_return true
-          allow(rook).to receive(:moved_from_starting_coordinate?).and_return true
+          allow(king).to receive(:moved_from_initial_coordinate?).and_return true
+          allow(rook).to receive(:moved_from_initial_coordinate?).and_return true
         end
 
         it 'returns true' do
@@ -132,8 +132,8 @@ module Chess
 
       context 'when both king and rook have not moved' do
         before do
-          allow(king).to receive(:moved_from_starting_coordinate?).and_return false
-          allow(rook).to receive(:moved_from_starting_coordinate?).and_return false
+          allow(king).to receive(:moved_from_initial_coordinate?).and_return false
+          allow(rook).to receive(:moved_from_initial_coordinate?).and_return false
         end
 
         it 'returns false' do
@@ -143,8 +143,8 @@ module Chess
 
       context 'when either king or rook has moved' do
         before do
-          allow(king).to receive(:moved_from_starting_coordinate?).and_return true
-          allow(rook).to receive(:moved_from_starting_coordinate?).and_return false
+          allow(king).to receive(:moved_from_initial_coordinate?).and_return true
+          allow(rook).to receive(:moved_from_initial_coordinate?).and_return false
         end
 
         it 'returns true' do

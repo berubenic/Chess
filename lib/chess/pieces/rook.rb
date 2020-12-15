@@ -32,6 +32,10 @@ module Chess
       super
     end
 
+    def possible_discoveries(directions = DIRECTIONS)
+      super
+    end
+
     def correct_x_coordinate_for_short_castling?(x_coordinate = 7)
       current_coordinate[0] == x_coordinate
     end
@@ -61,6 +65,7 @@ module Chess
         [[1, 7], [2, 7], [3, 7]]
       when [7, 7]
         [[6, 7], [5, 7]]
+      else NoMatchingPatternError
       end
     end
   end
@@ -85,6 +90,7 @@ module Chess
         [[1, 0], [2, 0], [3, 0]]
       when [7, 0]
         [[6, 0], [5, 0]]
+      else NoMatchingPatternError
       end
     end
   end

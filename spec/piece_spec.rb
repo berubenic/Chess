@@ -30,14 +30,14 @@ module Chess
 
       context 'when starting_coordinate is the same as current_coordinate' do
         it 'returns false' do
-          expect(piece.moved_from_starting_coordinate?).to be false
+          expect(piece.moved_from_initial_coordinate?).to be false
         end
       end
 
       context 'when starting_coordinate is not the same as current_coordinate' do
         it 'returns true' do
           piece.instance_variable_set(:@current_coordinate, [1, 1])
-          expect(piece.moved_from_starting_coordinate?).to be true
+          expect(piece.moved_from_initial_coordinate?).to be true
         end
       end
     end

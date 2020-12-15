@@ -28,6 +28,8 @@ module Chess
         setup_game
       when 2
         load_game
+      else
+        NoMatchingPatternError
       end
     end
 
@@ -81,11 +83,11 @@ module Chess
     end
 
     def valid_castling?(selection, array = board.array)
-      king = TileHelper.find_king(player, array)
-      rook = TileHelper.find_rook(player, selection, array)
+      king = TileHelper.find_king(current_player, array)
+      rook = TileHelper.find_rook(current_player, selection, array)
 
       return false if Referee.check?(array, king) ||
-                      Referee.king_and_rook_have_moved?(king, rook) ||
+                      Referee.king_or_rook_have_moved?(king, rook) ||
                       TileHelper.tile_between_king_and_rook_are_not_empty?(rook, array) ||
                       Referee.castling_tile_can_be_attacked?(king, rook)
 
@@ -98,34 +100,47 @@ module Chess
 
       board.add_moves_and_captures(piece)
       Display.display_board(array)
-      player_action
+      player_action(piece)
     end
 
     def no_movements_and_captures
-      Display.no_movements_or_captures_message
+      Display.no_action_message
       player_selection
     end
 
-    def player_action
+    def player_action(piece)
       loop do
         action = Display.ask_to_select_action(current_player)
-        return translate_action(action) if Translator.valid_input?(action)
+        return translate_action(action, piece) if Translator.valid_input?(action)
 
         Display.invalid_input_message
       end
     end
 
-    def translate_action(action)
+    def translate_action(action, piece)
       translated_action = Translator.translate(action)
-      return execute_movement_or_capture if board.valid_action?(translated_action)
+      return execute_action(translated_action, piece) if board.valid_action?(translated_action)
 
-      invalid_action
+      invalid_action(piece)
     end
 
-    def invalid_action
+    def invalid_action(piece)
       Display.invalid_action_message
-      player_action
+      player_action(piece)
     end
+
+    def execute_action(translated_action, piece)
+      board.execute_action(translated_action, piece)
+      return revert_action(translated_action, piece) if current_player_in_check?
+
+      board.remove_moves_and_captures
+    end
+
+    def current_player_in_check?(array = board.array)
+      king = TileHelper.find_king(current_player, array)
+      Referee.check?(array, king)
+    end
+
 
     def setup_players
       create_player_one

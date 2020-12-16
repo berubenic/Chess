@@ -9,35 +9,36 @@ module Chess
 
     def initialize(array: Array.new(8) { Array.new(8, '') })
       @array = array
-      @current_movements = nil
-      @current_captures = nil
+      @current_movements = []
+      @current_captures = []
       @last_captured_piece = nil
       @last_moved_piece = nil
     end
 
-    def execute_action(action, piece)
-      verify_pawn_moved_two_squares(action, piece) if piece.is_a?(Pawn)
+    def execute_action(action_coordinate, piece)
+      verify_pawn_moved_two_squares(action_coordinate, piece) if piece.is_a?(Pawn)
       @last_moved_piece = piece
-      update_last_captured_piece(action)
-      update_board(action, piece)
+      update_last_captured_piece(action_coordinate)
+      update_board(action_coordinate, piece)
     end
 
-    def update_board(action, piece)
-      coordinate = piece.current_coordinate
-      array[coordinate[1]][coordinate[0]] = ''
-      array[action[1]][action[0]] = piece
-      # return unless piece.is_a?(Pawn) && piece.en_passant_captures.include?(action)
-      # update_en_passant_execution(action, selection, piece)
+    def update_board(action_coordinate, piece)
+      current_coordinate = piece.current_coordinate
+      array[current_coordinate[1]][current_coordinate[0]] = ''
+      array[action_coordinate[1]][action_coordinate[0]] = piece
+      # return unless piece.is_a?(Pawn) && piece.en_passant_captures.include?(action_coordinate)
+      # update_en_passant_execution(action_coordinate, selection, piece)
     end
 
-    def update_last_captured_piece(action)
-      @last_captured_piece = if array[action[1]][action[0]].is_a?(String)
+    def update_last_captured_piece(coordinate)
+      @last_captured_piece = if array[coordinate[1]][coordinate[0]].is_a?(String)
                                nil
                              else
-                               array[action[1]][action[0]]
+                               array[coordinate[1]][coordinate[0]]
                              end
     end
 
+    # move to Pawn????
     def verify_pawn_moved_two_squares(action, piece)
       coordinate = piece.current_coordinate
       if (coordinate[1] - action[1]) == 2 || (coordinate[1] - action[1]) == -2

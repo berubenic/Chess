@@ -89,7 +89,7 @@ module Chess
       return false if Referee.check?(array, king) ||
                       Referee.king_or_rook_have_moved?(king, rook) ||
                       TileHelper.tile_between_king_and_rook_are_not_empty?(rook, array) ||
-                      Referee.castling_tile_can_be_attacked?(king, rook)
+                      Referee.castling_tile_can_be_attacked?(king, rook, array)
 
       true
     end

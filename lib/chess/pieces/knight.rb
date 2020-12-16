@@ -50,7 +50,7 @@ module Chess
       result
     end
 
-    def possible_discoveries(directions)
+    def possible_discoveries(directions = DIRECTIONS)
       possible_movements(directions)
     end
   end

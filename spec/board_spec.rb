@@ -4,6 +4,7 @@
 module Chess
   describe Board do
     subject(:board) { described_class.new }
+
     describe '#update_board' do
       let(:piece) { instance_double(Piece, current_coordinate: [1, 1]) }
 
@@ -17,7 +18,7 @@ module Chess
       context 'when the given coordinate is a String' do
         it 'assigns @last_captured_piece nil' do
           coordinate = [0, 0]
-          expect { board.update_last_captured_piece(coordinate) }.to_not change { board.last_captured_piece }
+          expect { board.update_last_captured_piece(coordinate) }.not_to change(board, :last_captured_piece)
         end
       end
 
@@ -27,7 +28,7 @@ module Chess
         it 'assigns @last_captured_piece the Piece' do
           coordinate = [0, 0]
           board.array[coordinate[1]][coordinate[0]] = piece
-          expect { board.update_last_captured_piece(coordinate) }.to change { board.last_captured_piece }.from(nil).to(piece)
+          expect { board.update_last_captured_piece(coordinate) }.to change(board, :last_captured_piece).from(nil).to(piece)
         end
       end
     end
@@ -77,13 +78,13 @@ module Chess
         it 'assigns @current_movements an array of coordinates' do
           allow(board).to receive(:add_moves)
           allow(board).to receive(:add_captures)
-          expect { board.add_moves_and_captures(piece) }.to change { board.current_movements }.from([]).to(movements)
+          expect { board.add_moves_and_captures(piece) }.to change(board, :current_movements).from([]).to(movements)
         end
 
         it 'assigns @current_captures an array of coordinates' do
           allow(board).to receive(:add_moves)
           allow(board).to receive(:add_captures)
-          expect { board.add_moves_and_captures(piece) }.to change { board.current_captures }.from([]).to(captures)
+          expect { board.add_moves_and_captures(piece) }.to change(board, :current_captures).from([]).to(captures)
         end
 
         it 'sends #add_moves to self' do
@@ -108,11 +109,11 @@ module Chess
         end
 
         it 'does not change @current_captures' do
-          expect { board.add_moves_and_captures(piece) }.to_not change { board.current_captures }
+          expect { board.add_moves_and_captures(piece) }.not_to change(board, :current_captures)
         end
 
         it 'does not send #add_captures to self' do
-          expect(board).to_not receive(:add_captures)
+          expect(board).not_to receive(:add_captures)
           board.add_moves_and_captures(piece)
         end
       end
@@ -125,12 +126,12 @@ module Chess
 
         it 'does not change @current_movements' do
           allow(board).to receive(:add_captures)
-          expect { board.add_moves_and_captures(piece) }.to_not change { board.current_movements }
+          expect { board.add_moves_and_captures(piece) }.not_to change(board, :current_movements)
         end
 
         it 'does not send #add_moves to self' do
           allow(board).to receive(:add_captures)
-          expect(board).to_not receive(:add_moves)
+          expect(board).not_to receive(:add_moves)
           board.add_moves_and_captures(piece)
         end
       end
@@ -139,12 +140,12 @@ module Chess
     describe '#add_moves' do
       it 'sends #update_array to self with each element of @current_movements' do
         content = 'o'
-        board.instance_variable_set(:@current_movements, [[1,1]])
+        board.instance_variable_set(:@current_movements, [[1, 1]])
         expect(board).to receive(:update_array).with(board.current_movements[0], content)
         board.add_moves(content)
       end
     end
-    
+
     describe '#update_array' do
       it 'updates @array at the given index with given content' do
         coordinate = [0, 0]

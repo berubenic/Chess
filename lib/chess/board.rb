@@ -68,12 +68,15 @@ module Chess
 
     def remove_moves
       current_movements.each do |move|
+        tile = array[move[1]][move[0]]
+        next unless tile.is_a?(String)
+
         array[move[1]][move[0]] = ''
       end
     end
 
     def remove_captures
-      current_captures.each do
+      current_captures.each do |capture|
         tile = array[capture[1]][capture[0]]
         next if tile.is_a?(String)
 

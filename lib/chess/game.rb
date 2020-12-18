@@ -47,8 +47,17 @@ module Chess
       end
     end
 
+    def switch_player
+      if current_player == player_one
+        @current_player = player_two
+      elsif current_player == player_two
+        @current_player = player_one
+      end
+    end
+
     def player_selection
       loop do
+        Display.display_board(board.array)
         selection = Display.ask_to_select_piece(current_player)
         return translate_selection(selection) if Translator.valid_input?(selection)
 
@@ -58,6 +67,7 @@ module Chess
 
     def player_action(piece)
       loop do
+        Display.display_board(board.array)
         action = Display.ask_to_select_action(current_player)
         return translate_action(action, piece) if Translator.valid_input?(action)
 
@@ -133,12 +143,13 @@ module Chess
       # code here
     end
 
-    def execute_action(translated_action, piece)
+    def execute_action(translated_action, piece, array = board.array)
       board.execute_action(translated_action, piece)
       return revert_action(translated_action, piece) if current_player_in_check?
 
       piece.update_current_coordinate(translated_action)
       board.remove_moves_and_captures
+      Display.display_board(array)
     end
 
     def current_player_in_check?(array = board.array)

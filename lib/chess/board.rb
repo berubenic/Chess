@@ -59,20 +59,42 @@ module Chess
       add_captures unless current_captures.empty?
     end
 
+    def remove_moves_and_captures
+      remove_moves unless current_movements.empty?
+      remove_captures unless current_captures.empty?
+      @current_movements = []
+      @current_captures = []
+    end
+
+    def remove_moves
+      current_movements.each do |move|
+        array[move[1]][move[0]] = ''
+      end
+    end
+
+    def remove_captures
+      current_captures.each do
+        tile = array[capture[1]][capture[0]]
+        next if tile.is_a?(String)
+
+        tile.can_not_be_captured
+      end
+    end
+
     def add_moves(content = 'o')
       current_movements.each do |move|
         update_array(move, content)
       end
     end
 
-    def update_array(coordinate, content)
-      @array[coordinate[1]][coordinate[0]] = content
-    end
-
     def add_captures
       current_captures.each do |capture|
         update_capturable_piece(capture)
       end
+    end
+
+    def update_array(coordinate, content)
+      @array[coordinate[1]][coordinate[0]] = content
     end
 
     def update_capturable_piece(coordinate)

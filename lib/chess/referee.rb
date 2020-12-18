@@ -13,6 +13,15 @@ module Chess
       false
     end
 
+    def castling_tile_can_be_attacked?(king, rook, array)
+      coordinate = king.castling_coordinate(rook)
+      color = king.color
+      array.each do |row|
+        return true if enemy_piece_in_row_can_discover_coordinate?(row, coordinate, color)
+      end
+      false
+    end
+
     def enemy_piece_in_row_can_attack_coordinate?(row, coordinate)
       row.each do |tile|
         next if tile.is_a?(String)
@@ -20,10 +29,6 @@ module Chess
         return true if tile.possible_captures.include?(coordinate)
       end
       false
-    end
-
-    def king_or_rook_have_moved?(king, rook)
-      king.moved_from_initial_coordinate? || rook.moved_from_initial_coordinate?
     end
 
     def enemy_piece_in_row_can_discover_coordinate?(row, coordinate, color)
@@ -36,13 +41,8 @@ module Chess
       false
     end
 
-    def castling_tile_can_be_attacked?(king, rook, array)
-      coordinate = king.castling_coordinate(rook)
-      color = king.color
-      array.each do |row|
-        return true if enemy_piece_in_row_can_discover_coordinate?(row, coordinate, color)
-      end
-      false
+    def king_or_rook_have_moved?(king, rook)
+      king.moved_from_initial_coordinate? || rook.moved_from_initial_coordinate?
     end
   end
 end

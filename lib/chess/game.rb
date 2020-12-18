@@ -56,6 +56,15 @@ module Chess
       end
     end
 
+    def player_action(piece)
+      loop do
+        action = Display.ask_to_select_action(current_player)
+        return translate_action(action, piece) if Translator.valid_input?(action)
+
+        Display.invalid_input_message
+      end
+    end
+
     def translate_selection(selection)
       case selection
       when 's'
@@ -73,6 +82,16 @@ module Chess
     def invalid_selection
       Display.invalid_selection_message
       player_selection
+    end
+
+    def no_movements_and_captures
+      Display.no_action_message
+      player_selection
+    end
+
+    def invalid_action(piece)
+      Display.invalid_action_message
+      player_action(piece)
     end
 
     def valid_selection?(selection, color = current_player.color)
@@ -103,20 +122,6 @@ module Chess
       player_action(piece)
     end
 
-    def no_movements_and_captures
-      Display.no_action_message
-      player_selection
-    end
-
-    def player_action(piece)
-      loop do
-        action = Display.ask_to_select_action(current_player)
-        return translate_action(action, piece) if Translator.valid_input?(action)
-
-        Display.invalid_input_message
-      end
-    end
-
     def translate_action(action, piece)
       translated_action = Translator.translate(action)
       return execute_action(translated_action, piece) if board.valid_action?(translated_action)
@@ -124,15 +129,15 @@ module Chess
       invalid_action(piece)
     end
 
-    def invalid_action(piece)
-      Display.invalid_action_message
-      player_action(piece)
+    def revert_action(translated_action, piece)
+      # code here
     end
 
     def execute_action(translated_action, piece)
       board.execute_action(translated_action, piece)
       return revert_action(translated_action, piece) if current_player_in_check?
 
+      piece.update_current_coordinate(translated_action)
       board.remove_moves_and_captures
     end
 

@@ -5,6 +5,8 @@ require_relative './piece'
 module Chess
   # Pawn piece
   class Pawn < Piece
+    attr_reader :moved_two_squares
+
     def default_color
       raise NotImplementedError
     end
@@ -15,6 +17,14 @@ module Chess
 
     def default_y_coordinate
       raise NotImplementedError
+    end
+
+    def moved_two_squares
+      @moved_two_squares = true
+    end
+
+    def did_not_move_two_squares
+      @moved_two_squares = false
     end
 
     def possible_movements(directions, result = [])

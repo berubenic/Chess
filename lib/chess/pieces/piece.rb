@@ -30,6 +30,10 @@ module Chess
       raise NotImplementedError
     end
 
+    def update_current_coordinate(coordinate)
+      @current_coordinate = coordinate
+    end
+
     def belongs_to_player?(player_color)
       color == player_color
     end
@@ -44,6 +48,10 @@ module Chess
 
     def can_be_captured
       @capturable = true
+    end
+
+    def can_not_be_captured
+      @capturable = false
     end
 
     def possible_movements(directions, result = [])

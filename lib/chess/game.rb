@@ -80,7 +80,7 @@ module Chess
       when 's'
         return save_game
       when 'long castle', 'short castle'
-        return execute_castling if valid_castling?(selection)
+        return execute_castling(selection) if valid_castling?(selection)
       else
         translated_selection = Translator.translate(selection)
         return find_movements_and_captures(translated_selection) if valid_selection?(translated_selection)
@@ -150,6 +150,17 @@ module Chess
       piece.update_current_coordinate(translated_action)
       board.remove_moves_and_captures
       Display.display_board(array)
+    end
+
+    def execute_castling(selection, color = current_player.color)
+      case selection
+      when 'long castle'
+        board.execute_long_castle(color)
+      when 'short castle'
+        board.execute_short_castle(color)
+      else
+        NoMatchingPatternError
+      end
     end
 
     def current_player_in_check?(array = board.array)

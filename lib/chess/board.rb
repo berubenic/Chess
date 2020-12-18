@@ -22,6 +22,46 @@ module Chess
       update_board(action_coordinate, piece)
     end
 
+    def execute_long_castle(color)
+      case color
+      when 'white'
+        y_coordinate = 7
+        long_castling(y_coordinate)
+      when 'black'
+        y_coordinate = 0
+        long_castling(y_coordinate)
+      else
+        NoMatchingPatternError
+      end
+    end
+
+    def long_castling(y_coordinate, rook = array[y_coordinate][0], king = array[y_coordinate][4])
+      array[y_coordinate][0] = ''
+      array[y_coordinate][4] = ''
+      array[y_coordinate][3] = rook
+      array[y_coordinate][2] = king
+    end
+
+    def execute_short_castle(color)
+      case color
+      when 'white'
+        y_coordinate = 7
+        short_castling(y_coordinate)
+      when 'black'
+        y_coordinate = 0
+        short_castling(y_coordinate)
+      else
+        NoMatchingPatternError
+      end
+    end
+
+    def short_castling(y_coordinate, rook = array[y_coordinate][7], king = array[y_coordinate][4])
+      array[y_coordinate][7] = ''
+      array[y_coordinate][4] = ''
+      array[y_coordinate][5] = rook
+      array[y_coordinate][6] = king
+    end
+
     def update_board(action_coordinate, piece)
       current_coordinate = piece.current_coordinate
       array[current_coordinate[1]][current_coordinate[0]] = ''

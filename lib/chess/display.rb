@@ -138,18 +138,25 @@ module Chess
     end
 
     def print_tile(tile)
+      pastel = Pastel.new
       if tile == ''
         ' '
-      elsif %w[o x].include?(tile)
-        tile
+      elsif %w[o].include?(tile)
+        pastel.bright_magenta(tile)
+      elsif %w[x].include?(tile)
+        pastel.red(tile)
       else
         print_piece(tile)
       end
     end
 
-    def print_piece(tile, _color = tile.color, piece = tile.content)
+    def print_piece(tile, piece = tile.content)
       pastel = Pastel.new
-      pastel.black.bold(piece)
+      if tile.capturable
+        pastel.red.bold(piece)
+      else
+        pastel.black(piece)
+      end
     end
   end
 end

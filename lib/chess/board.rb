@@ -15,6 +15,18 @@ module Chess
       @last_moved_piece = nil
     end
 
+    def revert_move(action_coordinate, piece)
+      array[piece.current_coordinate[1]][piece.current_coordinate[0]] = piece
+      return array[action_coordinate[1]][action_coordinate[0]] = '' if last_captured_piece.nil?
+
+      revert_captured_piece(action_coordinate)
+    end
+
+    def revert_captured_piece(coordinate)
+      array[coordinate[1]][coordinate[0]] = last_captured_piece
+      @last_captured_piece = nil
+    end
+
     def execute_action(action_coordinate, piece)
       verify_pawn_moved_two_squares(action_coordinate, piece) if piece.is_a?(Pawn)
       @last_moved_piece = piece
@@ -40,6 +52,8 @@ module Chess
       array[y_coordinate][4] = ''
       array[y_coordinate][3] = rook
       array[y_coordinate][2] = king
+      king.update_current_coordinate([2, y_coordinate])
+      rook.update_current_coordinate([4, y_coordinate])
     end
 
     def execute_short_castle(color)
@@ -60,6 +74,8 @@ module Chess
       array[y_coordinate][4] = ''
       array[y_coordinate][5] = rook
       array[y_coordinate][6] = king
+      king.update_current_coordinate([6, y_coordinate])
+      rook.update_current_coordinate([5, y_coordinate])
     end
 
     def update_board(action_coordinate, piece)
@@ -82,7 +98,7 @@ module Chess
     def verify_pawn_moved_two_squares(action, piece)
       coordinate = piece.current_coordinate
       if (coordinate[1] - action[1]) == 2 || (coordinate[1] - action[1]) == -2
-        piece.moved_two_squares
+        piece.has_moved_two_squares
       else
         piece.did_not_move_two_squares
       end

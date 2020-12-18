@@ -19,7 +19,7 @@ module Chess
       raise NotImplementedError
     end
 
-    def moved_two_squares
+    def has_moved_two_squares
       @moved_two_squares = true
     end
 

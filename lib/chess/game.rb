@@ -140,7 +140,10 @@ module Chess
     end
 
     def revert_action(translated_action, piece)
-      # code here
+      Display.king_is_in_check_message
+      board.revert_move(translated_action, piece)
+      board.remove_moves_and_captures
+      player_selection
     end
 
     def execute_action(translated_action, piece, array = board.array)

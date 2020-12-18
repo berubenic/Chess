@@ -78,6 +78,12 @@ module Chess
       clear
     end
 
+    def king_is_in_check_message
+      puts 'You put your king in check! Please try again!'
+      sleep 2
+      clear
+    end
+
     def clear
       system('clear') || system('cls')
     end

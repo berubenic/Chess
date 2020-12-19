@@ -102,5 +102,10 @@ module Chess
         tile != ''
       end
     end
+
+    def valid_tile_for_en_passant?(coordinate, board)
+      tile = find_tile(coordinate, board.array)
+      tile.is_a?(Pawn) && tile.moved_two_squares && board.last_moved_piece == tile
+    end
   end
 end

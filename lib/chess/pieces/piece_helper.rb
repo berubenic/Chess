@@ -27,5 +27,11 @@ module Chess
     def valid_capture?(coordinate, array, color)
       within_board?(coordinate) && TileHelper.enemy_occupied?(coordinate, array, color)
     end
+
+    def valid_tile_for_en_passant?(coordinate, board)
+      return false unless within_board?(coordinate)
+
+      TileHelper.valid_tile_for_en_passant?(coordinate, board)
+    end
   end
 end

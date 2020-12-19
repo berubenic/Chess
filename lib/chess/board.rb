@@ -5,12 +5,13 @@ require_relative './initial_setup'
 module Chess
   # Sets pieces for a normal game of chess
   class Board
-    attr_reader :array, :current_movements, :current_captures, :last_captured_piece, :last_moved_piece
+    attr_reader :array, :current_movements, :current_captures, :current_en_passant, :last_captured_piece, :last_moved_piece
 
     def initialize(array: Array.new(8) { Array.new(8, '') })
       @array = array
       @current_movements = []
       @current_captures = []
+      @current_en_passant = []
       @last_captured_piece = nil
       @last_moved_piece = nil
     end
@@ -19,19 +20,43 @@ module Chess
       array[piece.current_coordinate[1]][piece.current_coordinate[0]] = piece
       return array[action_coordinate[1]][action_coordinate[0]] = '' if last_captured_piece.nil?
 
-      revert_captured_piece(action_coordinate)
+      revert_captured_piece
     end
 
-    def revert_captured_piece(coordinate)
+    def revert_captured_piece(coordinate = last_captured_piece.current_coordinate)
       array[coordinate[1]][coordinate[0]] = last_captured_piece
       @last_captured_piece = nil
     end
 
     def execute_action(action_coordinate, piece)
-      verify_pawn_moved_two_squares(action_coordinate, piece) if piece.is_a?(Pawn)
+      piece.verify_if_moved_two_squares(action_coordinate) if piece.is_a?(Pawn)
       @last_moved_piece = piece
+      return execute_en_passant(action_coordinate, piece) if current_en_passant.include?(action_coordinate)
+
       update_last_captured_piece(action_coordinate)
       update_board(action_coordinate, piece)
+    end
+
+    def execute_en_passant(action_coordinate, piece)
+      case piece.current_coordinate[1]
+      when 4
+        black_en_passant(action_coordinate)
+      when 3
+        white_en_passant(action_coordinate)
+      else
+        NoMatchingPatternError
+      end
+      update_board(action_coordinate, piece)
+    end
+
+    def white_en_passant(action_coordinate)
+      @last_captured_piece = array[action_coordinate[1] + 1][action_coordinate[0]]
+      array[action_coordinate[1] + 1][action_coordinate[0]] = ''
+    end
+
+    def black_en_passant(action_coordinate)
+      @last_captured_piece = array[action_coordinate[1] - 1][action_coordinate[0]]
+      array[action_coordinate[1] - 1][action_coordinate[0]] = ''
     end
 
     def execute_long_castle(color)
@@ -94,25 +119,19 @@ module Chess
                              end
     end
 
-    # move to Pawn????
-    def verify_pawn_moved_two_squares(action, piece)
-      coordinate = piece.current_coordinate
-      if (coordinate[1] - action[1]) == 2 || (coordinate[1] - action[1]) == -2
-        piece.has_moved_two_squares
-      else
-        piece.did_not_move_two_squares
-      end
-    end
-
     def valid_action?(coordinate)
-      current_movements.include?(coordinate) || current_captures.include?(coordinate)
+      current_movements.include?(coordinate) ||
+        current_captures.include?(coordinate) ||
+        current_en_passant.include?(coordinate)
     end
 
     def add_moves_and_captures(piece)
       @current_movements = piece.possible_movements
       @current_captures = piece.possible_captures
+      @current_en_passant = piece.possible_en_passant if piece.is_a?(Pawn)
       add_moves unless current_movements.empty?
       add_captures unless current_captures.empty?
+      add_en_passant unless current_en_passant.empty?
     end
 
     def remove_moves_and_captures
@@ -149,6 +168,12 @@ module Chess
     def add_captures
       current_captures.each do |capture|
         update_capturable_piece(capture)
+      end
+    end
+
+    def add_en_passant(content = 'x')
+      current_en_passant.each do |passant|
+        update_array(passant, content)
       end
     end
 

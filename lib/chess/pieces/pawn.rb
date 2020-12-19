@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './piece'
+require_relative './piece_helper'
 
 module Chess
   # Pawn piece
@@ -19,12 +20,24 @@ module Chess
       raise NotImplementedError
     end
 
-    def has_moved_two_squares
+    def can_not_move_or_capture?
+      possible_movements.empty? && possible_captures.empty? && possible_en_passant.empty?
+    end
+
+    def did_move_two_squares
       @moved_two_squares = true
     end
 
     def did_not_move_two_squares
       @moved_two_squares = false
+    end
+
+    def verify_if_moved_two_squares(action_coordinate)
+      if (current_coordinate[1] - action_coordinate[1]) == 2 || (current_coordinate[1] - action_coordinate[1]) == -2
+        did_move_two_squares
+      else
+        did_not_move_two_squares
+      end
     end
 
     def possible_movements(directions, result = [])
@@ -61,6 +74,15 @@ module Chess
       end
       result
     end
+
+    def possible_en_passant(result = [])
+      return [] unless en_passant_correct_row?
+
+      result << left_en_passant unless left_en_passant.nil?
+      result << right_en_passant unless right_en_passant.nil?
+      result
+    end
+
   end
 
   # WhitePawn piece
@@ -98,6 +120,24 @@ module Chess
     def possible_discoveries(directions = CAPTURE_DIRECTIONS)
       super
     end
+
+    def left_en_passant
+      left_coordinate = [current_coordinate[0] - 1, current_coordinate[1]]
+      return nil unless PieceHelper.valid_tile_for_en_passant?(left_coordinate, board)
+
+      [left_coordinate[0], left_coordinate[1] - 1]
+    end
+
+    def right_en_passant
+      right_coordinate = [current_coordinate[0] + 1, current_coordinate[1]]
+      return nil unless PieceHelper.valid_tile_for_en_passant?(right_coordinate, board)
+
+      [right_coordinate[0], right_coordinate[1] - 1]
+    end
+
+    def en_passant_correct_row?
+      current_coordinate[1] == 3
+    end
   end
 
   # BlackPawn piece
@@ -134,6 +174,24 @@ module Chess
 
     def possible_discoveries(directions = CAPTURE_DIRECTIONS)
       super
+    end
+
+    def left_en_passant
+      left_coordinate = [current_coordinate[0] - 1, current_coordinate[1]]
+      return nil unless PieceHelper.valid_tile_for_en_passant?(left_coordinate, board)
+
+      [left_coordinate[0], left_coordinate[1] + 1]
+    end
+
+    def right_en_passant
+      right_coordinate = [current_coordinate[0] + 1, current_coordinate[1]]
+      return nil unless PieceHelper.valid_tile_for_en_passant?(right_coordinate, board)
+
+      [right_coordinate[0], right_coordinate[1] + 1]
+    end
+
+    def en_passant_correct_row?
+      current_coordinate[1] == 4
     end
   end
 end

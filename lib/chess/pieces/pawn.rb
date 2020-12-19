@@ -82,7 +82,6 @@ module Chess
       result << right_en_passant unless right_en_passant.nil?
       result
     end
-
   end
 
   # WhitePawn piece

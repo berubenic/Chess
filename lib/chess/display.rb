@@ -148,6 +148,7 @@ module Chess
       if tile == ''
         ' '
       elsif %w[o].include?(tile)
+        #noinspection RubyResolve
         pastel.bright_magenta(tile)
       elsif %w[x].include?(tile)
         pastel.red(tile)

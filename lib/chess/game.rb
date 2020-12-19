@@ -4,6 +4,7 @@ require_relative './board'
 require_relative './display'
 require_relative './tile_helper'
 require_relative './referee'
+require_relative './pawn_promotion'
 
 module Chess
   # Game has an overview of everything
@@ -43,6 +44,7 @@ module Chess
     def game_loop
       loop do
         player_selection
+        verify_pawn_promotion
         switch_player
       end
     end
@@ -52,6 +54,17 @@ module Chess
         @current_player = player_two
       elsif current_player == player_two
         @current_player = player_one
+      end
+    end
+
+    def verify_pawn_promotion(color = current_player.color)
+      case color
+      when 'white'
+        PawnPromotion.white_pawn_promotion(board)
+      when 'black'
+        PawnPromotion.black_pawn_promotion(board)
+      else
+        NoMatchingPatternError
       end
     end
 

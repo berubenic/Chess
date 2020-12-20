@@ -24,7 +24,7 @@ module Chess
     end
 
     def valid_input?(input)
-      return false if input == ''
+      return false if input.nil? || input == ''
 
       return true if input.length == 2 && input[0].match?(/[a-hA-H]/) && input[1].match?(/[1-8]/)
       return true if ['s', 'long castle', 'short castle'].include?(input)

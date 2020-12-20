@@ -33,7 +33,7 @@ module Chess
           tile.color != color
         end
 
-        moving_a_friendly_piece_in_row_causes_check?(king, row, board, color)
+        moving_friendly_in_row_will_check?(king, row, board, color)
       end
     end
 
@@ -96,7 +96,7 @@ module Chess
       nil
     end
 
-    def moving_a_friendly_piece_in_row_causes_check?(king, row, board, color)
+    def moving_friendly_in_row_will_check?(king, row, board, color)
       row.each do |tile|
         next if tile.is_a?(String)
         next if tile.color != color

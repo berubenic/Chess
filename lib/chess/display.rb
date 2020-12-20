@@ -104,6 +104,14 @@ module Chess
       clear
     end
 
+    def player_is_in_check_warning
+      clear
+      display_board(board.board)
+      puts 'Warning! Your king is in check!'
+      sleep 2
+      clear
+    end
+
     def clear
       system('clear') || system('cls')
     end
@@ -169,7 +177,7 @@ module Chess
         ' '
       elsif %w[o].include?(tile)
         #noinspection RubyResolve
-        pastel.bright_magenta(tile)
+        pastel.bright_blue(tile)
       elsif %w[x].include?(tile)
         pastel.red(tile)
       else

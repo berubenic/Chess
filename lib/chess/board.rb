@@ -3,7 +3,7 @@
 require_relative './initial_setup'
 
 module Chess
-  # Sets pieces for a normal game of chess
+  # Board for a game of chess
   class Board
     attr_reader :array, :current_movements, :current_captures, :current_en_passant, :last_captured_piece, :last_moved_piece
 
@@ -117,8 +117,6 @@ module Chess
       current_coordinate = piece.current_coordinate
       array[current_coordinate[1]][current_coordinate[0]] = ''
       array[action_coordinate[1]][action_coordinate[0]] = piece
-      # return unless piece.is_a?(Pawn) && piece.en_passant_captures.include?(action_coordinate)
-      # update_en_passant_execution(action_coordinate, selection, piece)
     end
 
     def update_last_captured_piece(coordinate)

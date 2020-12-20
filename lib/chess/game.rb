@@ -43,6 +43,7 @@ module Chess
 
     def game_loop
       loop do
+        Display.player_is_in_check_warning if current_player_in_check?
         return Display.draw(board, current_player) if stalemate?
 
         player_selection
@@ -50,51 +51,6 @@ module Chess
         return Display.game_over(board, current_player) if checkmate?
 
         switch_player
-      end
-    end
-
-    def stalemate?
-      king = TileHelper.find_king(current_player, board.array)
-      return false if Referee.king_can_avoid_attack?(king, board)
-
-      Referee.no_friendly_piece_can_move?(board, king)
-    end
-
-    def checkmate?
-      king = TileHelper.find_king(enemy_player, board.array)
-      return false unless Referee.check?(board.array, king)
-
-      return false if Referee.king_can_avoid_attack?(king, board) ||
-                      Referee.can_kill_checking_piece?(king, board) ||
-                      Referee.friendly_can_block?(king, board)
-
-      true
-    end
-
-    def switch_player
-      if current_player == player_one
-        @current_player = player_two
-      elsif current_player == player_two
-        @current_player = player_one
-      end
-    end
-
-    def enemy_player
-      if current_player == player_one
-        player_two
-      else
-        player_one
-      end
-    end
-
-    def verify_pawn_promotion(color = current_player.color)
-      case color
-      when 'white'
-        PawnPromotion.white_pawn_promotion(board)
-      when 'black'
-        PawnPromotion.black_pawn_promotion(board)
-      else
-        NoMatchingPatternError
       end
     end
 
@@ -132,19 +88,15 @@ module Chess
       invalid_selection
     end
 
-    def invalid_selection
-      Display.invalid_selection_message
-      player_selection
-    end
-
-    def no_movements_and_captures
-      Display.no_action_message
-      player_selection
-    end
-
-    def invalid_action(piece)
-      Display.invalid_action_message
-      player_action(piece)
+    def verify_pawn_promotion(color = current_player.color)
+      case color
+      when 'white'
+        PawnPromotion.white_pawn_promotion(board)
+      when 'black'
+        PawnPromotion.black_pawn_promotion(board)
+      else
+        NoMatchingPatternError
+      end
     end
 
     def valid_selection?(selection, color = current_player.color)
@@ -164,6 +116,26 @@ module Chess
                       Referee.castling_tile_can_be_attacked?(king, rook, array)
 
       true
+    end
+
+    def execute_action(translated_action, piece, array = board.array)
+      board.execute_action(translated_action, piece)
+      return revert_action(translated_action, piece) if current_player_in_check?
+
+      piece.update_current_coordinate(translated_action)
+      board.remove_moves_and_captures
+      Display.display_board(array)
+    end
+
+    def execute_castling(selection, color = current_player.color)
+      case selection
+      when 'long castle'
+        board.execute_long_castle(color)
+      when 'short castle'
+        board.execute_short_castle(color)
+      else
+        NoMatchingPatternError
+      end
     end
 
     def find_movements_and_captures(selection, array = board.array)
@@ -189,29 +161,58 @@ module Chess
       player_selection
     end
 
-    def execute_action(translated_action, piece, array = board.array)
-      board.execute_action(translated_action, piece)
-      return revert_action(translated_action, piece) if current_player_in_check?
+    def stalemate?
+      king = TileHelper.find_king(current_player, board.array)
+      return false if Referee.king_can_avoid_attack?(king, board)
 
-      piece.update_current_coordinate(translated_action)
-      board.remove_moves_and_captures
-      Display.display_board(array)
+      Referee.no_friendly_piece_can_move?(board, king)
     end
 
-    def execute_castling(selection, color = current_player.color)
-      case selection
-      when 'long castle'
-        board.execute_long_castle(color)
-      when 'short castle'
-        board.execute_short_castle(color)
-      else
-        NoMatchingPatternError
-      end
+    def checkmate?
+      king = TileHelper.find_king(enemy_player, board.array)
+      return false unless Referee.check?(board.array, king)
+
+      return false if Referee.king_can_avoid_attack?(king, board) ||
+                      Referee.can_kill_checking_piece?(king, board) ||
+                      Referee.friendly_can_block?(king, board)
+
+      true
     end
 
     def current_player_in_check?(array = board.array)
       king = TileHelper.find_king(current_player, array)
       Referee.check?(array, king)
+    end
+
+    def invalid_selection
+      Display.invalid_selection_message
+      player_selection
+    end
+
+    def no_movements_and_captures
+      Display.no_action_message
+      player_selection
+    end
+
+    def invalid_action(piece)
+      Display.invalid_action_message
+      player_action(piece)
+    end
+
+    def switch_player
+      if current_player == player_one
+        @current_player = player_two
+      elsif current_player == player_two
+        @current_player = player_one
+      end
+    end
+
+    def enemy_player
+      if current_player == player_one
+        player_two
+      else
+        player_one
+      end
     end
 
     def setup_players

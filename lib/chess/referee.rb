@@ -73,7 +73,7 @@ module Chess
         next if tile.color != color
         next if tile == king
 
-        tile.possible_movements.any? { |move| movements.include?(move) }
+        return true if tile.possible_movements.any? { |move| movements.include?(move) }
       end
       false
     end
@@ -113,9 +113,9 @@ module Chess
       end
     end
 
-    def check?(array, king, coordinate = king.current_coordinate)
+    def check?(array, king, coordinate = king.current_coordinate, color = king.color)
       array.each do |row|
-        return true if enemy_piece_in_row_can_attack_coordinate?(row, coordinate)
+        return true if enemy_piece_in_row_can_attack_coordinate?(row, coordinate, color)
       end
       false
     end
@@ -129,9 +129,10 @@ module Chess
       false
     end
 
-    def enemy_piece_in_row_can_attack_coordinate?(row, coordinate)
+    def enemy_piece_in_row_can_attack_coordinate?(row, coordinate, color)
       row.each do |tile|
         next if tile.is_a?(String)
+        next if tile.color == color
 
         return true if tile.possible_captures.include?(coordinate)
       end

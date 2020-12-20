@@ -30,7 +30,7 @@ $ bundle install
 
 ## Play Online
 
-- Play in your browser with [repl.it](##)
+- Play in your browser with [repl.it](https://repl.it/@NicholasBerube/Chess#README.md)
 
 ## Gems Used
 

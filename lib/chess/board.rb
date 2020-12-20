@@ -16,6 +16,16 @@ module Chess
       @last_moved_piece = nil
     end
 
+    def remove_tile(tile)
+      coordinate = tile.current_coordinate
+      array[coordinate[1]][coordinate[0]] = ''
+    end
+
+    def replace_tile(tile)
+      coordinate = tile.current_coordinate
+      array[coordinate[1]][coordinate[0]] = tile
+    end
+
     def revert_move(action_coordinate, piece)
       array[piece.current_coordinate[1]][piece.current_coordinate[0]] = piece
       return array[action_coordinate[1]][action_coordinate[0]] = '' if last_captured_piece.nil?

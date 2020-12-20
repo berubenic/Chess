@@ -54,6 +54,26 @@ module Chess
       prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)")
     end
 
+    def draw(board, player)
+      clear
+      display_board(board.array)
+      puts "It's a draw... #{player.name} is stalemated..."
+      prompt = TTY::Prompt.new
+      prompt.keypress('Press space or enter to continue', keys: %i[space return])
+      clear
+      load './game/game.rb'
+    end
+
+    def game_over(board, player)
+      clear
+      display_board(board.array)
+      puts "Game over! #{player.name} has won!"
+      prompt = TTY::Prompt.new
+      prompt.keypress('Press space or enter to continue', keys: %i[space return])
+      clear
+      load './game/game.rb'
+    end
+
     def invalid_input_message
       puts 'Invalid input, please try again.'
       sleep 2

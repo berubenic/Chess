@@ -42,7 +42,7 @@ module Chess
 
     def possible_movements(directions, result = [])
       result = first_possible_move(directions[0], result)
-      return result unless current_coordinate == starting_coordinate
+      return result unless current_coordinate == starting_coordinate && !result.empty?
 
       second_possible_move(directions[1], result)
     end

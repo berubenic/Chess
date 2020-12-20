@@ -43,10 +43,32 @@ module Chess
 
     def game_loop
       loop do
+        return Display.draw(board, current_player) if stalemate?
+
         player_selection
         verify_pawn_promotion
+        return Display.game_over(board, current_player) if checkmate?
+
         switch_player
       end
+    end
+
+    def stalemate?
+      king = TileHelper.find_king(current_player, board.array)
+      return false if Referee.king_can_avoid_attack?(king, board)
+
+      Referee.no_friendly_piece_can_move?(board, king)
+    end
+
+    def checkmate?
+      king = TileHelper.find_king(enemy_player, board.array)
+      return false unless Referee.check?(board.array, king)
+
+      return false if Referee.king_can_avoid_attack?(king, board) ||
+                      Referee.can_kill_checking_piece?(king, board) ||
+                      Referee.friendly_can_block?(king, board)
+
+      true
     end
 
     def switch_player
@@ -54,6 +76,14 @@ module Chess
         @current_player = player_two
       elsif current_player == player_two
         @current_player = player_one
+      end
+    end
+
+    def enemy_player
+      if current_player == player_one
+        player_two
+      else
+        player_one
       end
     end
 

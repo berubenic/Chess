@@ -46,7 +46,7 @@ module Chess
 
     def game_loop
       loop do
-        Display.player_is_in_check_warning if current_player_in_check?
+        Display.player_is_in_check_warning(board) if current_player_in_check?
         return Display.draw(board, current_player) if stalemate?
 
         player_selection

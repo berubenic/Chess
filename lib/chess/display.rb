@@ -104,9 +104,9 @@ module Chess
       clear
     end
 
-    def player_is_in_check_warning
+    def player_is_in_check_warning(board)
       clear
-      display_board(board.board)
+      display_board(board.array)
       puts 'Warning! Your king is in check!'
       sleep 2
       clear

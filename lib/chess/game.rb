@@ -5,10 +5,13 @@ require_relative './display'
 require_relative './tile_helper'
 require_relative './referee'
 require_relative './pawn_promotion'
+require_relative './save_load'
 
 module Chess
   # Game has an overview of everything
   class Game
+    include SaveLoad
+
     attr_reader :board, :player_one, :player_two, :current_player
 
     def initialize(board: Board.new, player_one: nil, player_two: nil, current_player: nil)
@@ -77,7 +80,7 @@ module Chess
     def translate_selection(selection)
       case selection
       when 's'
-        return save_game
+        return define_game_state
       when 'long castle', 'short castle'
         return execute_castling(selection) if valid_castling?(selection)
       else

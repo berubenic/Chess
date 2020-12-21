@@ -22,6 +22,7 @@ module Chess
       save_file = File.open('saves/chess_save.yml', 'w')
       YAML.dump(game_state, save_file)
       save_file.close
+      save_message
       exit
     end
 
@@ -33,7 +34,11 @@ module Chess
       @player_two = save_file['player_two']
       @current_player = save_file['current_player']
       game_loop
+    end
 
+    def save_message
+      puts "Game saved!"
+      sleep 2
     end
     
     def load_error

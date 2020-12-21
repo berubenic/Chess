@@ -161,14 +161,12 @@ board: &2 !ruby/object:Chess::Board
     - ''
     - ''
     - ''
-  - - ''
-    - ''
-    - &33 !ruby/object:Chess::WhitePawn
+  - - &33 !ruby/object:Chess::WhitePawn
       current_coordinate:
-      - 2
+      - 0
       - 4
       starting_coordinate:
-      - 2
+      - 0
       - 6
       color: white
       content: "♙"
@@ -180,6 +178,8 @@ board: &2 !ruby/object:Chess::Board
     - ''
     - ''
     - ''
+    - ''
+    - ''
   - - ''
     - ''
     - ''
@@ -188,9 +188,10 @@ board: &2 !ruby/object:Chess::Board
     - ''
     - ''
     - ''
-  - - !ruby/object:Chess::WhitePawn
+  - - ''
+    - !ruby/object:Chess::WhitePawn
       current_coordinate: &18
-      - 0
+      - 1
       - 6
       starting_coordinate: *18
       color: white
@@ -199,14 +200,13 @@ board: &2 !ruby/object:Chess::Board
       capturable: false
     - !ruby/object:Chess::WhitePawn
       current_coordinate: &19
-      - 1
+      - 2
       - 6
       starting_coordinate: *19
       color: white
       content: "♙"
       board: *2
       capturable: false
-    - ''
     - !ruby/object:Chess::WhitePawn
       current_coordinate: &20
       - 3

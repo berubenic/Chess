@@ -4,6 +4,7 @@ CLI Chess game made with Ruby.
 This is the final project of the Ruby Track from [The Odin Project](https://www.theodinproject.com/courses/ruby-programming/lessons/ruby-final-project?ref=lnav)
 
 ## Requirements
+
 - [Ruby](https://www.ruby-lang.org/en/) >= 2.4
 - [Bundler](https://bundler.io/) >= 2.1.2
 
@@ -21,7 +22,7 @@ $ bundle install
 
 ## Demo
 
-![stalemate example](gif/stalemate.gif)
+![fool's mate example](gif/fool.gif)
 
 ## How to Play
 
@@ -40,4 +41,3 @@ $ bundle install
   - For creating the title
 - [pastel](https://github.com/piotrmurach/pastel)
   - Terminal output styling
-  

@@ -51,7 +51,7 @@ module Chess
 
     def ask_to_select_action(player)
       prompt = TTY::Prompt.new
-      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)")
+      prompt.ask("#{player.name}, select a tile to move to or a piece to capture. (ex. A1)\n")
     end
 
     def draw(board, player)
@@ -159,7 +159,7 @@ module Chess
       end
     end
 
-    #noinspection RubyResolve
+    # noinspection RubyResolve
     def primary_color_tile(tile)
       pastel = Pastel.new
       print pastel.on_bright_white(" #{print_tile(tile)} ")
@@ -167,7 +167,7 @@ module Chess
 
     def secondary_color_tile(tile)
       pastel = Pastel.new
-      #noinspection RubyResolve
+      # noinspection RubyResolve
       print pastel.on_cyan(" #{print_tile(tile)} ")
     end
 
@@ -176,7 +176,7 @@ module Chess
       if tile == ''
         ' '
       elsif %w[o].include?(tile)
-        #noinspection RubyResolve
+        # noinspection RubyResolve
         pastel.bright_blue(tile)
       elsif %w[x].include?(tile)
         pastel.red(tile)

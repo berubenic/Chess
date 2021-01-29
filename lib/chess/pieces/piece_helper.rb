@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../tile_helper'
+require_relative '../modules/tile_helper'
 
 module Chess
   # Utility functions for pieces

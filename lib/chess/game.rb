@@ -2,9 +2,9 @@
 
 require_relative './board'
 require_relative './display'
-require_relative './tile_helper'
-require_relative './referee'
-require_relative './pawn_promotion'
+require_relative './modules/tile_helper'
+require_relative './modules/referee'
+require_relative './modules/pawn_promotion'
 require_relative './save_load'
 
 module Chess

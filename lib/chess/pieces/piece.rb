@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './piece_helper'
-require_relative '../tile_helper'
+require_relative '../modules/tile_helper'
 
 module Chess
   # Piece superclass

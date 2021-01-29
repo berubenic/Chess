@@ -134,11 +134,13 @@ module Chess
     end
 
     def display_left_sidebar(y_coordinate)
-      print "#{y_coordinate + 1} "
+      number = y_coordinate + -8
+      print "#{number.abs} "
     end
 
     def display_right_sidebar(y_coordinate)
-      print " #{y_coordinate + 1} \n"
+      number = y_coordinate + -8
+      print " #{number.abs} \n"
     end
 
     def display_header

@@ -19,7 +19,8 @@ module Chess
     def translate(input, result = [])
       input = input.downcase
       result << LETTERS.values_at(input[0])[0]
-      result << input[1].to_i - 1
+      number = input[1].to_i + -8
+      result << number.abs
       result
     end
 

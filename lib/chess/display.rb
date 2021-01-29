@@ -33,7 +33,7 @@ module Chess
       clear
       title_message
       prompt = TTY::Prompt.new
-      prompt.ask("What is your name? (#{player})")
+      prompt.ask("What is your name? (#{player})\n")
     end
 
     def welcome_player_message(name, color)

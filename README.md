@@ -32,6 +32,7 @@ $ bundle install
 ## Play Online
 
 - Play in your browser with [repl.it](https://repl.it/@NicholasBerube/Chess#README.md)
+- Make sure to zoom in on console as it tends to feel small
 
 ## Gems Used
 

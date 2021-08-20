@@ -1,7 +1,11 @@
 # Chess
 
 CLI Chess game made with Ruby.
-This is the final project of the Ruby Track from [The Odin Project](https://www.theodinproject.com/courses/ruby-programming/lessons/ruby-final-project?ref=lnav)
+Built using Object Oriented Programming principles in mind.
+Throughly tested using Rspec.
+Save a match in progress thanks to serialization.
+
+This is the final project for the Ruby Track from [The Odin Project](https://www.theodinproject.com/courses/ruby-programming/lessons/ruby-final-project?ref=lnav)
 
 ## Requirements
 

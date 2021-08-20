@@ -4,7 +4,7 @@ CLI Chess game made with Ruby.<br>
 <ul>
   <li>Built using Object Oriented Programming principles in mind:
     <ul>
-      <li> Encapsulation: Grouping ressembling logic together</li>
+      <li> Encapsulation: Grouping ressembling logic together through classes</li>
       <li>Abstraction: Letting classes know as little as possible to others</li>
       <li>Inheritance: Each different piece inherits from the Piece super class </li>
       <li>Polymorphism: Each different piece can behave like it's parent Piece class</li>

@@ -25,9 +25,9 @@ This is the final project for the Ruby Track from [The Odin Project](https://www
 
 ## Installation
 
-- Clone the repo locally.
+- Clone the repo locally. ([Instructions](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository))
 
-- `cd` into the directory.
+- `cd Chess` into the directory.
 
 - And then execute:
 
